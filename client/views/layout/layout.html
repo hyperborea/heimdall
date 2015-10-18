@@ -1,0 +1,20 @@
+<head>
+  <title>Dashboards</title>
+</head>
+
+
+<template name="layout">
+  <div class="ui inverted fixed menu">
+    <div class="ui container">
+      <div class="header item">
+        Dashboard
+      </div>
+
+      <a href="/jobs" class="item">Jobs</a>
+    </div>
+  </div>
+
+  <div class="ui main container">
+    {{> Template.dynamic template=main}}  
+  </div>
+</template>

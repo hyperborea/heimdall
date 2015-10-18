@@ -1,0 +1,10 @@
+<template name="jobView">
+  <div class="ui segment">
+    <h4 class="ui header">
+      {{doc.name}}
+      <a href="{{urlFor 'jobEdit' id=doc._id}}">
+        <small>(edit)</small>
+      </a>
+    </h4>
+  </div>
+</template>

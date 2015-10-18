@@ -1,0 +1,20 @@
+<template name="jobForm">
+
+  <form class="ui form">
+    <div class="field">
+      <input type="text" name="name" placeholder="Job Name">
+    </div>
+
+    <div class="field">
+      <textarea name="query"></textarea>
+    </div>
+
+    <div class="field">
+      <div class="ui submit button">save</div>
+      {{#if param 'id'}}
+        <div class="ui negative button js-delete">delete</div>
+      {{/if}}
+    </div>
+  </form>
+
+</template>
