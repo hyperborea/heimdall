@@ -4,8 +4,6 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-autopublish
-insecure
 standard-minifiers
 meteor-base
 mobile-experience
@@ -20,16 +18,15 @@ random
 ejson
 spacebars
 check
+npm-container
+
 kadira:flow-router
 kadira:blaze-layout
 perak:codemirror
 meteorhacks:npm
-
-
-npm-container
 msavin:mongol
 arillo:flow-router-helpers
 semantic:ui-css
 matb33:collection-hooks
 momentjs:moment
-wollardj:timeago
+klarna:accounts-ldap

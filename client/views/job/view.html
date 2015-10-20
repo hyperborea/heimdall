@@ -1,10 +1,31 @@
 <template name="jobView">
+  {{#with doc}}
   <div class="ui segment">
-    <h4 class="ui header">
-      {{doc.name}}
-      <a href="{{urlFor 'jobEdit' id=doc._id}}">
-        <small>(edit)</small>
-      </a>
-    </h4>
+  
+    <h4 class="ui header">{{doc.name}}</h4>
+
+    <div class="ui basic green button js-query">query</div>
+    
+    <table class="ui celled table">
+      <thead>
+        <tr>
+          {{#each key in dataKeys}}
+            <th>{{key}}</th>
+          {{/each}}
+        </tr>
+      </thead>
+
+      <tbody>
+        {{#each row in doc.result}}
+          <tr>
+            {{#each key in dataKeys}}
+              <td>{{getField row key}}</td>
+            {{/each}}
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
   </div>
+  {{/with}}
 </template>

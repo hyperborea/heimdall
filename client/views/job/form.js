@@ -23,6 +23,8 @@ Template.jobForm.onRendered(function() {
   });
   editor.on('change', (doc) => textarea.value = doc.getValue());
 
+  this.$('select').dropdown();
+
   var form = this.$('form').form({
     fields : fieldRules({
       name  : 'empty',
@@ -44,16 +46,22 @@ Template.jobForm.onRendered(function() {
 Template.jobForm.events({
   'submit form': function(event, template) {
     event.preventDefault();
-    
+
     var data = template.$('form').form('get values');
     var _id = FlowRouter.getParam('id');
 
     _id ? Jobs.update(_id, {$set: data}) : _id = Jobs.insert(data);
-    FlowRouter.go('jobView', {id: _id});
+    FlowRouter.go('jobEdit', {id: _id});
+  },
+
+  'click .js-query': function(event, template) {
+    Meteor.call('query', FlowRouter.getParam('id'));
   },
 
   'click .js-delete': function() {
-    Jobs.remove(FlowRouter.getParam('id'));
-    FlowRouter.go('jobList');
+    if (confirm('Sure you want to delete this job?')) {
+      Jobs.remove(FlowRouter.getParam('id'));
+      FlowRouter.go('jobList');
+    }
   }
 });

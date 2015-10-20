@@ -9,12 +9,27 @@
       <textarea name="query"></textarea>
     </div>
 
+    <div class="inline fields">
+      <div class="field">
+        <select name="periodicity">
+          <option value="">How often?</option>
+          <option value="daily">daily</option>
+          <option value="-">just once</option>
+        </select>
+      </div>
+    </div>
+
     <div class="field">
       <div class="ui submit button">save</div>
+      <div class="ui submit button js-query">save &amp; run</div>
       {{#if param 'id'}}
-        <div class="ui negative button js-delete">delete</div>
+        <div class="ui right floated negative button js-delete">delete</div>
       {{/if}}
     </div>
   </form>
+
+  <div class="ui horizontal divider"></div>
+
+  {{> jobView}}
 
 </template>

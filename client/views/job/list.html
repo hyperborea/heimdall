@@ -6,18 +6,11 @@
 
   <div class="ui relaxed divided animated list">
     {{#each job in jobs}}
-      <a href="{{urlFor 'jobView' id=job._id}}" class="item">
-        <div class="right floated content">
-          <a href="{{urlFor 'jobEdit' id=job._id}}" class="ui mini basic icon button">
-            <i class="edit icon"></i> edit
-          </a>
-        </div>
-
-        <i class="right triangle icon"></i>
-        
+      <a href="{{urlFor 'jobEdit' id=job._id}}" class="item">
+        <i class="right triangle icon"></i>        
         <div class="content">
           <div class="header">{{job.name}}</div>
-          <div class="description">{{timeAgo job.createdAt}}</div>
+          <div class="description">{{timeAgo job.createdAt}} by <em>{{job.username}}</em></div>
         </div>
       </a>
     {{/each}}

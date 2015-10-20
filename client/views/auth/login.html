@@ -1,0 +1,11 @@
+<template name="login">
+  <form>
+    <input type="text" name="username" placeholder="username" required>
+    <input type="password" name="password" placeholder="password" required>
+    <input type="submit" value="login">
+  </form>
+
+  {{#if loggingIn}}
+    ... logging in ...
+  {{/if}}
+</template>
