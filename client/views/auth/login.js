@@ -1,3 +1,10 @@
+Template.login.helpers({
+  loading: function() {
+    return Meteor.loggingIn() && 'loading';
+  }
+});
+
+
 Template.login.events({
   'submit form': function(event, template) {
     event.preventDefault();

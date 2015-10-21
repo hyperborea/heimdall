@@ -1,0 +1,24 @@
+<template name="sourceList">
+
+  <div class="ui cards">
+
+    <a href={{urlFor 'sourceNew'}} class="card">
+      <div class="content">
+        <div class="header">
+          <i class="plus squared icon"></i> Add Source
+        </div>
+      </div>
+    </a>
+
+    {{#each item in items}}
+      <a href={{urlFor 'sourceEdit' id=item._id}} class="card">
+        <div class="content">
+          <div class="header">{{item.name}}</div>
+          <div class="meta">{{item.username}}</div>
+        </div>
+      </a>
+    {{/each}}
+
+  </div>
+
+</template>

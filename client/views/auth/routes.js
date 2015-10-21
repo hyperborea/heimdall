@@ -16,8 +16,10 @@ Meteor.startup(function() {
 
 // Redirect user on login.
 Accounts.onLogin(function() {
-  var redirect = Session.get('redirectAfterLogin') || 'home';
-  FlowRouter.go(redirect);
+  if (FlowRouter.current().route.name == 'login') {
+    var redirect = Session.get('redirectAfterLogin') || 'home';
+    FlowRouter.go(redirect);
+  }
 });
 
 

@@ -1,0 +1,14 @@
+<template name="sourceForm">
+  <form class="ui form">
+    <div class="field">
+      <input type="text" name="name" placeholder="Source Name">
+    </div> 
+
+    <div class="field">
+      <div class="ui submit button">save</div>
+      {{#if param 'id'}}
+        <div class="ui right floated negative button js-delete">delete</div>
+      {{/if}}
+    </div>   
+  </form>
+</template>
