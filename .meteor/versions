@@ -27,6 +27,7 @@ diff-sequence@1.0.1
 ecmascript@0.1.5
 ecmascript-collections@0.1.6
 ejson@1.0.7
+email@1.0.7
 fastclick@1.0.7
 geojson-utils@1.0.4
 hot-code-push@1.0.0

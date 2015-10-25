@@ -5,8 +5,8 @@ Jobs.before.insert(function (userId, doc) {
   var user = Meteor.users.findOne(userId);
 
   doc.createdAt = Date.now();
-  doc.authorId = userId;
-  doc.author = user.username;
+  doc.ownerId = userId;
+  doc.owner = user.username;
 });
 
 

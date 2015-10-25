@@ -3,5 +3,9 @@ Meteor.publish('jobs', function() {
 });
 
 Meteor.publish('sources', function() {
-  return Sources.find({}, {fields: {password: 0}});
+  return Sources.find({
+    // ownerId: this.userId
+  }, {
+    fields: { password: 0 }
+  });
 });

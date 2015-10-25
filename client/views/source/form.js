@@ -26,7 +26,7 @@ Template.sourceForm.onRendered(function() {
 
 Template.sourceForm.helpers({
   saveBtnClass: function() {
-    return Template.instance().unsavedChanges.get() ? 'orange' : 'disabled';
+    return Template.instance().unsavedChanges.get() ? 'positive' : 'disabled';
   }
 });
 

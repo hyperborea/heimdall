@@ -31,7 +31,8 @@ Template.jobForm.onRendered(function() {
   });
   editor.on('change', (doc) => textarea.value = doc.getValue());
 
-  this.$('select, .dropdown').dropdown();
+  this.$('select, .ui.dropdown').dropdown();
+  this.$('.ui.accordion').accordion();
 
   var form = this.$('form').form({
     fields : fieldRules({
@@ -58,7 +59,7 @@ Template.jobForm.helpers({
   },
 
   saveBtnClass: function() {
-    return Template.instance().unsavedChanges.get() ? 'orange' : 'disabled';
+    return Template.instance().unsavedChanges.get() ? 'positive' : 'disabled';
   }
 });
 

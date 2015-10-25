@@ -8,12 +8,16 @@ Template.jobView.helpers({
     return Jobs.findOne(FlowRouter.getParam('id'));
   },
 
+  hasErrors: function() {
+    return this.result && this.result.status == 'error';
+  },
+
   data: function() {
-    return this.result ? JSON.stringify(this.result) : '-';
+    return (this.result && this.result.data) ? JSON.stringify(this.result.data) : '-';
   },
 
   dataKeys: function() {
-    return this.result ? _.keys(this.result[0]) : [];
+    return (this.result && this.result.data) ? _.keys(this.result.data[0]) : [];
   },
   getField: function(row, key) {
     return row[key];
@@ -21,8 +25,8 @@ Template.jobView.helpers({
 });
 
 
-Template.jobView.events({
-  'click .js-query': function() {
-    Meteor.call('query', this._id, this.query);
-  }
-});
+// Template.jobView.events({
+//   'click .js-query': function() {
+//     Meteor.call('query', this._id, this.query);
+//   }
+// });

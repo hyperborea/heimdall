@@ -1,5 +1,6 @@
 <template name="jobForm">
-  <form class="ui form">
+  <form class="ui job form">
+
     <div class="fields">
       <div class="four wide field">
         <div class="ui search selection dropdown">
@@ -22,14 +23,12 @@
       <textarea name="query"></textarea>
     </div>
 
-    <div class="inline fields">
-      <div class="field">
-        <select name="periodicity">
-          <option value="">How often?</option>
-          <option value="daily">daily</option>
-          <option value="-">just once</option>
-        </select>
-      </div>
+    <div class="ui fluid styled accordion field">
+      <div class="title"><i class="dropdown icon"></i> Periodicity</div>
+      <div class="content">{{> jobFormPeriodicity}}</div>
+
+      <div class="title"><i class="dropdown icon"></i> Email</div>
+      <div class="content">{{> jobFormEmail}}</div>
     </div>
 
     <div class="field">
@@ -39,9 +38,37 @@
         <div class="ui right floated negative button js-delete">delete</div>
       {{/if}}
     </div>
+
   </form>
 
-  <div class="ui horizontal divider"></div>
-
   {{> jobView}}
+</template>
+
+
+<template name="jobFormPeriodicity">
+  <p>How often should the job be executed?</p>
+  <select name="periodicity">
+    <option value="">Periods</option>
+    <option value="daily">daily</option>
+    <option value="-">just once</option>
+  </select>
+</template>
+
+
+<template name="jobFormEmail">
+  <div class="field">
+    <div class="ui checkbox">
+      <input type="checkbox" name="email_enabled">
+      <label>enable email notification</label>
+    </div>
+  </div>
+  <div class="field">
+    <input type="text" name="email_recipients" placeholder="Recipients">
+  </div>
+  <div class="field">
+    <input type="text" name="email_subject" placeholder="Subject">
+  </div>
+  <div class="field">
+    <textarea name="email_content"></textarea>
+  </div>
 </template>
