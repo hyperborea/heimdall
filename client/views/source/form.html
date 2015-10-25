@@ -1,14 +1,50 @@
 <template name="sourceForm">
-  <form class="ui form">
-    <div class="field">
-      <input type="text" name="name" placeholder="Source Name">
-    </div> 
+
+  <form class="ui form text container">
+
+    <h4 class="ui dividing header">Connection Details</h4>
 
     <div class="field">
-      <div class="ui submit button">save</div>
+      <label>Name <small>(optional)</small></label>
+      <input type="text" name="name">
+    </div>
+
+    <div class="field">
+      <label>Server</label>
+      <div class="fields">
+        <div class="eight wide field">
+          <input type="text" name="host" placeholder="host address">
+        </div>
+        <div class="four wide field">
+          <input type="number" name="port" placeholder="5432">
+        </div>
+        <div class="four wide field">
+          <input type="text" name="database" placeholder="database">
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Credentials</label>
+      <div class="two fields">
+        <div class="field">
+          <input type="text" name="username" placeholder="username">
+        </div>
+        <div class="field">
+          <input type="password" name="password" placeholder="password" autocomplete="off">
+        </div>
+      </div>
+    </div>
+
+    <div class="ui divider"></div>
+
+    <div class="field">
+      <div class="ui submit button {{saveBtnClass}}">save</div>
       {{#if param 'id'}}
         <div class="ui right floated negative button js-delete">delete</div>
       {{/if}}
-    </div>   
+    </div>  
+
   </form>
+
 </template>

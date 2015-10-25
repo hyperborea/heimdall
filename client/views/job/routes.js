@@ -1,8 +1,5 @@
 var jobRoutes = FlowRouter.group({
-  prefix: '/jobs',
-  subscriptions: function() {
-    this.register('jobs', Meteor.subscribe('jobs'));
-  }
+  prefix: '/jobs'
 });
 
 jobRoutes.route('/', {

@@ -31,3 +31,5 @@ matb33:collection-hooks
 momentjs:moment
 klarna:accounts-ldap
 hyperborea:ethergrid
+reactive-var
+ecmascript

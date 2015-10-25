@@ -14,6 +14,14 @@ function fieldRules(fields) {
 }
 
 
+Template.jobForm.onCreated(function() {
+  this.subscribe('jobs');
+  this.subscribe('sources');
+
+  this.unsavedChanges = new ReactiveVar(false);
+});
+
+
 Template.jobForm.onRendered(function() {
   var textarea = this.find('textarea');
   var editor = CodeMirror.fromTextArea(textarea, {
@@ -23,7 +31,7 @@ Template.jobForm.onRendered(function() {
   });
   editor.on('change', (doc) => textarea.value = doc.getValue());
 
-  this.$('select').dropdown();
+  this.$('select, .dropdown').dropdown();
 
   var form = this.$('form').form({
     fields : fieldRules({
@@ -38,12 +46,28 @@ Template.jobForm.onRendered(function() {
     if (job) {
       form.form('set values', job);
       editor.doc.setValue(job.query);
+      Template.instance().unsavedChanges.set(false);
     }
   });
 });
 
 
+Template.jobForm.helpers({
+  sources: function() {
+    return Sources.find();
+  },
+
+  saveBtnClass: function() {
+    return Template.instance().unsavedChanges.get() ? 'orange' : 'disabled';
+  }
+});
+
+
 Template.jobForm.events({
+  'change input, change textarea, keyup input': function() {
+    Template.instance().unsavedChanges.set(true);
+  },
+
   'submit form': function(event, template) {
     event.preventDefault();
 
@@ -51,6 +75,7 @@ Template.jobForm.events({
     var _id = FlowRouter.getParam('id');
 
     _id ? Jobs.update(_id, {$set: data}) : _id = Jobs.insert(data);
+    Template.instance().unsavedChanges.set(false);
     FlowRouter.go('jobEdit', {id: _id});
   },
 

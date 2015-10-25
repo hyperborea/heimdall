@@ -5,8 +5,11 @@ Sources.before.insert(function (userId, doc) {
   var user = Meteor.users.findOne(userId);
 
   doc.createdAt = Date.now();
-  doc.userId = userId;
-  doc.username = user.username;
+  doc.authorId = userId;
+  doc.author = user.username;
+
+  if (!doc.port) doc.port = '5432';
+  if (!doc.name) doc.name = doc.host;
 });
 
 

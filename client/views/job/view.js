@@ -1,3 +1,8 @@
+Template.jobView.onCreated(function() {
+  this.subscribe('jobs');
+});
+
+
 Template.jobView.helpers({
   doc: function() {
     return Jobs.findOne(FlowRouter.getParam('id'));
@@ -11,7 +16,6 @@ Template.jobView.helpers({
     return this.result ? _.keys(this.result[0]) : [];
   },
   getField: function(row, key) {
-    console.log(this, row, key);
     return row[key];
   }
 });

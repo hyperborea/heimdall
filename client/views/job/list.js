@@ -15,3 +15,8 @@ Template.jobList.helpers({
     return moment.min(ts, now).fromNow();
   }
 });
+
+
+Template.jobList.onCreated(function() {
+  this.subscribe('jobs');
+});

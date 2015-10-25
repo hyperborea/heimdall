@@ -1,7 +1,7 @@
 <template name="login">
-  <div class="ui centered middle aligned grid">
-    <div class="column" style="max-width: 450px; padding-top: 10%">
-      <form class="ui large form">
+  <div class="ui centered middle aligned grid" style="padding-top: 10%">
+    <div class="row">
+      <form class="ui large form six wide column">
         <div class="ui segment">
           <div class="field">
             <div class="ui fluid left icon input">
@@ -18,6 +18,12 @@
           <button type="submit" class="ui fluid large primary button {{loading}}">Login</button>
         </div>
       </form>
+    </div>
+
+    <div class="row">
+      <div class="ui message six wide column">
+        Please log in using your ordinary credentials.
+      </div>
     </div>
   </div>
 </template>

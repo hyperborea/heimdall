@@ -1,7 +1,21 @@
 <template name="jobForm">
   <form class="ui form">
-    <div class="field">
-      <input type="text" name="name" placeholder="Job Name">
+    <div class="fields">
+      <div class="four wide field">
+        <div class="ui search selection dropdown">
+          <input type="hidden" name="sourceId">
+          <i class="dropdown icon"></i>
+          <div class="default text">Source</div>
+          <div class="menu">
+            {{#each source in sources}}
+              <div class="item" data-value={{source._id}}>{{source.name}}</div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+      <div class="fourteen wide field">
+        <input type="text" name="name" placeholder="Job Name">  
+      </div>
     </div>
 
     <div class="field">
@@ -19,7 +33,7 @@
     </div>
 
     <div class="field">
-      <div class="ui submit button">save</div>
+      <div class="ui submit button {{saveBtnClass}}">save</div>
       <div class="ui submit button js-query">save &amp; run</div>
       {{#if param 'id'}}
         <div class="ui right floated negative button js-delete">delete</div>
