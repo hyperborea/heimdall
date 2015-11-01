@@ -6,31 +6,7 @@
 
     <div class="ui basic green button js-query">query</div>
 
-    {{#if hasErrors}}
-      <div class="ui error message">
-        {{doc.result.data}}
-      </div>
-    {{else}}
-      <table class="ui celled table">
-        <thead>
-          <tr>
-            {{#each key in dataKeys}}
-              <th>{{key}}</th>
-            {{/each}}
-          </tr>
-        </thead>
-
-        <tbody>
-          {{#each row in doc.result.data}}
-            <tr>
-              {{#each key in dataKeys}}
-                <td>{{getField row key}}</td>
-              {{/each}}
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
-    {{/if}}
+    {{> jobDataTable object=doc.preview}}
 
   </div>
   {{/with}}

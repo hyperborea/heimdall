@@ -8,19 +8,14 @@ Template.sourceForm.onCreated(function() {
 
 Template.sourceForm.onRendered(function() {
   var form = this.$('form').form({
-    fields: {
-      name: 'empty',
-    },
     inline: true,
   });
 
-  this.autorun(() => {
-    var source = Sources.findOne(FlowRouter.getParam('id'));
-    if (source) {
-      source.password = PASSWORD_NOCHANGE;
-      form.form('set values', source);
-    }
-  });
+  var source = Sources.findOne(FlowRouter.getParam('id'));
+  if (source) {
+    source.password = PASSWORD_NOCHANGE;
+    form.form('set values', source);
+  }
 });
 
 

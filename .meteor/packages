@@ -26,11 +26,14 @@ perak:codemirror
 meteorhacks:npm
 msavin:mongol
 arillo:flow-router-helpers
-semantic:ui-css
 matb33:collection-hooks
 momentjs:moment
 klarna:accounts-ldap
-hyperborea:ethergrid
 reactive-var
 ecmascript
 email
+percolate:synced-cron
+semantic:ui
+flemay:less-autoprefixer
+harrison:papa-parse
+hyperborea:timeago

@@ -1,19 +1,3 @@
-function fieldRules(fields) {
-  _.each(fields, function(rules, key) {
-    if(typeof rules == 'string') {
-      rules = [rules];
-    }
-
-    fields[key] = {
-      identifier: key,
-      rules: _.map(rules, (rule) => Object({ type: rule }))
-    }
-  });
-
-  return fields;
-}
-
-
 Template.jobForm.onCreated(function() {
   this.subscribe('jobs');
   this.subscribe('sources');
@@ -31,29 +15,41 @@ Template.jobForm.onRendered(function() {
   });
   editor.on('change', (doc) => textarea.value = doc.getValue());
 
-  this.$('select, .ui.dropdown').dropdown();
+  this.$('.ui.single.dropdown').dropdown();
+  this.$('.ui.checkbox').checkbox();
   this.$('.ui.accordion').accordion();
 
   var form = this.$('form').form({
-    fields : fieldRules({
+    fields : {
       name  : 'empty',
       query : 'empty',
-    }),
+    },
     inline  : true,
   });
 
+  // on hot reload we might need to set the values again
   this.autorun(() => {
-    var job = Jobs.findOne(FlowRouter.getParam('id'));
-    if (job) {
-      form.form('set values', job);
-      editor.doc.setValue(job.query);
-      Template.instance().unsavedChanges.set(false);
+    var _id = FlowRouter.getParam('id');
+
+    if (_id && form.form('get value', '_id') != _id) {
+      if (job = Jobs.findOne(_id)) {
+        // the timeout ensures that the source select box is populated before setting the values
+        Meteor.setTimeout(() => {
+          form.form('set values', objectToDotNotation(job));
+          editor.doc.setValue(job.query);
+          this.unsavedChanges.set(false);
+        });
+      }
     }
   });
 });
 
 
 Template.jobForm.helpers({
+  doc: function() {
+    return Jobs.findOne(FlowRouter.getParam('id'));
+  },
+
   sources: function() {
     return Sources.find();
   },
@@ -65,28 +61,30 @@ Template.jobForm.helpers({
 
 
 Template.jobForm.events({
-  'change input, change textarea, keyup input': function() {
+  'change input, keyup input, keyup textarea': function() {
     Template.instance().unsavedChanges.set(true);
   },
 
   'submit form': function(event, template) {
     event.preventDefault();
 
+    var template = Template.instance();
     var data = template.$('form').form('get values');
-    var _id = FlowRouter.getParam('id');
+    data['email.enabled'] = data['email.enabled'] === 'on';
 
-    _id ? Jobs.update(_id, {$set: data}) : _id = Jobs.insert(data);
-    Template.instance().unsavedChanges.set(false);
-    FlowRouter.go('jobEdit', {id: _id});
+    Meteor.call('saveJob', data, function(err, _id) {
+      template.unsavedChanges.set(false);
+      FlowRouter.go('jobEdit', {id: _id});
+    });
   },
 
   'click .js-query': function(event, template) {
-    Meteor.call('query', FlowRouter.getParam('id'));
+    Meteor.call('runJob', FlowRouter.getParam('id'));
   },
 
   'click .js-delete': function() {
     if (confirm('Sure you want to delete this job?')) {
-      Jobs.remove(FlowRouter.getParam('id'));
+      Meteor.call('removeJob', FlowRouter.getParam('id'));
       FlowRouter.go('jobList');
     }
   }

@@ -1,5 +1,5 @@
 Template.layout.onRendered(function() {
-  this.$('.ui.dropdown').dropdown({
+  this.$('.main.menu .ui.dropdown').dropdown({
     on: 'hover'
   });
 });
