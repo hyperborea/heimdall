@@ -21,8 +21,9 @@ Template.jobForm.onRendered(function() {
 
   var form = this.$('form').form({
     fields : {
-      name  : 'empty',
-      query : 'empty',
+      name     : 'empty',
+      query    : 'empty',
+      sourceId : 'empty',
     },
     inline  : true,
   });

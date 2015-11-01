@@ -8,6 +8,11 @@ Template.sourceForm.onCreated(function() {
 
 Template.sourceForm.onRendered(function() {
   var form = this.$('form').form({
+    fields : {
+      host     : 'empty',
+      database : 'empty',
+      username : 'empty'
+    },
     inline: true,
   });
 
