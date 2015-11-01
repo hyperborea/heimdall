@@ -36,9 +36,16 @@
       </div>
     </div>
 
+    <div class="field">
+      <div class="ui checkbox">
+        <input type="checkbox" name="isPublic">
+        <label>usable by public</label>
+      </div>
+    </div>
+
     <div class="ui divider"></div>
 
-    <div class="field">
+    <div class="action field">
       <div class="ui submit button {{saveBtnClass}}">save</div>
       {{#if param 'id'}}
         <div class="ui right floated negative button js-delete">delete</div>

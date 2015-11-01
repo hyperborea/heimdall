@@ -11,11 +11,20 @@ Template.sourceForm.onRendered(function() {
     inline: true,
   });
 
-  var source = Sources.findOne(FlowRouter.getParam('id'));
-  if (source) {
-    source.password = PASSWORD_NOCHANGE;
-    form.form('set values', source);
-  }
+  this.$('.ui.checkbox').checkbox();
+
+  this.autorun(() => {
+    if (source = Sources.findOne(FlowRouter.getParam('id'))) {
+      source.password = PASSWORD_NOCHANGE;
+      form.form('set values', source);
+      this.unsavedChanges.set(false);
+
+      if (!isOwner(Meteor.userId(), source.ownerId)) {
+        form.find('input').attr('readonly', '');
+        form.find('.action.field').hide();
+      }
+    }
+  });
 });
 
 
@@ -37,6 +46,7 @@ Template.sourceForm.events({
     var _id = FlowRouter.getParam('id');
     var data = template.$('form').form('get values');
     if (data.password == PASSWORD_NOCHANGE) delete data.password;
+    data['isPublic'] = data['isPublic'] === 'on';
 
     _id ? Sources.update(_id, {$set: data}) : _id = Sources.insert(data);
     Template.instance().unsavedChanges.set(false);

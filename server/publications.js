@@ -3,7 +3,7 @@ Meteor.publish('jobs', function() {
 });
 
 Meteor.publish('sources', function() {
-  return Sources.find(filterByOwnership(this.userId), {
+  return Sources.find({$or: [filterByOwnership(this.userId), { isPublic: true }]}, {
     fields: { password: 0 }
   });
 });

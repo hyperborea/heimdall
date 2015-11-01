@@ -16,7 +16,9 @@
           <div class="header">{{item.name}}</div>
           <div class="meta">{{item.username}}</div>
         </div>
-        <div class="extra content">postgreSQL</div>
+        <div class="extra content">
+          <i class="user icon"></i> {{item.owner}}
+        </div>
       </a>
     {{/each}}
 
