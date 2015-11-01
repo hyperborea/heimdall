@@ -10,8 +10,8 @@ Template.jobView.helpers({
 });
 
 
-// Template.jobView.events({
-//   'click .js-query': function() {
-//     Meteor.call('query', this._id, this.query);
-//   }
-// });
+Template.jobView.events({
+  'click .js-query': function() {
+    Meteor.call('runJob', this._id);
+  }
+});
