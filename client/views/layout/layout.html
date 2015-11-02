@@ -10,14 +10,14 @@
         Heimdall
       </div>
 
-      <a href={{urlFor 'jobList'}} class="item"><i class="cubes icon"></i> Jobs</a>
-      <a href={{urlFor 'sourceList'}} class="item"><i class="database icon"></i> Sources</a>
+      <a href={{pathFor 'jobList'}} class="item"><i class="cubes icon"></i> Jobs</a>
+      <a href={{pathFor 'sourceList'}} class="item"><i class="database icon"></i> Sources</a>
 
       <div class="right menu">
         <div class="ui dropdown item">
           <i class="user icon"></i> {{currentUser.displayName}}
           <div class="menu">
-            <a href={{urlFor 'logout'}} class="item">
+            <a href={{pathFor 'logout'}} class="item">
               <i class="sign out icon"></i> Logout
             </a>
           </div>

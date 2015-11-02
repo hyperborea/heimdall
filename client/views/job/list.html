@@ -1,12 +1,12 @@
 <template name="jobList">
-  <a href={{urlFor 'jobNew'}} class="ui basic button">
+  <a href={{pathFor 'jobNew'}} class="ui basic button">
     <i class="plus squared icon"></i>
     Create Job
   </a>
 
   <div class="ui relaxed divided animated list">
     {{#each job in jobs}}
-      <a href={{urlFor 'jobEdit' id=job._id}} class="item">
+      <a href={{pathFor 'jobEdit' id=job._id}} class="item">
         <i class="right triangle icon"></i>        
         <div class="content">
           <div class="header">{{job.name}}</div>

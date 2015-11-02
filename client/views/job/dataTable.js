@@ -19,3 +19,10 @@ Template.jobDataTableOK.helpers({
     return row[key];
   }
 });
+
+
+Template.jobDataTableRunning.events({
+  'click .js-cancel': function(event, template) {
+    Meteor.call('cancelJob', this.object.jobId);
+  }
+});

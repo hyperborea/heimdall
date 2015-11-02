@@ -3,9 +3,9 @@ var pg = Meteor.npmRequire('pg');
 const TIMEOUT = 30000;
 
 
-queryPostgres = function(source, query, callback) {
+queryPostgres = function(source, query, endCallback, startCallback) {
   function results(status, data) {
-    callback({
+    endCallback && endCallback({
       status: status,
       data: data
     });
@@ -17,6 +17,8 @@ queryPostgres = function(source, query, callback) {
   
     pg.connect(conString, Meteor.bindEnvironment((err, client, done) => {
       const pid = client.processID;
+      startCallback && startCallback(pid);
+      
       if (err) return results('error', `${err} - could not connect with data source.`);
 
       client.query(query, Meteor.bindEnvironment((err, result) => {

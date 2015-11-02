@@ -2,7 +2,7 @@
 
   <div class="ui cards">
 
-    <a href={{urlFor 'sourceNew'}} class="green card">
+    <a href={{pathFor 'sourceNew'}} class="green card">
       <div class="content">
         <div class="header">
           <i class="plus squared icon"></i> Add Source
@@ -11,7 +11,7 @@
     </a>
 
     {{#each item in items}}
-      <a href={{urlFor 'sourceEdit' id=item._id}} class="card">
+      <a href={{pathFor 'sourceEdit' id=item._id}} class="card">
         <div class="content">
           <div class="header">{{item.name}}</div>
           <div class="meta">{{item.username}}</div>
