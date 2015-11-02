@@ -5,3 +5,9 @@ Meteor.startup(function() {
     scheduleJob(job._id, job.schedule);
   });
 });
+
+
+if (process.env.USER === 'root') {
+  const basePath = process.env.PWD;
+  SSL(`${basePath}/private/server.key`,`${basePath}/private/server.crt`, 443);
+}
