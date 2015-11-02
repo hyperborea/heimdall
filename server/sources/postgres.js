@@ -15,11 +15,11 @@ queryPostgres = function(source, query, endCallback, startCallback) {
     const conString = `postgres://${source.username}:${source.password}@${source.host}:${source.port}/${source.database}`
     query = `SET statement_timeout TO ${TIMEOUT};` + query;
   
-    pg.connect(conString, Meteor.bindEnvironment((err, client, done) => {
+    pg.connect(conString, Meteor.bindEnvironment((err, client, done) => {      
+      if (err) return results('error', `${err} - could not connect with data source.`);
+
       const pid = client.processID;
       startCallback && startCallback(pid);
-      
-      if (err) return results('error', `${err} - could not connect with data source.`);
 
       client.query(query, Meteor.bindEnvironment((err, result) => {
         if (err) {
