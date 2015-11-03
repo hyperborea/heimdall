@@ -22,6 +22,10 @@
           <input type="text" name="database" placeholder="database">
         </div>
       </div>
+      <div class="ui checkbox">
+        <input type="checkbox" name="ssl">
+        <label>use SSL</label>
+      </div>
     </div>
 
     <div class="field">
@@ -46,11 +50,31 @@
     <div class="ui divider"></div>
 
     <div class="action field">
-      <div class="ui submit button {{saveBtnClass}}">save</div>
-      {{#if param 'id'}}
+      <div class="ui buttons">
+        <div class="ui submit button {{saveBtnClass}}">save</div>
+        {{#if doc._id}}
+          <div class="or" data-text="&amp;"></div>
+          <div class="ui submit button js-test">test connection</div>
+        {{/if}}  
+      </div>
+      
+      {{#if doc._id}}
         <div class="ui right floated negative button js-delete">delete</div>
       {{/if}}
-    </div>  
+    </div>
+
+    {{#if doc.test}}
+    <div class="field">
+      <label>Connection</label>
+      <div>
+        <i class="{{resultIcon doc.test}} large icon"></i>
+        <small>last checked {{timeAgo doc.test.updatedAt}}</small>
+      </div>
+      {{#if resultIsError doc.test}}
+        <div class="ui visible error message">{{doc.test.data}}</div>
+      {{/if}}
+    </div>
+    {{/if}}
 
   </form>
 

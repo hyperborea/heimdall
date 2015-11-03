@@ -3,7 +3,7 @@
   <div class="ui segment">
   
     <h4 class="ui header">
-      {{doc.name}}
+      {{doc.name}} <small><a href="{{pathFor 'jobEdit' id=doc._id}}">(edit)</a></small>
       <div class="sub header"> {{timeAgo doc.result.updatedAt}} </div>
     </h4>
 

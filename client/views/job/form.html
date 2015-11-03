@@ -39,9 +39,20 @@
     </div>
 
     <div class="field">
-      <div class="ui submit button {{saveBtnClass}}">save</div>
-      {{#if param 'id'}}
-        <div class="ui submit button js-query">save &amp; run</div>
+      <div class="ui buttons">
+        <div class="ui submit button {{saveBtnClass}}">save</div>
+        {{#if doc._id}}
+          <div class="or" data-text="&amp;"></div>
+          <div class="ui submit button js-query">run</div>
+        {{/if}}
+      </div>
+      
+      {{#if doc._id}}
+        &ensp;
+        <a href="{{pathFor 'jobView' id=doc._id}}" class="ui basic circular icon button">
+          <i class="area chart icon"></i>
+        </a>
+        
         <div class="ui right floated negative button js-delete">delete</div>
       {{/if}}
     </div>
