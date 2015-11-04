@@ -1,6 +1,19 @@
+Template.login.onCreated(function() {
+  this.error = new ReactiveVar(false);
+});
+
+
 Template.login.helpers({
   loading: function() {
     return Meteor.loggingIn() && 'loading';
+  },
+
+  hasError: function() {
+    return Template.instance().error.get() ? 'error' : false;
+  },
+
+  errorMessage: function() {
+    return Template.instance().error.get();
   }
 });
 
@@ -13,7 +26,7 @@ Template.login.events({
     var password = template.find('[name=password]').value;
 
     Meteor.loginWithLDAP(username, password, function(err) {
-      if (err) alert('Authentication failed, please try again');
+      if (err) template.error.set(err.reason);
     });
   }
 });
