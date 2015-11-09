@@ -1,0 +1,36 @@
+<template name="visWorldMap">
+  <div class="map" style="position: relative"></div>
+</template>
+
+
+<template name="visWorldMapForm">
+  <div class="two fields">
+
+    <div class="field">
+      <div class="ui selection dropdown">
+        <input type="hidden" name="countryField" value={{settings.countryField}}>
+        <i class="dropdown icon"></i>
+        <div class="default text">country field</div>
+        <div class="menu">
+          {{#each field in fields}}
+            <div class="item" data-value={{field}}>{{field}}</div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="ui selection dropdown">
+        <input type="hidden" name="valueField" value={{settings.valueField}}>
+        <i class="dropdown icon"></i>
+        <div class="default text">value field</div>
+        <div class="menu">
+          {{#each field in fields}}
+            <div class="item" data-value={{field}}>{{field}}</div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</template>

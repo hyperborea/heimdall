@@ -1,15 +1,20 @@
 <template name="visForm">
   <div class="ui form segment">
     <div class="field">
-      <select name="type">
-        <option value="">select visualization type</option>
-        <option value="Chart">chart</option>
-        <option value="TimeSeries">time series</option>
-        <option value="DataTable">dataTable</option>
-      </select>
+      <div class="ui search selection dropdown">
+        <input type="hidden" name="type" value={{job.vis.type}}>
+        <i class="dropdown icon"></i>
+        <div class="default text">select visualization type</div>
+        <div class="menu">
+          <div class="item" data-value="Chart">chart</div>
+          <div class="item" data-value="TimeSeries">time series</div>
+          <div class="item" data-value="WorldMap">world map</div>
+          <div class="item" data-value="DataTable">dataTable</div>
+        </div>
+      </div>
     </div>
 
-    {{> Template.dynamic template=typeForm data=typeData}}
+    {{> Template.dynamic template=(typeForm job) data=(typeData job)}}
 
     <div class="field">
       <div class="ui submit button">Apply</div>
