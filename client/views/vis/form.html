@@ -1,0 +1,18 @@
+<template name="visForm">
+  <div class="ui form segment">
+    <div class="field">
+      <select name="type">
+        <option value="">select visualization type</option>
+        <option value="Chart">chart</option>
+        <option value="TimeSeries">time series</option>
+        <option value="DataTable">dataTable</option>
+      </select>
+    </div>
+
+    {{> Template.dynamic template=typeForm data=typeData}}
+
+    <div class="field">
+      <div class="ui submit button">Apply</div>
+    </div>
+  </div>
+</template>

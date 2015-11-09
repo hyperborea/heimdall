@@ -1,0 +1,38 @@
+<template name="visChart">
+  <div class="chart"></div>
+</template>
+
+
+<template name="visChartForm">
+  <div class="fields">
+
+    <div class="four wide field">
+      <div class="ui single selection dropdown">
+        <input type="hidden" name="chartType" value={{settings.chartType}}>
+        <i class="dropdown icon"></i>
+        <span class="default text">Chart Type</span>
+        <div class="menu">
+          <div class="item" data-value="line"><i class="line chart icon"></i>line</div>
+          <div class="item" data-value="spline"><i class="line chart icon"></i>line (smooth)</div>
+          <div class="item" data-value="area"><i class="area chart icon"></i>area</div>
+          <div class="item" data-value="bar"><i class="bar chart icon"></i>bar</div>
+          <div class="item" data-value="pie"><i class="pie chart icon"></i>pie</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="twelve wide field">
+      <div class="ui multiple search selection dropdown">
+        <input type="hidden" name="columns" value={{settings.columns}}>
+        <i class="dropdown icon"></i>
+        <span class="default text">columns</span>
+        <div class="menu">
+          {{#each field in fields}}
+            <div class="item" data-value={{field}}>{{field}}</div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</template>

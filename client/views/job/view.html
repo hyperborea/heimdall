@@ -1,18 +1,16 @@
 <template name="jobView">
-  {{#with doc}}
   <div class="ui segment">
-  
     <h4 class="ui header">
-      {{doc.name}} <small><a href="{{pathFor 'jobEdit' id=doc._id}}">(edit)</a></small>
-      <div class="sub header"> {{timeAgo doc.result.updatedAt}} </div>
+      {{job.name}} <small><a href="{{pathFor 'jobEdit' id=job._id}}">(edit)</a></small>
+      <div class="sub header"> {{timeAgo job.result.updatedAt}} </div>
     </h4>
 
-    <div class="ui basic green button js-query">query</div>
-
-    <div class="chart"></div>
-
-    {{> jobDataTable object=doc.result}}
-
+    <div class="ui basic green button js-query" data-id={{job._id}}>query</div>
   </div>
-  {{/with}}
+
+  {{> visForm jobId=job._id}}
+
+  {{> visualization visType=job.vis.type result=job.result vis=job.vis}}
+
+  {{> visualization visType="DataTable" result=job.result}}
 </template>

@@ -1,0 +1,20 @@
+<template name="visualization">
+  {{> Template.dynamic template=templateName data=visData}} 
+</template>
+
+
+<template name="visualizationError">
+  <div class="ui icon error message">
+    <i class="warning icon"></i>
+    <div class="content">
+      {{data}}  
+    </div>
+  </div>
+</template>
+
+
+<template name="visualizationRunning">
+  <div class="ui active inline loader"></div>
+  &ensp;
+  <div class="ui basic red button js-cancel">cancel</div>
+</template>

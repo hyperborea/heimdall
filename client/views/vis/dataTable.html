@@ -1,9 +1,9 @@
-<template name="jobDataTable">
+<!-- <template name="visDataTable">
   {{> Template.dynamic template=templateName}} 
 </template>
 
 
-<template name="jobDataTableError">
+<template name="visDataTableError">
   <div class="ui icon error message">
     <i class="warning icon"></i>
     <div class="content">
@@ -13,14 +13,14 @@
 </template>
 
 
-<template name="jobDataTableRunning">
+<template name="visDataTableRunning">
   <div class="ui active inline loader"></div>
   &ensp;
   <div class="ui basic red button js-cancel">cancel</div>
-</template>
+</template> -->
 
 
-<template name="jobDataTableOK">
+<template name="visDataTable">
   <table class="ui celled table">
     <thead>
       <tr>
@@ -31,7 +31,7 @@
     </thead>
 
     <tbody>
-      {{#each row in object.data}}
+      {{#each row in data}}
         <tr>
           {{#each key in dataKeys}}
             <td>{{getField row key}}</td>

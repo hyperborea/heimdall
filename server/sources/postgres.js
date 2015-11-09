@@ -4,11 +4,15 @@ const TIMEOUT = 30000;
 
 
 queryPostgres = function(source, query, endCallback, startCallback) {
-  function results(status, data) {
-    endCallback && endCallback({
+  function results(status, data, extras) {
+    extras = extras || {};
+
+    var result = {
       status: status,
       data: data
-    });
+    };
+
+    endCallback && endCallback(_.extend(result, extras));
   }
 
   if (source && query) {
@@ -33,7 +37,9 @@ queryPostgres = function(source, query, endCallback, startCallback) {
           results('error', err.toString());
         }
         else {
-          results('ok', result.rows);
+          results('ok', result.rows, {
+            fields: _.pluck(result.fields, 'name')
+          });
         }
         done();
       }));
