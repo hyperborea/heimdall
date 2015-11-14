@@ -1,0 +1,13 @@
+<template name="dashboardList">
+  <a href={{pathFor 'dashboardNew'}} class="ui basic button">
+    <i class="plus icon"></i> Create dashboard
+  </a>
+
+  <div class="ui list">
+    {{#each item in items}}
+      <a href={{pathFor 'dashboardEdit' id=item._id}} class="item">
+        {{item.title}}
+      </a>
+    {{/each}}
+  </div>
+</template>

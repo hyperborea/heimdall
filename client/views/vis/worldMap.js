@@ -7,10 +7,12 @@ Template.visWorldMap.onRendered(function() {
     check(context.settings.countryField, String);
     check(context.settings.valueField, String);
 
+    const targetColor = context.settings.targetColor || '#0000FF';
+
     let values = _.pluck(context.data, context.settings.valueField);
     let colors = d3.scale.linear()
       .domain([0, _.max(values)])
-      .range(['#F5F5F5', '#0000FF']);
+      .range(['#F5F5F5', targetColor]);
 
     let dataset = {};
     context.data.forEach(function(item) {
@@ -26,7 +28,8 @@ Template.visWorldMap.onRendered(function() {
       element: template.find('.map'),
       fills: { defaultFill: '#F5F5F5' },
       data: dataset,
-      height: 450
+      height: 450,
+      scope: context.settings.mapType
     });
   });
 });

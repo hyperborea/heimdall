@@ -19,7 +19,9 @@ Template.sourceForm.onRendered(function() {
   this.$('.ui.checkbox').checkbox();
 
   this.autorun(() => {
-    if (source = Sources.findOne(FlowRouter.getParam('id'))) {
+    var source = Sources.findOne(FlowRouter.getParam('id'));
+
+    if (source) {
       source.password = PASSWORD_NOCHANGE;
       form.form('set values', source);
       this.unsavedChanges.set(false);
@@ -65,7 +67,7 @@ Template.sourceForm.events({
     event.preventDefault();
 
     var _id = FlowRouter.getParam('id');
-    var data = template.$('form').form('get values');
+    var data = $(event.target).form('get values');
     if (data.password == PASSWORD_NOCHANGE) delete data.password;
     data['isPublic'] = data['isPublic'] === 'on';
     data['ssl'] = data['ssl'] === 'on';

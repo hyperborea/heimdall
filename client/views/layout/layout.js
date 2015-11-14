@@ -3,3 +3,11 @@ Template.layout.onRendered(function() {
     on: 'hover'
   });
 });
+
+
+Template.layout.helpers({
+  userInitials: function() {
+    var user = Meteor.user();
+    return user && user.displayName.replace(/[^A-Z]/g, '');
+  }
+});

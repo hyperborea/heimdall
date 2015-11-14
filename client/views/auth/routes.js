@@ -5,7 +5,7 @@ Meteor.startup(function() {
   Tracker.autorun(function() {
     if (!Meteor.userId()) {
       var route = FlowRouter.current().route;
-      if (!_.contains(AUTH_ROUTES, route.name)) {
+      if (route && !_.contains(AUTH_ROUTES, route.name)) {
         Session.set('redirectAfterLogin', route.path);
       }
 

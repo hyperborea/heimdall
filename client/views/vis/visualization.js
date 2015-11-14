@@ -6,7 +6,7 @@ Template.visualization.helpers({
     const templateMapping = {
       error   : 'visualizationError',
       running : 'visualizationRunning',
-      ok      : 'vis' + context.visType
+      ok      : 'vis' + (context.visType || (context.vis && context.vis.type))
     };
     
     return result && templateMapping[result.status];

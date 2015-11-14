@@ -1,0 +1,28 @@
+<template name="dashboardForm">
+  <form class="ui form container">
+    <div class="fields">
+      <div class="twelve wide field">
+        <input type="text" name="title" placeholder="Dashboard Title" value={{doc.title}}>
+      </div>
+
+      <div class="two wide field">
+        <div class="ui fluid basic blue labeled icon button js-add-widget">
+          <i class="plus icon"></i> Widget
+        </div>
+      </div>
+
+      <div class="two wide field">
+        <div class="ui fluid submit button">Save</div>
+      </div>
+    </div>
+  </form>
+
+  <div class="gridster"></div>
+</template>
+
+
+<template name="dashboardFormWidget">
+  <div class="dashboardFormWidget">
+    <div class="ui basic icon button js-remove-widget"><i class="remove icon"></i></div>
+  </div>
+</template>

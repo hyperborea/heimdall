@@ -1,32 +1,48 @@
 Template.visChart.onRendered(function() {
   var template = this;
-
-  var chart = c3.generate({
-    bindto: template.find('.chart'),
-    data: {
-      columns: []
-    }
-  });
+  var container = template.find('.chart');
 
   this.autorun(() => {
     const context = Template.currentData();
-    const columns = context.settings.columns;
 
-    if (context.data && columns) {
-      chart.load({
-        json: context.data,
-        keys: { value: columns },
-        // columns: _.map(columns, (column) => {
-        //   return [].concat([column], _.pluck(context.data, column));
-        // }),
-        unload: true,
-        type: context.settings.chartType || 'line'
-      });
+    if (context.data && context.settings.columns) {
+      var config = {
+        bindto: container,
+        data: {
+          json: context.data,
+          keys: { value: context.settings.columns },
+          type: context.settings.chartType || 'line'
+        }
+      };
+
+      if (context.settings.timeField) {
+        config.data.x = context.settings.timeField;
+        config.data.keys.value.push(context.settings.timeField);
+        config.axis = {
+          x: {
+            type: 'timeseries',
+            tick: {
+              format: '%Y-%m-%d'
+            }
+          }
+        };
+      }
+
+      c3.generate(config);
     }
   });
 });
 
 
 Template.visChartForm.onRendered(function() {
-  this.$('.ui.dropdown').dropdown();
+  this.$('.ui.single.dropdown').dropdown();
+  this.$('.ui.multiple.dropdown').dropdown({allowAdditions: true});
+});
+
+
+Template.visChartForm.events({
+  'click .foo': function(event, template) {
+    event.preventDefault();
+    console.log(event.target);
+  }
 });

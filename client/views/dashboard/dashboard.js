@@ -7,10 +7,12 @@ Template.dashboard.onRendered(function() {
   this.$('.gridster').gridster({
     widget_selector: '.item',
     widget_margins: [0, 0],
-    widget_base_dimensions: [200, 140],
-    max_cols: 6,
+    widget_base_dimensions: [100, 100],
     resize: {
-      enabled: true
+      enabled: true,
+      stop: function() {
+        window.dispatchEvent(new Event('resize'));
+      }
     }
   });
 });
@@ -22,14 +24,11 @@ Template.dashboard.events({
     var gridNode = template.find('.gridster');
 
     var job = Jobs.findOne('7i95baedLwwajxW5k');
-    var widgetTemplate = Template['vis' + job.vis.type];
-    // var widget = Blaze.renderWithData(widgetTemplate, job.result, gridNode);
-
-    var widget = Blaze.render(Template.dashboardWidget, gridNode);
+    var widget = Blaze.renderWithData(Template.visualization, job, gridNode);
+    // var widget = Blaze.render(Template.dashboardWidget, gridNode);
     var widgetNode = widget.firstNode();
-    console.log(widgetNode);
 
-    grid.add_widget(widgetNode);
+    grid.add_widget(widgetNode, 7, 3);
   }
 });
 

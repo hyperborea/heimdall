@@ -70,7 +70,7 @@ Template.jobForm.events({
     event.preventDefault();
 
     var template = Template.instance();
-    var data = template.$('form').form('get values');
+    var data = $(event.target).form('get values');
     data['email.enabled'] = data['email.enabled'] === 'on';
 
     Meteor.call('saveJob', data, function(err, _id) {

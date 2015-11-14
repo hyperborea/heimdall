@@ -1,4 +1,4 @@
 FlowRouter.route('/', {
   name: 'home',
-  action: () => FlowRouter.go('/jobs')
+  action: () => FlowRouter.go('dashboardList')
 });
