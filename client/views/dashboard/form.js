@@ -4,17 +4,30 @@ Template.dashboardForm.onCreated(function() {
 
 
 Template.dashboardForm.onRendered(function() {
-  this.$('form').form({});
+  this.$('form').form({
+    fields: {
+      title: 'empty'
+    },
+    inline: true
+  });
 
   var grid = this.$('.gridster').gridster({
-    widget_selector: '.item',
     widget_margins: [10, 10],
-    widget_base_dimensions: [100, 100],
+    widget_base_dimensions: [200, 150],
     resize: {
       enabled: true,
       stop: function() {
         window.dispatchEvent(new Event('resize'));
       }
+    },
+    serialize_params: function($w, wgd) {
+      return {
+        col: wgd.col,
+        row: wgd.row,
+        size_x: wgd.size_x,
+        size_y: wgd.size_y,
+        jobId: $w.find('[name=jobId]').val()
+      };
     }
   }).data('gridster');
 
@@ -50,6 +63,13 @@ Template.dashboardForm.events({
     FlowRouter.go('dashboardEdit', {id: _id});
   },
 
+  'click .js-delete': function() {
+    if (confirm('Sure you want to delete this dashboard?')) {
+      Dashboards.remove(FlowRouter.getParam('id'));
+      FlowRouter.go('dashboardList');
+    }
+  },
+
   'click .js-add-widget': function(event, template) {
     var grid = getGrid(template);
     addWidget(grid);
@@ -71,7 +91,7 @@ function getGrid(template) {
 function addWidget(grid, options) {
   options = options || {};
 
-  var widget = Blaze.render(Template.dashboardFormWidget, grid.$el.get(0));
+  var widget = Blaze.renderWithData(Template.dashboardFormWidget, options, grid.$el.get(0));
   var widgetNode = widget.firstNode();
 
   grid.add_widget(widgetNode, options.size_x, options.size_y, options.col, options.row);

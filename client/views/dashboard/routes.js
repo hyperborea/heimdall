@@ -16,3 +16,8 @@ dashboardRoutes.route('/:id/edit', {
   name: 'dashboardEdit',
   action: render('dashboardForm')
 });
+
+dashboardRoutes.route('/:id', {
+  name: 'dashboardView',
+  action: render('dashboardView')
+});

@@ -1,0 +1,10 @@
+<template name="dashboardView">
+  <h1 class="ui dividing header">
+    {{doc.title}}
+    <span class="sub header">
+      <a href={{pathFor 'dashboardEdit' id=doc._id}}>edit</a>
+    </span>
+  </h1>
+
+  <div class="gridster"></div>
+</template>

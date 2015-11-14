@@ -1,0 +1,26 @@
+<template name="dashboardFormWidget">
+  <div class="dashboardFormWidget">
+
+    <div class="ui form">
+      <div class="field">
+        <div class="ui search selection dropdown">
+          <input type="hidden" name="jobId" value={{jobId}}>
+          <i class="dropdown icon"></i>
+          <div class="default text">Job</div>
+          <div class="menu">
+            {{#each job in jobs}}
+              <div class="item" data-value={{job._id}}>{{job.name}}</div>
+            {{/each}}
+          </div>
+        </div>  
+      </div>
+
+      <div class="divider"></div>
+      
+      <div class="field">
+        <div class="ui basic button js-remove-widget">Remove</div>
+      </div>
+    </div>
+    
+  </div>
+</template>

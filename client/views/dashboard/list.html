@@ -5,7 +5,7 @@
 
   <div class="ui list">
     {{#each item in items}}
-      <a href={{pathFor 'dashboardEdit' id=item._id}} class="item">
+      <a href={{pathFor 'dashboardView' id=item._id}} class="item">
         {{item.title}}
       </a>
     {{/each}}
