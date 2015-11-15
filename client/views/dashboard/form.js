@@ -12,13 +12,10 @@ Template.dashboardForm.onRendered(function() {
   });
 
   var grid = this.$('.gridster').gridster({
-    widget_margins: [10, 10],
+    widget_margins: [10, 20],
     widget_base_dimensions: [200, 150],
     resize: {
-      enabled: true,
-      stop: function() {
-        window.dispatchEvent(new Event('resize'));
-      }
+      enabled: true
     },
     serialize_params: function($w, wgd) {
       return {

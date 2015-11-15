@@ -26,7 +26,7 @@ Template.sourceForm.onRendered(function() {
       form.form('set values', source);
       this.unsavedChanges.set(false);
 
-      if (!isOwner(Meteor.userId(), source.ownerId)) {
+      if (!isOwner(Meteor.user(), source)) {
         form.find('input').attr('readonly', '');
         form.find('.action.field').hide();
       }

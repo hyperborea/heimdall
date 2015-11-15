@@ -2,6 +2,9 @@ Template.visChart.onRendered(function() {
   var template = this;
   var container = template.find('.chart');
 
+  var $node = $(template.firstNode);
+  var $wrapper = $node.closest('.visualizationWrapper');
+
   this.autorun(() => {
     const context = Template.currentData();
 
@@ -12,6 +15,9 @@ Template.visChart.onRendered(function() {
           json: context.data,
           keys: { value: context.settings.columns },
           type: context.settings.chartType || 'line'
+        },
+        size: {
+          height: $wrapper.height() - 50
         }
       };
 

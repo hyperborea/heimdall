@@ -9,7 +9,7 @@ _.extend(LDAP_SETTINGS, {
     username: 'guest',
     password: 'guest',
     displayName: 'Guest User',
-    // groups: ['risk'],
+    groups: ['risk'],
   }
 });
 

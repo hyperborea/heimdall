@@ -28,8 +28,13 @@ Template.visWorldMap.onRendered(function() {
       element: template.find('.map'),
       fills: { defaultFill: '#F5F5F5' },
       data: dataset,
-      height: 450,
-      scope: context.settings.mapType
+      responsive: true,
+      scope: context.settings.mapType,
+      geographyConfig: {
+        popupTemplate: function(geography, data) {
+          return `<div class="hoverinfo"><strong>${geography.properties.name}</strong>: ${data.value}</div>`;
+        }
+      }
     });
   });
 });

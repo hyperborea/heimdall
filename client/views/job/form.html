@@ -1,11 +1,11 @@
 <template name="jobForm">
   <form class="ui job form">
-    <input type="hidden" name="_id">
+    <input type="hidden" name="_id" value={{doc._id}}>
 
     <div class="fields">
       <div class="four wide field">
-        <div class="ui single search selection dropdown">
-          <input type="hidden" name="sourceId">
+        <div class="ui single search selection source dropdown">
+          <input type="hidden" name="sourceId" value={{doc.sourceId}}>
           <i class="dropdown icon"></i>
           <div class="default text">Source</div>
           <div class="menu">
@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="fourteen wide field">
-        <input type="text" name="name" placeholder="Job Name">  
+        <input type="text" name="name" value={{doc.name}} placeholder="Job Name">  
       </div>
     </div>
 
@@ -29,13 +29,19 @@
         <i class="dropdown icon"></i> Schedule
         {{#if doc.schedule}}<i class="lightning icon"></i>{{/if}}
       </div>
-      <div class="content">{{> jobFormSchedule}}</div>
+      <div class="content">{{> jobFormSchedule doc=doc}}</div>
 
       <div class="title">
         <i class="dropdown icon"></i> Email
         {{#if doc.email.enabled}}<i class="lightning icon"></i>{{/if}}
       </div>
-      <div class="content">{{> jobFormEmail}}</div>
+      <div class="content">{{> jobFormEmail doc=doc}}</div>
+
+      <div class="title">
+        <i class="dropdown icon"></i> Permissions
+        {{#if doc.ownerGroups}}<i class="lightning icon"></i>{{/if}}
+      </div>
+      <div class="content">{{> jobFormPermissions doc=doc}}</div>
     </div>
 
     <div class="field">
@@ -66,7 +72,7 @@
       </span>
     </h4>
 
-    {{> visualization visType="DataTable" result=doc.result}}
+    {{> visualization visType="DataTable" result=doc.result visBasic=true}}
   {{/if}}
 </template>
 
@@ -78,7 +84,7 @@
       <a href="http://bunkat.github.io/later/parsers.html#text" target="_blank">Text Parser documentation</a>.  
     </div>
     <div class="field">
-      <input type="text" name="schedule" placeholder="e.g. every 1 day">  
+      <input type="text" name="schedule" value={{doc.schedule}} placeholder="e.g. every 1 day">  
     </div>
   </div>
 </template>
@@ -88,20 +94,34 @@
   <div class="ui small form">
     <div class="field">
       <div class="ui checkbox">
-        <input type="checkbox" name="email.enabled">
+        <input type="checkbox" name="email.enabled" checked={{doc.email.enabled}}>
         <label>enable email notification</label>
       </div>
     </div>
     <div class="field">
       <label>Recipients</label>
-      <input type="text" name="email.recipients" placeholder="Recipients">
+      <input type="text" name="email.recipients" value={{doc.email.recipients}} placeholder="Recipients">
     </div>
     <div class="field">
       <label>Message</label>
-      <input type="text" name="email.subject" placeholder="Subject">
+      <input type="text" name="email.subject" value={{doc.email.subject}} placeholder="Subject">
     </div>
     <div class="field">
-      <textarea name="email.content"></textarea>
+      <textarea name="email.content">{{doc.email.content}}</textarea>
+    </div>
+  </div>
+</template>
+
+
+<template name="jobFormPermissions">
+  <div class="ui small form">
+    <div class="field">
+      <label>LDAP groups with ownership</label>
+      <div class="ui multiple search selection dropdown">
+        <input type="hidden" name="ownerGroups" value={{doc.ownerGroups}}>
+        <div class="text"></div>
+        <div class="menu"></div>
+      </div>
     </div>
   </div>
 </template>

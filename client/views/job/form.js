@@ -28,20 +28,14 @@ Template.jobForm.onRendered(function() {
     inline  : true,
   });
 
-  // on hot reload we might need to set the values again
   this.autorun(() => {
-    var _id = FlowRouter.getParam('id');
+    Sources.find().fetch();
+    this.$('.source.dropdown').dropdown();
+  });
 
-    if (_id && form.form('get value', '_id') != _id) {
-      if (job = Jobs.findOne(_id)) {
-        // the timeout ensures that the source select box is populated before setting the values
-        Meteor.setTimeout(() => {
-          form.form('set values', objectToDotNotation(job));
-          editor.doc.setValue(job.query);
-          this.unsavedChanges.set(false);
-        });
-      }
-    }
+  this.autorun(() => {
+    var job = Jobs.findOne(FlowRouter.getParam('id'));
+    if (job) editor.doc.setValue(job.query);
   });
 });
 
@@ -72,6 +66,7 @@ Template.jobForm.events({
     var template = Template.instance();
     var data = $(event.target).form('get values');
     data['email.enabled'] = data['email.enabled'] === 'on';
+    data['ownerGroups'] = (data['ownerGroups'] || '').split(',');
 
     Meteor.call('saveJob', data, function(err, _id) {
       template.unsavedChanges.set(false);
@@ -89,4 +84,12 @@ Template.jobForm.events({
       FlowRouter.go('jobList');
     }
   }
+});
+
+
+Template.jobFormPermissions.onRendered(function() {
+  this.autorun(() => {
+    Template.currentData();
+    this.$('.ui.multiple.dropdown').dropdown({ allowAdditions: true });
+  });
 });
