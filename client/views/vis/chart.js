@@ -34,6 +34,14 @@ Template.visChart.onRendered(function() {
         };
       }
 
+      if (context.settings.categoryField) {
+        config.data.x = context.settings.categoryField;
+        config.data.keys.value.push(context.settings.categoryField);
+        config.axis = {
+          x: { type: 'category' }
+        };
+      }
+
       c3.generate(config);
     }
   });

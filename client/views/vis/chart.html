@@ -5,7 +5,7 @@
 
 <template name="visChartForm">
   <div class="fields">
-    <div class="four wide field">
+    <div class="three wide field">
       <div class="ui single selection dropdown">
         <input type="hidden" name="chartType" value={{settings.chartType}}>
         <i class="dropdown icon"></i>
@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <div class="eight wide field">
+    <div class="seven wide field">
       <div class="ui multiple search selection dropdown">
         <input type="hidden" name="columns" value={{settings.columns}}>
         <i class="dropdown icon"></i>
@@ -33,13 +33,28 @@
       </div>
     </div>
 
-    <div class="four wide field">
+    <div class="three wide field">
       <div class="ui single search selection dropdown">
         <input type="hidden" name="timeField" value={{settings.timeField}}>
         <i class="dropdown icon"></i>
         <span class="text"></span>
         <div class="menu">
           <div class="item" data-value="">time field (optional)</div>
+          <div class="divider"></div>
+          {{#each field in fields}}
+            <div class="item" data-value={{field}}>{{field}}</div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+
+    <div class="three wide field">
+      <div class="ui single search selection dropdown">
+        <input type="hidden" name="categoryField" value={{settings.categoryField}}>
+        <i class="dropdown icon"></i>
+        <span class="text"></span>
+        <div class="menu">
+          <div class="item" data-value="">category field (optional)</div>
           <div class="divider"></div>
           {{#each field in fields}}
             <div class="item" data-value={{field}}>{{field}}</div>
