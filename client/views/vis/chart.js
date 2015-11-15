@@ -42,6 +42,21 @@ Template.visChart.onRendered(function() {
         };
       }
 
+      if (context.settings.chartType === 'pie') {
+        var valField = context.settings.columns[0];
+        var catField = context.settings.categoryField;
+
+        var data = _.groupBy(context.data, catField);
+        _.each(data, (items, cat) => {
+          data[cat] = _.pluck(items, valField);
+        });
+
+        config.data = {
+          json: data,
+          type: context.settings.chartType
+        };
+      }
+
       c3.generate(config);
     }
   });
