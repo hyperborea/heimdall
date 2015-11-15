@@ -10,7 +10,7 @@
 
   {{> visForm jobId=job._id}}
 
-  {{> visualization visType=job.vis.type result=job.result vis=job.vis}}
+  {{> visualization visType=job.vis.type visHeight='400px' name=job.name result=job.result vis=job.vis}}  
 
-  {{> visualization visType="DataTable" result=job.result}}
+  {{> visualization visType="DataTable" visBasic=true result=job.result}}
 </template>

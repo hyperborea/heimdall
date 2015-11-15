@@ -21,6 +21,17 @@ Template.visualization.helpers({
 });
 
 
+Template.visualization.events({
+  'click .js-run': function(event, template) {
+    Meteor.call('runJob', template.data.result.jobId);
+  },
+
+  'click .js-edit': function(event, template) {
+    FlowRouter.go('jobView', { id: template.data.result.jobId });
+  }
+});
+
+
 Template.visualizationRunning.events({
   'click .js-cancel': function(event, template) {
     Meteor.call('cancelJob', template.data.jobId);

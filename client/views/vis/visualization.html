@@ -1,15 +1,20 @@
 <template name="visualization">
-  <div class="visualizationWrapper">
+  <div class="visualizationWrapper" style="height: {{visHeight}}; margin-bottom: 3rem">
     {{#if visBasic}}
       {{> Template.dynamic template=templateName data=visData}} 
     {{else}}
       <div class="ui top attached segment grid">
-        <div class="twelve wide column">
-          <strong>{{name}}</strong>
+        <div class="two column row">
+          <div class="column">
+            <strong>{{name}}</strong>  
+          </div>
+          <div class="right aligned column">
+            <small>{{timeAgo result.updatedAt}}</small>
+            &ensp;
+            <i class="refresh link icon js-run"></i>
+            <i class="edit link icon js-edit"></i>
+          </div>          
         </div>
-        <small class="four wide right aligned column">
-          {{timeAgo result.updatedAt}}
-        </small>
       </div>
       <div class="ui bottom attached segment">
         {{> Template.dynamic template=templateName data=visData}}   

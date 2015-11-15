@@ -1,5 +1,6 @@
 Meteor.publish('dashboards', function() {
-  return Dashboards.find(filterByOwnership(this.userId));
+  // return Dashboards.find(filterByOwnership(this.userId));
+  return Dashboards.find();
 });
 
 Meteor.publish('jobs', function() {
