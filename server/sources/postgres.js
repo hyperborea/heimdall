@@ -1,6 +1,6 @@
 var pg = Meteor.npmRequire('pg');
 
-const TIMEOUT = 30000;
+const TIMEOUT = 300000;
 
 
 queryPostgres = function(source, query, endCallback, startCallback) {
