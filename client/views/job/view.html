@@ -1,13 +1,4 @@
 <template name="jobView">
-  <div class="ui segment">
-    <h4 class="ui header">
-      {{job.name}}
-      <a href="{{pathFor 'jobEdit' id=job._id}}"><small>edit</small></a>
-    </h4>
-
-    <div class="ui basic green button js-query" data-id={{job._id}}>query</div>
-  </div>
-
   {{> visForm jobId=job._id}}
 
   {{> visualization visType=job.vis.type visHeight='400px' name=job.name result=job.result vis=job.vis}}  
