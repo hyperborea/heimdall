@@ -1,4 +1,11 @@
 <template name="jobView">
+  <h1 class="ui dividing header">
+    {{job.name}}
+    <span class="sub header">
+      <a href={{pathFor 'jobEdit' id=job._id}}>edit</a>
+    </span>
+  </h1>
+
   {{> visForm jobId=job._id}}
 
   {{> visualization visType=job.vis.type visHeight='400px' name=job.name result=job.result vis=job.vis}}  

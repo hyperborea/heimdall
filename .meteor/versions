@@ -56,6 +56,7 @@ meteor@1.1.10
 meteor-base@1.0.1
 meteorhacks:async@1.0.0
 meteorhacks:npm@1.5.0
+meteorhacks:picker@1.0.3
 meteortoys:toykit@2.1.2
 minifiers@1.1.7
 minimongo@1.0.10

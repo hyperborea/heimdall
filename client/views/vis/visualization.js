@@ -26,12 +26,12 @@ Template.visualization.events({
     Meteor.call('runJob', template.data.result.jobId);
   },
 
-  'click .js-edit-vis': function(event, template) {
-    FlowRouter.go('jobView', { id: template.data.result.jobId });
+  'click .js-download': function(event, template) {
+    window.open(`/jobs/${template.data.result.jobId}/download`);
   },
 
-  'click .js-edit-job': function(event, template) {
-    FlowRouter.go('jobEdit', { id: template.data.result.jobId });
+  'click .js-edit-vis': function(event, template) {
+    FlowRouter.go('jobView', { id: template.data.result.jobId });
   }
 });
 
