@@ -1,5 +1,5 @@
 Template.jobView.onCreated(function() {
-  this.subscribe('jobs');
+  this.subscribe('job', FlowRouter.getParam('id'));
 });
 
 

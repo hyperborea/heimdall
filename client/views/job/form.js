@@ -1,5 +1,5 @@
 Template.jobForm.onCreated(function() {
-  this.subscribe('jobs');
+  this.subscribe('job', FlowRouter.getParam('id'));
   this.subscribe('sources');
 
   this.unsavedChanges = new ReactiveVar(false);
@@ -51,6 +51,10 @@ Template.jobForm.helpers({
 
   saveBtnClass: function() {
     return Template.instance().unsavedChanges.get() ? 'positive' : 'disabled';
+  },
+
+  hasItems: function(arr) {
+    return arr && arr.length;
   }
 });
 
@@ -66,7 +70,7 @@ Template.jobForm.events({
     var template = Template.instance();
     var data = $(event.target).form('get values');
     data['email.enabled'] = data['email.enabled'] === 'on';
-    data['ownerGroups'] = (data['ownerGroups'] || '').split(',');
+    data['ownerGroups'] = _.without( (data['ownerGroups'] || '').split(','), '');
 
     Meteor.call('saveJob', data, function(err, _id) {
       template.unsavedChanges.set(false);

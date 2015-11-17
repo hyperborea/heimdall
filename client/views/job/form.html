@@ -39,7 +39,7 @@
 
       <div class="title">
         <i class="dropdown icon"></i> Permissions
-        {{#if doc.ownerGroups}}<i class="lightning icon"></i>{{/if}}
+        {{#if hasItems doc.ownerGroups}}<i class="lightning icon"></i>{{/if}}
       </div>
       <div class="content">{{> jobFormPermissions doc=doc}}</div>
     </div>

@@ -1,6 +1,7 @@
+loadHandler(Template.dashboardView);
+
 Template.dashboardView.onCreated(function() {
-  this.subscribe('dashboards');
-  this.subscribe('jobs');
+  this.subscribe('dashboard', FlowRouter.getParam('id'));
 });
 
 
@@ -17,6 +18,7 @@ Template.dashboardView.onRendered(function() {
     grid.remove_all_widgets();
 
     _.each(widgets, (widget) => {
+      this.subscribe('job', widget.jobId);
       addWidget(grid, widget);
     });
   });
@@ -26,6 +28,10 @@ Template.dashboardView.onRendered(function() {
 Template.dashboardView.helpers({
   doc: function() {
     return Dashboards.findOne(FlowRouter.getParam('id'));
+  },
+
+  loadingClass: function() {
+    return Session.get('isLoading') && 'hidden';
   }
 });
 

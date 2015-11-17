@@ -29,5 +29,11 @@
 
   <div class="ui main container">
     {{> Template.dynamic template=main}}  
+
+    {{#if isLoading}}
+      <center>
+        <i class="big loading circle notched icon"></i> 
+      </center>
+    {{/if}}
   </div>
 </template>

@@ -9,5 +9,9 @@ Template.layout.helpers({
   userInitials: function() {
     var user = Meteor.user();
     return user && user.displayName.replace(/[^A-Z]/g, '');
+  },
+
+  isLoading: function() {
+    return Session.get('isLoading');
   }
 });
