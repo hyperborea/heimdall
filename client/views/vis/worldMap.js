@@ -19,6 +19,8 @@ Template.visWorldMap.onRendered(function() {
       let country = item[context.settings.countryField];
       let value = item[context.settings.valueField];
 
+      if (context.settings.mapType === 'world') country = countryISO3(country);
+
       dataset[country] = { value: value, fillColor: colors(value) };
     });
 
