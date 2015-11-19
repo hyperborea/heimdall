@@ -1,6 +1,8 @@
 Template.jobForm.onCreated(function() {
-  this.subscribe('job', FlowRouter.getParam('id'));
   this.subscribe('sources');
+  this.autorun(() => {
+    this.subscribe('job', FlowRouter.getParam('id'));
+  });
 
   this.unsavedChanges = new ReactiveVar(false);
 });
@@ -42,7 +44,8 @@ Template.jobForm.onRendered(function() {
 
 Template.jobForm.helpers({
   doc: function() {
-    return Jobs.findOne(FlowRouter.getParam('id'));
+    var job = Jobs.findOne(FlowRouter.getParam('id'))
+    return job;
   },
 
   sources: function() {

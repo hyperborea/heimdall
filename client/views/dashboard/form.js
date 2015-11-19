@@ -1,5 +1,7 @@
 Template.dashboardForm.onCreated(function() {
-  this.subscribe('dashboard', FlowRouter.getParam('id'));
+  this.autorun(() => {
+    this.subscribe('dashboard', FlowRouter.getParam('id'));
+  });
 });
 
 
@@ -69,7 +71,7 @@ Template.dashboardForm.events({
 
   'click .js-add-widget': function(event, template) {
     var grid = getGrid(template);
-    addWidget(grid);
+    addWidget(grid, { size_x: 2 });
   },
 
   'click .js-remove-widget': function(event, template) {
