@@ -35,7 +35,7 @@ Template.jobForm.onRendered(function() {
 
   this.autorun(() => {
     var job = Jobs.findOne(FlowRouter.getParam('id'));
-    if (job) editor.doc.setValue(job.query);
+    if (job && job.query) editor.doc.setValue(job.query);
   });
 });
 
