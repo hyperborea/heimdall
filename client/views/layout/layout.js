@@ -2,6 +2,10 @@ Template.layout.onRendered(function() {
   this.$('.main.menu .ui.dropdown').dropdown({
     on: 'hover'
   });
+
+  this.$('.ui.disclaimer.modal').modal({
+    blurring: true
+  });
 });
 
 
@@ -13,5 +17,12 @@ Template.layout.helpers({
 
   isLoading: function() {
     return Session.get('isLoading');
+  }
+});
+
+
+Template.layout.events({
+  'click .js-open-disclaimer': function(event, template) {
+    $('.ui.disclaimer.modal').modal('show');
   }
 });
