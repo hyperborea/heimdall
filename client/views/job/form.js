@@ -1,8 +1,6 @@
 Template.jobForm.onCreated(function() {
   this.subscribe('sources');
-  this.autorun(() => {
-    this.subscribe('job', FlowRouter.getParam('id'));
-  });
+  this.autorun( () => this.subscribe('job', FlowRouter.getParam('id')) );
 
   this.unsavedChanges = new ReactiveVar(false);
 });
@@ -31,13 +29,14 @@ Template.jobForm.onRendered(function() {
   });
 
   this.autorun(() => {
-    Sources.find().fetch();
-    this.$('.source.dropdown').dropdown();
+    var job = Jobs.findOne(FlowRouter.getParam('id'));
+    if (job && job.query) editor.doc.setValue(job.query);
   });
 
   this.autorun(() => {
-    var job = Jobs.findOne(FlowRouter.getParam('id'));
-    if (job && job.query) editor.doc.setValue(job.query);
+    if (this.subscriptionsReady()) {
+      this.$('.source.dropdown').dropdown();  
+    }
   });
 });
 
