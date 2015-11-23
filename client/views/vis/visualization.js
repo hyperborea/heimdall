@@ -3,13 +3,18 @@ Template.visualization.helpers({
     const context = Template.currentData();
     const result = context.result;
 
-    const templateMapping = {
-      error   : 'visualizationError',
-      running : 'visualizationRunning',
-      ok      : 'vis' + (context.visType || (context.vis && context.vis.type) || 'DataTable')
-    };
-    
-    return result && templateMapping[result.status];
+    switch (result && result.status) {
+      case false:
+        return undefined
+      case 'error':
+        return 'visualizationError';
+      default:
+        return _.isArray(result.data) && 'vis' + (context.visType || (context.vis && context.vis.type) || 'DataTable')
+    }
+  },
+
+  isRunning: function() {
+    return (Template.currentData().result.status === 'running') && 'loading';
   },
 
   visData: function() {
@@ -32,12 +37,9 @@ Template.visualization.events({
 
   'click .js-edit-vis': function(event, template) {
     FlowRouter.go('jobView', { id: template.data.result.jobId });
-  }
-});
+  },
 
-
-Template.visualizationRunning.events({
   'click .js-cancel': function(event, template) {
-    Meteor.call('cancelJob', template.data.jobId);
+    Meteor.call('cancelJob', template.data.result.jobId);
   }
 });

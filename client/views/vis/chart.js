@@ -7,44 +7,51 @@ Template.visChart.onRendered(function() {
 
   this.autorun(() => {
     const context = Template.currentData();
+    const settings = context.settings;
 
-    if (context.data && context.settings.columns) {
+    if (context.data && settings.columns) {
       var config = {
         bindto: container,
         data: {
           json: context.data,
-          keys: { value: context.settings.columns },
-          type: context.settings.chartType || 'line'
+          keys: { value: settings.columns },
+          type: settings.chartType || 'line'
         },
         size: {
           height: $wrapper.height() - 50
         },
         axis: {
           x: {
-            label: context.settings.labelX
+            label: {
+              text: settings.labelX,
+              position: settings.labelX && 'outer-right'
+            }
           },
           y: {
-            label: context.settings.labelY
+            label: {
+              text: settings.labelY,
+              position: settings.labelY && 'outer-top'
+            }
           }
         }
       };
 
-      if (context.settings.timeField) {
-        config.data.x = context.settings.timeField;
-        config.data.keys.value.push(context.settings.timeField);
+      if (settings.timeField) {
+        config.data.x = settings.timeField;
+        config.data.keys.value.push(settings.timeField);
         config.axis.x.type = 'timeseries';
         config.axis.x.tick = { format: '%Y-%m-%d' };
       }
 
-      if (context.settings.categoryField) {
-        config.data.x = context.settings.categoryField;
-        config.data.keys.value.push(context.settings.categoryField);
+      if (settings.categoryField) {
+        config.data.x = settings.categoryField;
+        config.data.keys.value.push(settings.categoryField);
         config.axis.x.type = 'category';
       }
 
-      if (context.settings.chartType === 'pie') {
-        var valField = context.settings.columns[0];
-        var catField = context.settings.categoryField;
+      if (settings.chartType === 'pie') {
+        var valField = settings.columns[0];
+        var catField = settings.categoryField;
 
         var data = _.groupBy(context.data, catField);
         _.each(data, (items, cat) => {
@@ -53,7 +60,7 @@ Template.visChart.onRendered(function() {
 
         config.data = {
           json: data,
-          type: context.settings.chartType
+          type: settings.chartType
         };
       }
 
