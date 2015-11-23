@@ -71,7 +71,7 @@ Template.dashboardForm.events({
 
   'click .js-add-widget': function(event, template) {
     var grid = getGrid(template);
-    addWidget(grid, { size_x: 2 });
+    addWidget(grid, { size_x: 5, size_y: 2 });
   },
 
   'click .js-remove-widget': function(event, template) {

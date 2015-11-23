@@ -18,28 +18,28 @@ Template.visChart.onRendered(function() {
         },
         size: {
           height: $wrapper.height() - 50
+        },
+        axis: {
+          x: {
+            label: context.settings.labelX
+          },
+          y: {
+            label: context.settings.labelY
+          }
         }
       };
 
       if (context.settings.timeField) {
         config.data.x = context.settings.timeField;
         config.data.keys.value.push(context.settings.timeField);
-        config.axis = {
-          x: {
-            type: 'timeseries',
-            tick: {
-              format: '%Y-%m-%d'
-            }
-          }
-        };
+        config.axis.x.type = 'timeseries';
+        config.axis.x.tick = { format: '%Y-%m-%d' };
       }
 
       if (context.settings.categoryField) {
         config.data.x = context.settings.categoryField;
         config.data.keys.value.push(context.settings.categoryField);
-        config.axis = {
-          x: { type: 'category' }
-        };
+        config.axis.x.type = 'category';
       }
 
       if (context.settings.chartType === 'pie') {
