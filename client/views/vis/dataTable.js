@@ -3,7 +3,13 @@ Template.visDataTable.helpers({
     var data = Template.currentData().data
     return data ? _.keys(data[0]) : [];
   },
+  
   getField: function(row, key) {
-    return row[key].toString();
+    var value = row[key];
+
+    if (value instanceof Date)
+      return moment(value).format('YYYY-MM-DD HH:mm:ss');
+    else
+      return value.toString();
   }
 });
