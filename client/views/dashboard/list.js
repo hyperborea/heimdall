@@ -1,4 +1,4 @@
-// loadHandler(Template.dashboardList);
+loadHandler(Template.dashboardList);
 
 Template.dashboardList.onCreated(function() {
   this.subscribe('dashboards');

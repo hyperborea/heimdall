@@ -1,10 +1,24 @@
 Template.layout.onRendered(function() {
-  this.$('.main.menu .ui.dropdown').dropdown({
-    on: 'hover'
-  });
-
   this.$('.ui.disclaimer.modal').modal({
     blurring: true
+  });
+
+  var grid = [
+    [1, 1, 1, 0, 1, 1, 1],
+    [1, 1, 0, 0, 0, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 0, 0, 0, 1, 1],
+    [1, 1, 1, 0, 1, 1, 1],
+  ];
+
+  var canvas = this.find('#logo');
+  var ether = new Ethergrid(canvas, grid, { entropy: 0 });
+
+  this.autorun(() => {
+    ether.speed(Session.get('isLoading') ? 0.5 : 1);
+    ether.entropy(Session.get('isLoading') ? 10 : 0);
+    Session.get('isLoading') ? ether.color(255, 0, 0) : ether.color(247, 202, 24);
   });
 });
 

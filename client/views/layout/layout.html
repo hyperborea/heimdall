@@ -4,41 +4,28 @@
 
 
 <template name="layout">
-  <div class="ui inverted fixed main menu">
-    <div class="ui container">
-      <div class="header item">
-        Heimdall
-      </div>
+  <div class="ui sidebar inverted vertical visible main menu">
+    <div class="header item">
+      <canvas id="logo"></canvas> <span>eimdall</span>
+    </div>
 
-      <a href={{pathFor 'dashboardList'}} class="item"><i class="block layout icon"></i> Dashboards</a>
-      <a href={{pathFor 'jobList'}} class="item"><i class="cubes icon"></i> Jobs</a>
-      <a href={{pathFor 'sourceList'}} class="item"><i class="database icon"></i> Sources</a>
+    <a href={{pathFor 'dashboardList'}} class="item"><i class="block layout icon"></i> Dashboards</a>
+    <a href={{pathFor 'jobList'}} class="item"><i class="cubes icon"></i> Jobs</a>
+    <a href={{pathFor 'sourceList'}} class="item"><i class="database icon"></i> Sources</a>
 
-      <div class="right menu">
-        <a class="item js-open-disclaimer">
-          <i class="flag icon"></i> READ ME
-        </a>
-
-        <div class="ui dropdown item">
-          <i class="user icon"></i> {{currentUser.displayName}}
-          <div class="menu">
-            <a href={{pathFor 'logout'}} class="item">
-              <i class="sign out icon"></i> Logout
-            </a>
-          </div>
+    <a class="item js-open-disclaimer"><i class="flag icon"></i> READ ME</a>
+    <div class="item">
+      <div class="header">{{currentUser.displayName}}</div>
+      <div class="menu">
+          <a href={{pathFor 'logout'}} class="item"><i class="sign out icon"></i> Logout</a>
         </div>
-      </div>
     </div>
   </div>
 
-  <div class="ui main container">
-    {{> Template.dynamic template=main}}  
-
-    {{#if isLoading}}
-      <center>
-        <i class="big loading circle notched icon"></i> 
-      </center>
-    {{/if}}
+  <div class="pusher">
+    <div class="ui basic segment">
+      {{> Template.dynamic template=main}}  
+    </div>
   </div>
 
   {{> layoutDisclaimer}}

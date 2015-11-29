@@ -1,4 +1,4 @@
-// loadHandler(Template.sourceList);
+loadHandler(Template.sourceList);
 
 Template.sourceList.helpers({
   items: function() {

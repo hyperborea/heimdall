@@ -1,4 +1,4 @@
-// loadHandler(Template.jobList);
+loadHandler(Template.jobList);
 
 Template.jobList.onCreated(function() {
   this.subscribe('jobs');
