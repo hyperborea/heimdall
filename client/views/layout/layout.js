@@ -16,9 +16,9 @@ Template.layout.onRendered(function() {
   var ether = new Ethergrid(canvas, grid, { entropy: 0 });
 
   this.autorun(() => {
-    ether.speed(Session.get('isLoading') ? 0.5 : 1);
+    ether.speed(Session.get('isLoading') ? 0.35 : 0.5);
     ether.entropy(Session.get('isLoading') ? 10 : 0);
-    Session.get('isLoading') ? ether.color(255, 0, 0) : ether.color(247, 202, 24);
+    Session.get('isLoading') ? ether.color(255, 0, 0, 0.5) : ether.color(247, 202, 24, 0.5);
   });
 });
 
