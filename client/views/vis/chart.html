@@ -20,20 +20,22 @@
       </div>
     </div>
 
-    <div class="seven wide field">
+    <div class="thirteen wide field">
       <div class="ui multiple search selection dropdown">
         <input type="hidden" name="columns" value={{settings.columns}}>
         <i class="dropdown icon"></i>
         <span class="default text">columns</span>
         <div class="menu">
           {{#each field in fields}}
-            <div class="item" data-value={{field}}>{{field}}</div>
+            <div class="item">{{field}}</div>
           {{/each}}
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="three wide field">
+  <div class="three fields">
+    <div class="field">
       <div class="ui single search selection dropdown">
         <input type="hidden" name="timeField" value={{settings.timeField}}>
         <i class="dropdown icon"></i>
@@ -42,13 +44,13 @@
           <div class="item" data-value="">time field (optional)</div>
           <div class="divider"></div>
           {{#each field in fields}}
-            <div class="item" data-value={{field}}>{{field}}</div>
+            <div class="item">{{field}}</div>
           {{/each}}
         </div>
       </div>
     </div>
 
-    <div class="three wide field">
+    <div class="field">
       <div class="ui single search selection dropdown">
         <input type="hidden" name="categoryField" value={{settings.categoryField}}>
         <i class="dropdown icon"></i>
@@ -57,19 +59,37 @@
           <div class="item" data-value="">category field (optional)</div>
           <div class="divider"></div>
           {{#each field in fields}}
-            <div class="item" data-value={{field}}>{{field}}</div>
+            <div class="item">{{field}}</div>
           {{/each}}
         </div>
       </div>
     </div>
+
+    <div class="field">
+      <div class="ui single search selection dropdown">
+        <input type="hidden" name="y2Field" value={{settings.y2Field}}>
+        <i class="dropdown icon"></i>
+        <span class="text"></span>
+        <div class="menu">
+          <div class="item" data-value="">y2 Field (optional)</div>
+          <div class="divider"></div>
+          {{#each field in fields}}
+            <div class="item">{{field}}</div>
+          {{/each}}
+        </div>       
+      </div>
+    </div>
   </div>
 
-  <div class="two fields">
+  <div class="three fields">
     <div class="field">
       <input type="text" name="labelX" value={{settings.labelX}} placeholder="Label for X axis">
     </div>
     <div class="field">
       <input type="text" name="labelY" value={{settings.labelY}} placeholder="Label for Y axis">
+    </div>
+    <div class="field">
+      <input type="text" name="labelY2" value={{settings.labelY2}} placeholder="Label for Y2 axis">
     </div>
   </div>
 </template>

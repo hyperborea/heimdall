@@ -32,9 +32,21 @@ Template.visChart.onRendered(function() {
               text: settings.labelY,
               position: settings.labelY && 'outer-top'
             }
+          },
+          y2: {
+            label: {
+              text: settings.labelY2,
+              position: settings.labelY2 && 'outer-top'
+            }
           }
         }
       };
+
+      if (settings.y2Field) {
+        config.data.axes = {};
+        config.data.axes[settings.y2Field] = 'y2';
+        config.axis.y2.show = true;
+      }
 
       if (settings.timeField) {
         config.data.x = settings.timeField;
