@@ -39,12 +39,12 @@
 
       <div class="title">
         <i class="dropdown icon"></i> Permissions
-        {{#if hasItems doc.ownerGroups}}<i class="lightning icon"></i>{{/if}}
+        {{#if hasPermissions doc}}<i class="lightning icon"></i>{{/if}}
       </div>
       <div class="content">{{> jobFormPermissions doc=doc}}</div>
     </div>
 
-    <div class="field">
+    <div class="action field">
       <div class="ui buttons">
         <div class="ui submit button {{saveBtnClass}}">save</div>
         {{#if doc._id}}
@@ -116,12 +116,13 @@
 <template name="jobFormPermissions">
   <div class="ui small form">
     <div class="field">
-      <label>LDAP groups with ownership</label>
-      <div class="ui multiple search selection dropdown">
-        <input type="hidden" name="ownerGroups" value={{doc.ownerGroups}}>
-        <div class="text"></div>
-        <div class="menu"></div>
-      </div>
+      <label>Access Groups</label>
+      {{> groupsInput name='accessGroups' value=doc.accessGroups}}
+    </div>
+
+    <div class="field">
+      <label>Owner Groups</label>
+      {{> groupsInput name='ownerGroups' value=doc.ownerGroups}}
     </div>
   </div>
 </template>

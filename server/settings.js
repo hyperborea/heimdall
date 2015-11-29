@@ -1,5 +1,5 @@
 _.extend(LDAP_SETTINGS, {
-  allowedGroups: ['risk', 'risk.management', 'riskengineering.tl.e', 'product'],
+  allowedGroups: ['risk', 'risk.management', 'riskengineering.tl.e', 'product', 'heimdall.debug'],
   
   roleMapping: {
     admin: ['risk.infrastructure']
@@ -9,7 +9,7 @@ _.extend(LDAP_SETTINGS, {
     username: 'guest',
     password: 'guest',
     displayName: 'Guest User',
-    groups: ['guest'],
+    groups: ['heimdall.debug'],
   }
 });
 

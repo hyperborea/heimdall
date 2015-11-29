@@ -69,8 +69,8 @@ Template.sourceForm.events({
     var _id = FlowRouter.getParam('id');
     var data = $(event.target).form('get values');
     if (data.password == PASSWORD_NOCHANGE) delete data.password;
-    data['isPublic'] = data['isPublic'] === 'on';
     data['ssl'] = data['ssl'] === 'on';
+    data['accessGroups'] = _.without( (data['accessGroups'] || '').split(','), '');
 
     _id ? Sources.update(_id, {$set: data}) : _id = Sources.insert(data);
     Template.instance().unsavedChanges.set(false);

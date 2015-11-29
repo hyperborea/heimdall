@@ -1,0 +1,12 @@
+<template name="groupsInput">
+  <div class="ui multiple search selection dropdown">
+    <input type="hidden" name={{name}} value={{value}}>
+    <i class="dropdown icon"></i>
+    <div class="default text">select groups</div>
+    <div class="menu">
+      {{#each group in groups}}
+        <div class="item">{{group.name}}</div>
+      {{/each}}
+    </div>
+  </div>
+</template>

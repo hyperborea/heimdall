@@ -1,13 +1,18 @@
-Template.visForm.onCreated(function() {
-  this.subscribe('jobs');
-});
-
-
 Template.visForm.onRendered(function() {
   var template = this;
   template.$('.ui.dropdown').dropdown();
 
   var form = template.$('.ui.form').form({});
+
+  this.autorun(() => {
+    var job = Jobs.findOne(Template.currentData().jobId);
+    if (job) {
+      if (!isOwner(Meteor.user(), job)) {
+        form.find('input').attr('readonly', '');
+        form.find('.action.field').hide();
+      }
+    }
+  });
 });
 
 

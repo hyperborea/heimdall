@@ -1,5 +1,4 @@
 Template.jobForm.onCreated(function() {
-  this.subscribe('sources');
   this.autorun( () => this.subscribe('job', FlowRouter.getParam('id')) );
 
   this.unsavedChanges = new ReactiveVar(false);
@@ -30,13 +29,20 @@ Template.jobForm.onRendered(function() {
 
   this.autorun(() => {
     var job = Jobs.findOne(FlowRouter.getParam('id'));
-    if (job && job.query) editor.doc.setValue(job.query);
+    if (job) {
+      if (job.query) editor.doc.setValue(job.query);
+      
+      if (!isOwner(Meteor.user(), job)) {
+        form.find('input').attr('readonly', '');
+        form.find('.action.field').hide();
+      }
+    }
   });
 
-  this.autorun(() => {
-    if (this.subscriptionsReady()) {
-      this.$('.source.dropdown').dropdown();  
-    }
+  this.subscribe('sources', () => {
+    Tracker.afterFlush(() => {
+      this.$('.source.dropdown').dropdown();
+    });
   });
 });
 
@@ -55,8 +61,11 @@ Template.jobForm.helpers({
     return Template.instance().unsavedChanges.get() ? 'positive' : 'disabled';
   },
 
-  hasItems: function(arr) {
-    return arr && arr.length;
+  hasPermissions: function(doc) {
+    return doc && (
+      (doc.ownerGroups && doc.ownerGroups.length) ||
+      (doc.accessGroups && doc.accessGroups.length)
+    );
   }
 });
 
@@ -72,6 +81,7 @@ Template.jobForm.events({
     var template = Template.instance();
     var data = $(event.target).form('get values');
     data['email.enabled'] = data['email.enabled'] === 'on';
+    data['accessGroups'] = _.without( (data['accessGroups'] || '').split(','), '');
     data['ownerGroups'] = _.without( (data['ownerGroups'] || '').split(','), '');
 
     Meteor.call('saveJob', data, function(err, _id) {
@@ -90,12 +100,4 @@ Template.jobForm.events({
       FlowRouter.go('jobList');
     }
   }
-});
-
-
-Template.jobFormPermissions.onRendered(function() {
-  this.autorun(() => {
-    Template.currentData();
-    this.$('.ui.multiple.dropdown').dropdown({ allowAdditions: true });
-  });
 });

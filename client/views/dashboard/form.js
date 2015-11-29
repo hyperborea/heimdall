@@ -32,13 +32,13 @@ Template.dashboardForm.onRendered(function() {
 
   this.autorun(() => {
     var dashboard = Dashboards.findOne(FlowRouter.getParam('id'));
-    var widgets = dashboard ? dashboard.widgets : [];
 
-    grid.remove_all_widgets();
-
-    _.each(widgets, (widget) => {
-      addWidget(grid, widget);
-    });
+    if (dashboard) {
+      grid.remove_all_widgets();
+      _.each(dashboard.widgets, (widget) => {
+        addWidget(grid, widget);
+      });
+    }
   });
 });
 
@@ -56,6 +56,7 @@ Template.dashboardForm.events({
 
     var _id = FlowRouter.getParam('id');
     var data = $(event.target).form('get values');
+    data['accessGroups'] = _.without( (data['accessGroups'] || '').split(','), '');
     data.widgets = getGrid(template).serialize();
 
     _id ? Dashboards.update(_id, {$set: data}) : _id = Dashboards.insert(data);

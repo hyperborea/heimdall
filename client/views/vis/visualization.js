@@ -3,18 +3,21 @@ Template.visualization.helpers({
     const context = Template.currentData();
     const result = context.result;
 
-    switch (result && result.status) {
-      case false:
-        return undefined
-      case 'error':
-        return 'visualizationError';
-      default:
-        return _.isArray(result.data) && 'vis' + (context.visType || (context.vis && context.vis.type) || 'DataTable')
+    if (result) {
+      switch (result.status) {
+        case false:
+          return undefined
+        case 'error':
+          return 'visualizationError';
+        default:
+          return _.isArray(result.data) && 'vis' + (context.visType || (context.vis && context.vis.type) || 'DataTable')
+      }
     }
   },
 
   isRunning: function() {
-    return (Template.currentData().result.status === 'running') && 'loading';
+    var data = Template.currentData();
+    return (data && data.result && data.result.status === 'running') ? 'loading' : false;
   },
 
   visData: function() {
