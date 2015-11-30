@@ -10,7 +10,10 @@
           <div class="default text">Source</div>
           <div class="menu">
             {{#each source in sources}}
-              <div class="item" data-value={{source._id}}>{{source.name}}</div>
+              <div class="item" data-value={{source._id}}>
+                {{source.name}}
+                <div class="meta">{{source.owner}}</div>
+              </div>
             {{/each}}
           </div>
         </div>

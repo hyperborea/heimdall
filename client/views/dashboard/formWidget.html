@@ -9,7 +9,10 @@
           <div class="default text">Job</div>
           <div class="menu">
             {{#each job in jobs}}
-              <div class="item" data-value={{job._id}}>{{job.name}}</div>
+              <div class="item" data-value={{job._id}}>
+                {{job.name}}
+                <div class="description">{{job.owner}}</div>
+              </div>
             {{/each}}
           </div>
         </div>  

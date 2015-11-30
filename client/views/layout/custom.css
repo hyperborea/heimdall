@@ -1,0 +1,8 @@
+.hidden { display: none; }
+
+.ui.dropdown .meta {
+  font-size: 0.7em;
+}
+.ui.dropdown .text .meta {
+  display: none;
+}
