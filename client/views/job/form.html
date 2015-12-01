@@ -47,7 +47,7 @@
       <div class="content">{{> jobFormPermissions doc=doc}}</div>
     </div>
 
-    <div class="action field">
+    <div class="action field {{ ownerVisibility doc }}">
       <div class="ui buttons">
         <div class="ui submit button {{saveBtnClass}}">save</div>
         {{#if doc._id}}

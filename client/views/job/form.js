@@ -29,14 +29,7 @@ Template.jobForm.onRendered(function() {
 
   this.autorun(() => {
     var job = Jobs.findOne(FlowRouter.getParam('id'));
-    if (job) {
-      if (job.query) editor.doc.setValue(job.query);
-      
-      if (!isOwner(Meteor.user(), job)) {
-        form.find('input').attr('readonly', '');
-        form.find('.action.field').hide();
-      }
-    }
+    if (job && job.query) editor.doc.setValue(job.query);
   });
 
   this.subscribe('sources', () => {

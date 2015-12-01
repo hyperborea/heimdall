@@ -25,11 +25,6 @@ Template.sourceForm.onRendered(function() {
       source.password = PASSWORD_NOCHANGE;
       form.form('set values', source);
       this.unsavedChanges.set(false);
-
-      if (!isOwner(Meteor.user(), source)) {
-        form.find('input').attr('readonly', '');
-        form.find('.action.field').hide();
-      }
     }
   });
 });
