@@ -4,9 +4,9 @@ AUTH_ROUTES = ['login', 'logout'];
 Meteor.startup(function() {
   Tracker.autorun(function() {
     if (!Meteor.userId()) {
-      var route = FlowRouter.current().route;
-      if (route && !_.contains(AUTH_ROUTES, route.name)) {
-        Session.set('redirectAfterLogin', route.path);
+      var current = FlowRouter.current();
+      if (current && !_.contains(AUTH_ROUTES, current.route.name)) {
+        Session.set('redirectAfterLogin', current.path);
       }
 
       FlowRouter.go('login');
@@ -18,6 +18,7 @@ Meteor.startup(function() {
 Accounts.onLogin(function() {
   if (FlowRouter.current().route.name == 'login') {
     var redirect = Session.get('redirectAfterLogin') || 'home';
+    Session.set('redirectAfterLogin', undefined);
     FlowRouter.go(redirect);
   }
 });
