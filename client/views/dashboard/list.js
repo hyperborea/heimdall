@@ -8,5 +8,9 @@ Template.dashboardList.onCreated(function() {
 Template.dashboardList.helpers({
   items: function() {
     return Dashboards.find();
+  },
+
+  hasStarred: function(_id) {
+    return hasStarred('dashboard', _id);
   }
 });

@@ -12,7 +12,12 @@
     {{#each item in items}}
       <a href={{pathFor 'dashboardView' id=item._id}} class="card">
         <div class="content">
-          <div class="header">{{item.title}}</div>
+          <div class="header">
+            {{item.title}}
+            {{#if hasStarred item._id}}
+              <i class="yellow star icon"></i>
+            {{/if}}
+          </div>
         </div>
         <div class="extra content">
           <i class="user icon"></i> {{item.owner}}

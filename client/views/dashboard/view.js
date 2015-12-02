@@ -8,7 +8,8 @@ Template.dashboardView.onCreated(function() {
 Template.dashboardView.onRendered(function() {
   var grid = this.$('.gridster').gridster({
     widget_margins: [10, 20],
-    widget_base_dimensions: [200, 150]
+    widget_base_dimensions: [200, 150],
+    max_size_x: 10
   }).data('gridster');
 
   this.autorun(() => {
@@ -32,7 +33,18 @@ Template.dashboardView.helpers({
 
   loadingClass: function() {
     return Session.get('isLoading') && 'hidden';
+  },
+
+  starredClass: function(doc) {
+    return hasStarred('dashboard', FlowRouter.getParam('id')) ? 'yellow' : 'empty';
   }
+});
+
+
+Template.dashboardView.events({
+  'click .js-toggle-star': function() {
+    toggleStar('dashboard', FlowRouter.getParam('id'));
+  },
 });
 
 

@@ -1,11 +1,18 @@
 <template name="dashboardView">
   <h1 class="ui dividing header">
-    {{doc.title}}
-    {{#if isOwner doc}}
-      <span class="sub header">
-        <a href={{pathFor 'dashboardEdit' id=doc._id}}>edit</a>
-      </span>
-    {{/if}}
+    <div class="ui grid">
+      <div class="fifteen wide column">
+        {{doc.title}}
+        {{#if isOwner doc}}
+          <span class="sub header">
+            <a href={{pathFor 'dashboardEdit' id=doc._id}}>edit</a>
+          </span>
+        {{/if}}
+      </div>
+      <div class="one wide right aligned column">
+        <i class="{{starredClass}} star link icon js-toggle-star" title="star"></i>
+      </div>
+    </div>    
   </h1>
 
   <div class="gridster {{loadingClass}}"></div>
