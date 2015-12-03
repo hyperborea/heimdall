@@ -1,7 +1,9 @@
 loadHandler(Template.dashboardView);
 
 Template.dashboardView.onCreated(function() {
-  this.subscribe('dashboard', FlowRouter.getParam('id'));
+  this.autorun(() => {
+    this.subscribe('dashboard', FlowRouter.getParam('id'));
+  });
 });
 
 
