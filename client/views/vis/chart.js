@@ -10,10 +10,13 @@ Template.visChart.onRendered(function() {
     const settings = context.settings;
 
     if (context.data) {
-      var fieldTypes = {};
+      var fieldSettings = {};
       _.each(settings.series, (series) => {
         _.each(series.columns, (field) => {
-          fieldTypes[field] = series.type;
+          fieldSettings[field] = {
+            type  : series.type || 'line',
+            yAxis : series.yAxis || 'y'
+          };
         });
       });
 
@@ -21,9 +24,10 @@ Template.visChart.onRendered(function() {
         bindto: container,
         data: {
           json: context.data,
-          keys: { value: _.keys(fieldTypes) },
+          keys: { value: _.keys(fieldSettings) },
           groups: _.map(settings.series, (series) => series.columns),
-          types: fieldTypes
+          types: _.object(_.keys(fieldSettings), _.pluck(fieldSettings, 'type')),
+          axes: _.object(_.keys(fieldSettings), _.pluck(fieldSettings, 'yAxis'))
         },
         size: {
           height: $wrapper.height() - 50
@@ -44,25 +48,24 @@ Template.visChart.onRendered(function() {
             max: settings.maxY
           },
           y2: {
+            show: _.where(fieldSettings, {yAxis: 'y2'}).length > 0,
             label: {
               text: settings.labelY2,
               position: settings.labelY2 && 'outer-top'
-            }
+            },
+            min: settings.minY,
+            max: settings.maxY
           }
         }
       };
 
-      if (settings.y2Field) {
-        config.data.axes = {};
-        config.data.axes[settings.y2Field] = 'y2';
-        config.axis.y2.show = true;
-      }
+      console.log(config);
 
       if (settings.timeField) {
         config.data.x = settings.timeField;
         config.data.keys.value.push(settings.timeField);
         config.axis.x.type = 'timeseries';
-        config.axis.x.tick = { format: '%Y-%m-%d' };
+        config.axis.x.tick = { format: settings.timeFormat || '%Y-%m-%d' };
       }
 
       if (settings.categoryField) {
@@ -71,7 +74,7 @@ Template.visChart.onRendered(function() {
         config.axis.x.type = 'category';
       }
 
-      if (_.contains(fieldTypes, 'pie')) {
+      if (_.contains(_.pluck(fieldSettings, 'type'), 'pie')) {
         var valField = settings.series[0].columns[0];
         var catField = settings.categoryField;
 
@@ -89,57 +92,4 @@ Template.visChart.onRendered(function() {
       c3.generate(config);
     }
   });
-});
-
-
-Template.visChartForm.onRendered(function() {
-  this.$('.ui.single.dropdown').dropdown();
-  this.$('.tabular.menu .item').tab();
-});
-
-
-Template.visChartFormSeries.onCreated(function() {
-  this.series = new ReactiveVar(this.data.settings.series || [{ type: 'line' }]);
-});
-
-
-Template.visChartFormSeriesTypes.onRendered(function() {
-  this.$('.ui.single.dropdown').dropdown();
-});
-
-
-Template.visChartFormSeriesFields.onRendered(function() {
-  this.$('.ui.multiple.dropdown').dropdown({allowAdditions: true});
-});
-
-
-Template.visChartFormSeries.helpers({
-  seriesArray: function() {
-    return Template.instance().series.get();
-  },
-
-  fieldName: function(index, name) {
-    return `series[${index}][${name}]`;
-  }
-});
-
-Template.visChartFormSeries.events({
-  'click .js-add-series': function(event, template) {
-    var series = template.series.get();
-    
-    series.push({});
-    template.series.set(series);
-  },
-
-  'click .js-remove-series': function(event, template) {
-    var index = $(event.target).data('index');
-    var series = template.series.get();
-    
-    series.splice(index, 1);
-    template.series.set(series);
-
-    Tracker.afterFlush(() => {
-      template.$('.ui.dropdown').dropdown('save defaults').dropdown('restore defaults');
-    });
-  }
 });

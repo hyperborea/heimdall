@@ -1,0 +1,141 @@
+<template name="visChartForm">
+  <div class="ui small form field">
+    <div class="ui pointing secondary tabular menu">
+      <a class="active item" data-tab="series">Series</a>
+      <a class="item" data-tab="axes">Axes</a>
+    </div>
+    <div class="ui active tab container" data-tab="series">
+      {{> visChartFormSeries}}
+    </div>
+    <div class="ui tab container" data-tab="axes">
+      {{> visChartFormAxes}}
+    </div>  
+  </div>
+</template>
+
+
+<template name="visChartFormSeriesTypes">
+  <div class="ui single selection dropdown">
+    <input type="hidden" name={{name}} value={{value}}>
+    <i class="dropdown icon"></i>
+    <span class="default text">Chart Type</span>
+    <div class="menu">
+      <div class="item" data-value="line"><i class="line chart icon"></i>line</div>
+      <div class="item" data-value="spline"><i class="line chart icon"></i>line (smooth)</div>
+      <div class="item" data-value="area"><i class="area chart icon"></i>area</div>
+      <div class="item" data-value="bar"><i class="bar chart icon"></i>bar</div>
+      <div class="item" data-value="pie"><i class="pie chart icon"></i>pie</div>
+    </div>
+  </div>
+</template>
+
+
+<template name="visChartFormSeriesFields">
+  <div class="ui multiple search selection dropdown">
+    <input type="hidden" name="{{name}}:list" value={{value}}>
+    <i class="dropdown icon"></i>
+    <span class="default text">columns</span>
+    <div class="menu">
+      {{#each field in ../fields}}
+        <div class="item">{{field}}</div>
+      {{/each}}
+    </div>
+  </div>
+</template>
+
+
+<template name="visChartFormSeries">
+  <div class="field">
+    <div class="ui basic button js-add-series">Add series</div>    
+  </div>  
+
+  {{#each series in seriesArray}}
+    <div class="fields">
+      <div class="three wide field">
+        {{> visChartFormSeriesTypes name=(fieldName @index 'type') value=series.type}}
+      </div>
+      <div class="nine wide field">
+        {{> visChartFormSeriesFields name=(fieldName @index 'columns') value=series.columns}}
+      </div>
+      <div class="three wide field">
+        <div class="ui single search selection dropdown">
+          <input type="hidden" name={{fieldName @index 'yAxis'}} value={{series.yAxis}}>
+          <i class="dropdown icon"></i>
+          <span class="text"></span>
+          <div class="menu">
+            <div class="item" data-value="y">Y axis</div>
+            <div class="item" data-value="y2">Y2 axis</div>
+          </div>
+        </div>
+      </div>
+      <div class="one wide field">
+        <i class="circular red inverted remove link icon js-remove-series" data-index={{@index}}></i>
+      </div>
+    </div>
+  {{/each}}  
+
+  <div class="three fields">
+    <div class="field">
+      <div class="ui single search selection dropdown">
+        <input type="hidden" name="categoryField" value={{settings.categoryField}}>
+        <i class="dropdown icon"></i>
+        <span class="text"></span>
+        <div class="menu">
+          <div class="item" data-value="">category field (optional)</div>
+          <div class="divider"></div>
+          {{#each field in fields}}
+            <div class="item">{{field}}</div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="ui single search selection dropdown">
+        <input type="hidden" name="timeField" value={{settings.timeField}}>
+        <i class="dropdown icon"></i>
+        <span class="text"></span>
+        <div class="menu">
+          <div class="item" data-value="">time field (optional)</div>
+          <div class="divider"></div>
+          {{#each field in fields}}
+            <div class="item">{{field}}</div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="ui labeled input">
+        <a href="https://github.com/mbostock/d3/wiki/Time-Formatting" target="_blank" class="ui label">
+          Time Format
+        </a>
+        <input type="text" name="timeFormat" value={{settings.timeFormat}} placeholder="%Y-%m-%d">  
+      </div>
+    </div>
+  </div>
+</template>
+
+
+<template name="visChartFormAxes">
+  <div class="three fields">
+    <div class="field">
+      <input type="text" name="labelX" value={{settings.labelX}} placeholder="Label for X axis">
+    </div>
+    <div class="field">
+      <input type="text" name="labelY" value={{settings.labelY}} placeholder="Label for Y axis">
+    </div>
+    <div class="field">
+      <input type="text" name="labelY2" value={{settings.labelY2}} placeholder="Label for Y2 axis">
+    </div>
+  </div>
+
+  <div class="two fields">
+    <div class="field">
+      <input type="text" name="minY:number" value={{settings.minY}} placeholder="Minimum value">
+    </div>
+    <div class="field">
+      <input type="text" name="maxY:number" value={{settings.maxY}} placeholder="Maximum value">
+    </div>
+  </div>
+</template>
