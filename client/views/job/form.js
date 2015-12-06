@@ -72,10 +72,7 @@ Template.jobForm.events({
     event.preventDefault();
 
     var template = Template.instance();
-    var data = $(event.target).form('get values');
-    data['email.enabled'] = data['email.enabled'] === 'on';
-    data['accessGroups'] = _.without( (data['accessGroups'] || '').split(','), '');
-    data['ownerGroups'] = _.without( (data['ownerGroups'] || '').split(','), '');
+    var data = $(event.target).serializeJSON();
 
     Meteor.call('saveJob', data, function(err, _id) {
       template.unsavedChanges.set(false);

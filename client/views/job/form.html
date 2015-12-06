@@ -97,20 +97,20 @@
   <div class="ui small form">
     <div class="field">
       <div class="ui checkbox">
-        <input type="checkbox" name="email.enabled" checked={{doc.email.enabled}}>
+        <input type="checkbox" name="email[enabled]:boolean" checked={{doc.email.enabled}}>
         <label>enable email notification</label>
       </div>
     </div>
     <div class="field">
       <label>Recipients</label>
-      <input type="text" name="email.recipients" value={{doc.email.recipients}} placeholder="Recipients">
+      <input type="text" name="email[recipients]" value={{doc.email.recipients}} placeholder="Recipients">
     </div>
     <div class="field">
       <label>Message</label>
-      <input type="text" name="email.subject" value={{doc.email.subject}} placeholder="Subject">
+      <input type="text" name="email[subject]" value={{doc.email.subject}} placeholder="Subject">
     </div>
     <div class="field">
-      <textarea name="email.content">{{doc.email.content}}</textarea>
+      <textarea name="email[content]">{{doc.email.content}}</textarea>
     </div>
   </div>
 </template>
@@ -120,12 +120,12 @@
   <div class="ui small form">
     <div class="field">
       <label>Access Groups</label>
-      {{> groupsInput name='accessGroups' value=doc.accessGroups}}
+      {{> groupsInput name='accessGroups:list' value=doc.accessGroups}}
     </div>
 
     <div class="field">
       <label>Owner Groups</label>
-      {{> groupsInput name='ownerGroups' value=doc.ownerGroups}}
+      {{> groupsInput name='ownerGroups:list' value=doc.ownerGroups}}
     </div>
   </div>
 </template>

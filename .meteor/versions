@@ -40,7 +40,7 @@ http@1.1.1
 hyperborea:c3@1.0.1
 hyperborea:datamaps@1.0.5
 hyperborea:ethergrid@0.0.3
-hyperborea:timeago@0.0.1
+hyperborea:timeago@0.0.2
 id-map@1.0.4
 jquery@1.11.4
 kadira:blaze-layout@2.3.0

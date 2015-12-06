@@ -1,8 +1,7 @@
 Template.visForm.onRendered(function() {
-  var template = this;
-  template.$('.ui.dropdown').dropdown();
+  this.$('.ui.dropdown').dropdown();
 
-  var form = template.$('.ui.form').form({});
+  var form = this.$('.ui.form').form({});
 });
 
 
@@ -31,8 +30,7 @@ Template.visForm.events({
     event.preventDefault();
 
     var form = template.$('.ui.form').form({});
-    var settings = $(event.target).form('get values');
-    if (settings.columns) settings.columns = settings.columns.split(',');
+    var settings = $(event.target).serializeJSON();
 
     Meteor.call('saveJobVis', template.data.jobId, settings);
   }
