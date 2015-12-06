@@ -71,8 +71,8 @@ Template.visChart.onRendered(function() {
         config.axis.x.type = 'category';
       }
 
-      if (settings.chartType === 'pie') {
-        var valField = settings.columns[0];
+      if (_.contains(fieldTypes, 'pie')) {
+        var valField = settings.series[0].columns[0];
         var catField = settings.categoryField;
 
         var data = _.groupBy(context.data, catField);
@@ -82,7 +82,7 @@ Template.visChart.onRendered(function() {
 
         config.data = {
           json: data,
-          type: settings.chartType
+          type: 'pie'
         };
       }
 
@@ -99,7 +99,7 @@ Template.visChartForm.onRendered(function() {
 
 
 Template.visChartFormSeries.onCreated(function() {
-  this.series = new ReactiveVar(this.data.settings.series || []);
+  this.series = new ReactiveVar(this.data.settings.series || [{ type: 'line' }]);
 });
 
 
