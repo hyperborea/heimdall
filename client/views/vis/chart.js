@@ -84,21 +84,6 @@ Template.visChart.onRendered(function() {
         config.axis.x.type = 'category';
       }
 
-      if (_.contains(_.pluck(fieldSettings, 'type'), 'pie')) {
-        var valField = settings.series[0].columns[0];
-        var catField = settings.categoryField;
-
-        var data = _.groupBy(context.data, catField);
-        _.each(data, (items, cat) => {
-          data[cat] = _.pluck(items, valField);
-        });
-
-        config.data = {
-          json: data,
-          type: 'pie'
-        };
-      }
-
       c3.generate(config);
     }
   });

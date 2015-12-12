@@ -1,0 +1,49 @@
+<template name="visPieChart">
+  <div class="chart"></div>
+</template>
+
+
+<template name="visPieChartForm">
+  <div class="three fields">
+    <div class="field">
+      <label>Chart Type</label>
+      <div class="ui selection dropdown">
+        <input type="hidden" name="chartType" value={{settings.chartType}}>
+        <i class="dropdown icon"></i>
+        <span class="default text">select</span>
+        <div class="menu">
+          <div class="item" data-value="pie">Pie</div>
+          <div class="item" data-value="donut">Donut</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Category Field</label>
+      <div class="ui search selection dropdown">
+        <input type="hidden" name="categoryField" value={{settings.categoryField}}>
+        <i class="dropdown icon"></i>
+        <span class="default text">select</span>
+        <div class="menu">
+          {{#each field in fields}}
+            <div class="item">{{field}}</div>
+          {{/each}}
+        </div>
+      </div>  
+    </div>
+
+    <div class="field">
+      <label>Value Field</label>
+      <div class="ui search selection dropdown">
+        <input type="hidden" name="valueField" value={{settings.valueField}}>
+        <i class="dropdown icon"></i>
+        <span class="default text">select</span>
+        <div class="menu">
+          {{#each field in fields}}
+            <div class="item">{{field}}</div>
+          {{/each}}
+        </div>
+      </div>  
+    </div>
+  </div>
+</template>
