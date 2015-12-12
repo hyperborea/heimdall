@@ -2,6 +2,9 @@ Template.visPieChart.onRendered(function() {
   var template = this;
   var container = template.find('.chart');
 
+  var $node = $(template.firstNode);
+  var $wrapper = $node.closest('.visualizationWrapper');
+
   this.autorun(() => {
     const context = Template.currentData();
     const settings = context.settings;
@@ -20,7 +23,10 @@ Template.visPieChart.onRendered(function() {
       data: {
         columns: _.map(data, (item) => item),
         type: settings.chartType || 'pie',
-      }
+      },
+      size: {
+        height: $wrapper.height() - 50
+      },
     });
   });
 });
