@@ -3,13 +3,17 @@
     <div class="ui pointing secondary tabular menu">
       <a class="active item" data-tab="series">Series</a>
       <a class="item" data-tab="axes">Axes</a>
+      <a class="item" data-tab="grid">Grid</a>
     </div>
     <div class="ui active tab container" data-tab="series">
       {{> visChartFormSeries}}
     </div>
     <div class="ui tab container" data-tab="axes">
       {{> visChartFormAxes}}
-    </div>  
+    </div>
+    <div class="ui tab container" data-tab="grid">
+      {{> visChartFormGrid}}
+    </div>
   </div>
 </template>
 
@@ -130,22 +134,38 @@
     <tbody>
       <tr>
         <td class="center aligned">X</td>
-        <td><input type="text" name="labelX" value={{settings.labelX}} placeholder="Label for X axis"></td>
-        <td><input type="text" name="minX:number" value={{settings.minX}} placeholder="Minimum value"></td>
-        <td><input type="text" name="maxX:number" value={{settings.maxX}} placeholder="Maximum value"></td>
+        <td><input type="text" name="labelX" value={{settings.labelX}} placeholder=""></td>
+        <td><input type="text" name="minX:number" value={{settings.minX}} placeholder="auto"></td>
+        <td><input type="text" name="maxX:number" value={{settings.maxX}} placeholder="auto"></td>
       </tr>
       <tr>
         <td class="center aligned">Y</td>
-        <td><input type="text" name="labelY" value={{settings.labelY}} placeholder="Label for Y axis"></td>
-        <td><input type="text" name="minY:number" value={{settings.minY}} placeholder="Minimum value"></td>
-        <td><input type="text" name="maxY:number" value={{settings.maxY}} placeholder="Maximum value"></td>
+        <td><input type="text" name="labelY" value={{settings.labelY}} placeholder=""></td>
+        <td><input type="text" name="minY:number" value={{settings.minY}} placeholder="auto"></td>
+        <td><input type="text" name="maxY:number" value={{settings.maxY}} placeholder="auto"></td>
       </tr>
       <tr>
         <td class="center aligned">Y2</td>
-        <td><input type="text" name="labelY2" value={{settings.labelY2}} placeholder="Label for Y2 axis"></td>
-        <td><input type="text" name="minY2:number" value={{settings.minY2}} placeholder="Minimum value"></td>
-        <td><input type="text" name="maxY2:number" value={{settings.maxY2}} placeholder="Maximum value"></td>
+        <td><input type="text" name="labelY2" value={{settings.labelY2}} placeholder=""></td>
+        <td><input type="text" name="minY2:number" value={{settings.minY2}} placeholder="auto"></td>
+        <td><input type="text" name="maxY2:number" value={{settings.maxY2}} placeholder="auto"></td>
       </tr>
     </tbody>
   </table>
+</template>
+
+
+<template name="visChartFormGrid">
+  <div class="field">
+    <div class="ui slider checkbox">
+      <input type="checkbox" name="gridY:boolean" checked={{settings.gridY}}>
+      <label>horizontal grid lines</label>
+    </div>  
+  </div>
+  <div class="field">
+    <div class="ui slider checkbox">
+      <input type="checkbox" name="gridX:boolean" checked={{settings.gridX}}>
+      <label>vertical grid lines</label>
+    </div>  
+  </div>
 </template>

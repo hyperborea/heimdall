@@ -58,6 +58,10 @@ Template.visChart.onRendered(function() {
             min: settings.minY2,
             max: settings.maxY2
           }
+        },
+        grid: {
+          x: { show: settings.gridX },
+          y: { show: settings.gridY }
         }
       };
 
