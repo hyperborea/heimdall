@@ -14,24 +14,14 @@ Template.visChartFormSeries.onCreated(function() {
   this.series = new ReactiveVar(this.data.settings.series || [SERIES_DEFAULT]);
 });
 
-
-Template.visChartFormSeriesTypes.onRendered(function() {
+Template.visChartFormSeriesItem.onRendered(function() {
   this.$('.ui.single.dropdown').dropdown();
-});
-
-
-Template.visChartFormSeriesFields.onRendered(function() {
   this.$('.ui.multiple.dropdown').dropdown({allowAdditions: true});
 });
-
 
 Template.visChartFormSeries.helpers({
   seriesArray: function() {
     return Template.instance().series.get();
-  },
-
-  fieldName: function(index, name) {
-    return `series[${index}][${name}]`;
   }
 });
 
