@@ -37,7 +37,9 @@ Template.visChart.onRendered(function() {
             label: {
               text: settings.labelX,
               position: settings.labelX && 'outer-right'
-            }
+            },
+            min: settings.minX,
+            max: settings.maxX
           },
           y: {
             label: {
@@ -53,8 +55,8 @@ Template.visChart.onRendered(function() {
               text: settings.labelY2,
               position: settings.labelY2 && 'outer-top'
             },
-            min: settings.minY,
-            max: settings.maxY
+            min: settings.minY2,
+            max: settings.maxY2
           }
         }
       };

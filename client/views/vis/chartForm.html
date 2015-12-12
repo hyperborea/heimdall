@@ -4,10 +4,10 @@
       <a class="active item" data-tab="series">Series</a>
       <a class="item" data-tab="axes">Axes</a>
     </div>
-    <div class="ui active tab container" data-tab="series">
+    <div class="ui tab container" data-tab="series">
       {{> visChartFormSeries}}
     </div>
-    <div class="ui tab container" data-tab="axes">
+    <div class="ui active tab container" data-tab="axes">
       {{> visChartFormAxes}}
     </div>  
   </div>
@@ -118,24 +118,34 @@
 
 
 <template name="visChartFormAxes">
-  <div class="three fields">
-    <div class="field">
-      <input type="text" name="labelX" value={{settings.labelX}} placeholder="Label for X axis">
-    </div>
-    <div class="field">
-      <input type="text" name="labelY" value={{settings.labelY}} placeholder="Label for Y axis">
-    </div>
-    <div class="field">
-      <input type="text" name="labelY2" value={{settings.labelY2}} placeholder="Label for Y2 axis">
-    </div>
-  </div>
-
-  <div class="two fields">
-    <div class="field">
-      <input type="text" name="minY:number" value={{settings.minY}} placeholder="Minimum value">
-    </div>
-    <div class="field">
-      <input type="text" name="maxY:number" value={{settings.maxY}} placeholder="Maximum value">
-    </div>
-  </div>
+  <table class="ui definition table">
+    <thead>
+      <tr>
+        <th class="one wide"></th>
+        <th class="nine wide">Label</th>
+        <th class="three wide">Min</th>
+        <th class="three wide">Max</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="center aligned">X</td>
+        <td><input type="text" name="labelX" value={{settings.labelX}} placeholder="Label for X axis"></td>
+        <td><input type="text" name="minX:number" value={{settings.minX}} placeholder="Minimum value"></td>
+        <td><input type="text" name="maxX:number" value={{settings.maxX}} placeholder="Maximum value"></td>
+      </tr>
+      <tr>
+        <td class="center aligned">Y</td>
+        <td><input type="text" name="labelY" value={{settings.labelY}} placeholder="Label for Y axis"></td>
+        <td><input type="text" name="minY:number" value={{settings.minY}} placeholder="Minimum value"></td>
+        <td><input type="text" name="maxY:number" value={{settings.maxY}} placeholder="Maximum value"></td>
+      </tr>
+      <tr>
+        <td class="center aligned">Y2</td>
+        <td><input type="text" name="labelY2" value={{settings.labelY2}} placeholder="Label for Y2 axis"></td>
+        <td><input type="text" name="minY2:number" value={{settings.minY2}} placeholder="Minimum value"></td>
+        <td><input type="text" name="maxY2:number" value={{settings.maxY2}} placeholder="Maximum value"></td>
+      </tr>
+    </tbody>
+  </table>
 </template>
