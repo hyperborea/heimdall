@@ -55,3 +55,44 @@ Template.visChartFormSeries.events({
     });
   }
 });
+
+
+Template.visChartFormGrid.onCreated(function() {
+  this.gridLines = new ReactiveVar(this.data.settings.gridLines || []);
+});
+
+Template.visChartFormGrid.onRendered(function() {
+  this.$('.ui.checkbox').checkbox();
+});
+
+Template.visChartFormGridLine.onRendered(function() {
+  this.$('.ui.dropdown').dropdown();
+});
+
+Template.visChartFormGrid.helpers({
+  gridLines: () => Template.instance().gridLines.get()
+});
+
+Template.visChartFormGrid.events({
+  'click .js-add-line': function(event, template) {
+    var gridLines = template.gridLines.get();
+
+    gridLines.push({
+      axis: 'y',
+      position: 'end'
+    });
+    template.gridLines.set(gridLines);
+  },
+
+  'click .js-remove-line': function(event, template) {
+    var index = $(event.target).data('index');
+    var gridLines = template.gridLines.get();
+    
+    gridLines.splice(index, 1);
+    template.gridLines.set(gridLines);
+
+    Tracker.afterFlush(() => {
+      template.$('.ui.dropdown').dropdown('save defaults').dropdown('restore defaults');
+    });
+  }
+});

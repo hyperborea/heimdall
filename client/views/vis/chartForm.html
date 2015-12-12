@@ -50,7 +50,9 @@
 
 <template name="visChartFormSeries">
   <div class="field">
-    <div class="ui basic button js-add-series">Add series</div>    
+    <div class="ui basic button js-add-series">
+      <i class="plus icon"></i> Add series
+    </div>
   </div>  
 
   {{#each series in seriesArray}}
@@ -167,5 +169,52 @@
       <input type="checkbox" name="gridX:boolean" checked={{settings.gridX}}>
       <label>vertical grid lines</label>
     </div>  
+  </div>
+
+  <div class="field">
+    <div class="ui basic button js-add-line">
+      <i class="plus icon"></i> Add reference line
+    </div>    
+  </div>
+  {{#each line in gridLines}}
+    {{> visChartFormGridLine line=line index=@index}}
+  {{/each}}
+</template>
+
+
+<template name="visChartFormGridLine">
+  <div class="fields">
+    <div class="three wide field">
+      <div class="ui selection dropdown">
+        <input type="hidden" name="gridLines[{{index}}][axis]" value={{line.axis}}>
+        <i class="dropdown icon"></i>
+        <span class="text"></span>
+        <div class="menu">
+          <div class="item" data-value="y">horizontal</div>
+          <div class="item" data-value="x">vertical</div>
+        </div>
+      </div>
+    </div>
+    <div class="two wide field">
+      <input type="text" name="gridLines[{{index}}][value]" value={{line.value}} placeholder="value">
+    </div>
+    <div class="seven wide field">
+      <input type="text" name="gridLines[{{index}}][text]" value={{line.text}} placeholder="label">
+    </div>
+    <div class="three wide field">
+      <div class="ui selection dropdown">
+        <input type="hidden" name="gridLines[{{index}}][position]" value={{line.position}}>
+        <i class="dropdown icon"></i>
+        <span class="text"></span>
+        <div class="menu">
+          <div class="item">start</div>
+          <div class="item">middle</div>
+          <div class="item">end</div>
+        </div>
+      </div>
+    </div>
+    <div class="one wide field">
+      <i class="circular red inverted remove link icon js-remove-line" data-index={{index}}></i>
+    </div>
   </div>
 </template>

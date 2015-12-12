@@ -60,12 +60,16 @@ Template.visChart.onRendered(function() {
           }
         },
         grid: {
-          x: { show: settings.gridX },
-          y: { show: settings.gridY }
+          x: {
+            show: settings.gridX,
+            lines: _.where(settings.gridLines, {axis: 'x'})
+          },
+          y: {
+            show: settings.gridY,
+            lines: _.where(settings.gridLines, {axis: 'y'})
+          }
         }
       };
-
-      console.log(config);
 
       if (settings.timeField) {
         config.data.x = settings.timeField;
