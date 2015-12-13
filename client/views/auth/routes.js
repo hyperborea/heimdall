@@ -16,7 +16,8 @@ Meteor.startup(function() {
 
 // Redirect user on login.
 Accounts.onLogin(function() {
-  if (FlowRouter.current().route.name == 'login') {
+  var current = FlowRouter.current();
+  if (current.route && current.route.name == 'login') {
     var redirect = Session.get('redirectAfterLogin') || 'home';
     Session.set('redirectAfterLogin', undefined);
     FlowRouter.go(redirect);

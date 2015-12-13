@@ -1,0 +1,10 @@
+.heatmap rect {
+  stroke: #E6E6E6;
+  stroke-width: 2px;  
+}
+
+.heatmap text {
+  font-size: 9pt;
+  font-family: Consolas, courier;
+  fill: #aaa;
+}
