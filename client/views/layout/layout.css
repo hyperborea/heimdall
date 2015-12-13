@@ -1,3 +1,7 @@
+body {
+  overflow-x: auto;
+}
+
 #__blaze-root {
   height: 100%;
 }
