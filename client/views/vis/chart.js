@@ -38,6 +38,9 @@ Template.visChart.onRendered(function() {
               text: settings.labelX,
               position: settings.labelX && 'outer-right'
             },
+            tick: {
+              format: settings.formatX ? d3.format(settings.formatX) : undefined
+            },
             min: settings.minX,
             max: settings.maxX
           },
@@ -45,6 +48,9 @@ Template.visChart.onRendered(function() {
             label: {
               text: settings.labelY,
               position: settings.labelY && 'outer-top'
+            },
+            tick: {
+              format: settings.formatY ? d3.format(settings.formatY) : undefined
             },
             min: settings.minY,
             max: settings.maxY
@@ -54,6 +60,9 @@ Template.visChart.onRendered(function() {
             label: {
               text: settings.labelY2,
               position: settings.labelY2 && 'outer-top'
+            },
+            tick: {
+              format: settings.formatY2 ? d3.format(settings.formatY2) : undefined
             },
             min: settings.minY2,
             max: settings.maxY2

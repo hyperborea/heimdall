@@ -123,8 +123,14 @@
       <tr>
         <th class="one wide"></th>
         <th class="nine wide">Label</th>
-        <th class="three wide">Min</th>
-        <th class="three wide">Max</th>
+        <th class="two wide">Min</th>
+        <th class="two wide">Max</th>
+        <th class="two wide">
+          Format
+          <a href="https://github.com/mbostock/d3/wiki/Formatting" target="_blank">
+            <i class="external link icon"></i>
+          </a>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -133,18 +139,21 @@
         <td><input type="text" name="labelX" value={{settings.labelX}} placeholder="none"></td>
         <td><input type="text" name="minX:number" value={{settings.minX}} placeholder="auto"></td>
         <td><input type="text" name="maxX:number" value={{settings.maxX}} placeholder="auto"></td>
+        <td><input type="text" name="formatX" value={{settings.formatX}} placeholder="auto"></td>
       </tr>
       <tr>
         <td class="center aligned">Y</td>
         <td><input type="text" name="labelY" value={{settings.labelY}} placeholder="none"></td>
         <td><input type="text" name="minY:number" value={{settings.minY}} placeholder="auto"></td>
         <td><input type="text" name="maxY:number" value={{settings.maxY}} placeholder="auto"></td>
+        <td><input type="text" name="formatY" value={{settings.formatY}} placeholder="auto"></td>
       </tr>
       <tr>
         <td class="center aligned">Y2</td>
         <td><input type="text" name="labelY2" value={{settings.labelY2}} placeholder="none"></td>
         <td><input type="text" name="minY2:number" value={{settings.minY2}} placeholder="auto"></td>
         <td><input type="text" name="maxY2:number" value={{settings.maxY2}} placeholder="auto"></td>
+        <td><input type="text" name="formatY2" value={{settings.formatY2}} placeholder="auto"></td>
       </tr>
     </tbody>
   </table>
