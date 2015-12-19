@@ -18,7 +18,7 @@ queryPostgres = function(source, query, endCallback, startCallback) {
   if (source && query) {
     const connectionConfig = {
       user     : source.username,
-      password : source.password,
+      password : decryptString(source.password),
       host     : source.host,
       port     : source.port,
       database : source.database,

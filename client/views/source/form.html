@@ -1,29 +1,30 @@
 <template name="sourceForm">
 
   <form class="ui form text container">
+    <input type="hidden" name="_id" value={{doc._id}}>
 
     <h4 class="ui dividing header">Connection Details</h4>
 
     <div class="field">
       <label>Name</label>
-      <input type="text" name="name">
+      <input type="text" name="name" value={{doc.name}}>
     </div>
 
     <div class="field">
       <label>Server</label>
       <div class="fields">
         <div class="eight wide field">
-          <input type="text" name="host" placeholder="host address">
+          <input type="text" name="host" value={{doc.host}} placeholder="host address">
         </div>
         <div class="four wide field">
-          <input type="number" name="port" placeholder="5432">
+          <input type="number" name="port" value={{doc.port}} placeholder="5432">
         </div>
         <div class="four wide field">
-          <input type="text" name="database" placeholder="database">
+          <input type="text" name="database" value={{doc.database}} placeholder="database">
         </div>
       </div>
       <div class="ui checkbox">
-        <input type="checkbox" name="ssl">
+        <input type="checkbox" name="ssl:boolean" checked={{doc.ssl}}>
         <label>use SSL</label>
       </div>
     </div>
@@ -32,17 +33,17 @@
       <label>Credentials</label>
       <div class="two fields">
         <div class="field">
-          <input type="text" name="username" placeholder="username">
+          <input type="text" name="username" value={{doc.username}} placeholder="username">
         </div>
         <div class="field">
-          <input type="password" name="password" placeholder="password" autocomplete="off">
+          <input type="password" name="password" value={{doc.password}} placeholder="password" autocomplete="off">
         </div>
       </div>
     </div>
 
     <div class="field">
       <label>Access Groups</label>
-      {{> groupsInput name='accessGroups'}}
+      {{> groupsInput name='accessGroups:list' value=doc.accessGroups}}
     </div>
 
     <div class="ui divider"></div>

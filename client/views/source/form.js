@@ -17,22 +17,16 @@ Template.sourceForm.onRendered(function() {
   });
 
   this.$('.ui.checkbox').checkbox();
-
-  this.autorun(() => {
-    var source = Sources.findOne(FlowRouter.getParam('id'));
-
-    if (source) {
-      source.password = PASSWORD_NOCHANGE;
-      form.form('set values', source);
-      this.unsavedChanges.set(false);
-    }
-  });
 });
 
 
 Template.sourceForm.helpers({
   doc: function() {
-    return Sources.findOne(FlowRouter.getParam('id'));
+    var source = Sources.findOne(FlowRouter.getParam('id'));
+    
+    return _.extend(source || {}, {
+      password: PASSWORD_NOCHANGE
+    });
   },
 
   saveBtnClass: function() {
@@ -54,27 +48,25 @@ Template.sourceForm.helpers({
 
 
 Template.sourceForm.events({
-  'change input, keyup input': function() {
-    Template.instance().unsavedChanges.set(true);
+  'change input, keyup input': function(event, template) {
+    template.unsavedChanges.set(true);
   },
 
   'submit form': function(event, template) {
     event.preventDefault();
 
-    var _id = FlowRouter.getParam('id');
-    var data = $(event.target).form('get values');
+    var data = $(event.target).serializeJSON();
     if (data.password == PASSWORD_NOCHANGE) delete data.password;
-    data['ssl'] = data['ssl'] === 'on';
-    data['accessGroups'] = _.without( (data['accessGroups'] || '').split(','), '');
 
-    _id ? Sources.update(_id, {$set: data}) : _id = Sources.insert(data);
-    Template.instance().unsavedChanges.set(false);
-    FlowRouter.go('sourceEdit', {id: _id});
+    Meteor.call('saveSource', data, function(err, _id) {
+      template.unsavedChanges.set(false);
+      FlowRouter.go('sourceEdit', {id: _id});
+    });
   },
 
   'click .js-delete': function() {
     if (confirm('Sure you want to delete this source?')) {
-      Sources.remove(FlowRouter.getParam('id'));
+      Meteor.call('removeSource', FlowRouter.getParam('id'));
       FlowRouter.go('sourceList');
     }
   },

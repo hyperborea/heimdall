@@ -10,6 +10,6 @@ Template.visDataTable.helpers({
     if (value instanceof Date)
       return moment(value).format('YYYY-MM-DD HH:mm:ss');
     else
-      return value.toString();
+      return _.isNull(value) ? null : value.toString();
   }
 });
