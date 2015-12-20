@@ -6,10 +6,11 @@
 <template name="visWorldMapForm">
   <div class="four fields">
     <div class="field">
+      <label>Map Type</label>
       <div class="ui selection dropdown">
         <input type="hidden" name="mapType" value={{settings.mapType}}>
         <i class="dropdown icon"></i>
-        <div class="default text">Map Type</div>
+        <div class="default text">select</div>
         <div class="menu">
           <div class="item" data-value="world">World Map</div>
           <div class="item" data-value="usa">US Map</div>
@@ -18,10 +19,11 @@
     </div>
 
     <div class="field">
+      <label>Country Field</label>
       <div class="ui selection dropdown">
         <input type="hidden" name="countryField" value={{settings.countryField}}>
         <i class="dropdown icon"></i>
-        <div class="default text">country field</div>
+        <div class="default text">select field</div>
         <div class="menu">
           {{#each field in fields}}
             <div class="item" data-value={{field}}>{{field}}</div>
@@ -31,10 +33,11 @@
     </div>
 
     <div class="field">
+      <label>Value Field</label>
       <div class="ui selection dropdown">
         <input type="hidden" name="valueField" value={{settings.valueField}}>
         <i class="dropdown icon"></i>
-        <div class="default text">value field</div>
+        <div class="default text">select field</div>
         <div class="menu">
           {{#each field in fields}}
             <div class="item" data-value={{field}}>{{field}}</div>
@@ -44,7 +47,9 @@
     </div>
 
     <div class="field">
-      <input type="color" name="targetColor" value={{settings.targetColor}} placeholder="target color">
+      <label>Target Color</label>
+      {{> colorPicker name="targetColor" value=settings.targetColor}}
+      <!-- <input type="color" name="targetColor" value={{settings.targetColor}} placeholder="target color"> -->
     </div>
   </div>
 </template>
