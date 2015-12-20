@@ -17,7 +17,7 @@ Template.jobList.helpers({
     var selector = {};
 
     if (Session.get('jobList.search'))
-      selector['name'] = { $regex: Session.get('jobList.search') };
+      selector['name'] = { $regex: Session.get('jobList.search'), $options: 'i' };
     if (Session.get('jobList.filterOwn'))
       selector['ownerId'] = Meteor.userId();
 
