@@ -1,0 +1,27 @@
+<template name="statistics">
+  <h2 class="ui dividing header"><i class="protect icon"></i> Owned</h2>
+  {{> statisticsNumbers count=counts.owned}}
+
+  <h2 class="ui dividing header"><i class="unhide icon"></i> Accessible</h2>
+  {{> statisticsNumbers count=counts.accessible}}
+</template>
+
+
+<template name="statisticsNumbers">
+  <div class="ui three statistics">
+    <div class="statistic">
+      <div class="value"><i class="block layout icon"></i> {{count.dashboards}}</div>
+      <div class="label">dashboards</div>
+    </div>
+
+    <div class="statistic">
+      <div class="value"><i class="cubes icon"></i> {{count.jobs}}</div>
+      <div class="label">jobs</div>
+    </div>
+
+    <div class="statistic">
+      <div class="value"><i class="database icon"></i> {{count.sources}}</div>
+      <div class="label">sources</div>
+    </div>
+  </div>
+</template>

@@ -10,9 +10,18 @@
       <canvas id="logo"></canvas> <span>eimdall</span>
     </div>
 
-    <a href={{pathFor 'dashboardList'}} class="item"><i class="block layout icon"></i> Dashboards</a>
-    <a href={{pathFor 'jobList'}} class="item"><i class="cubes icon"></i> Jobs</a>
-    <a href={{pathFor 'sourceList'}} class="item"><i class="database icon"></i> Sources</a>
+    <a href={{pathFor 'dashboardList'}} class="{{isActiveRoute regex='^dashboard'}} item">
+      <i class="block layout icon"></i> Dashboards
+    </a>
+    <a href={{pathFor 'jobList'}} class="{{isActiveRoute regex='^job'}} item">
+      <i class="cubes icon"></i> Jobs
+    </a>
+    <a href={{pathFor 'sourceList'}} class="{{isActiveRoute regex='^source'}} item">
+      <i class="database icon"></i> Sources
+    </a>
+    <!-- <a href={{pathFor 'statistics'}} class="{{isActiveRoute regex='^statistics'}} item">
+      <i class="line chart icon"></i> Statistics
+    </a> -->
 
     <div class="spacer item"></div>
 
