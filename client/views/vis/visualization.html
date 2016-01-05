@@ -18,7 +18,10 @@
             &ensp;
             <i class="download link icon js-download" title="download"></i>
             <i class="refresh link icon js-run" title="refresh"></i>
-            <i class="edit link icon js-edit-vis" title="edit"></i>
+            <a href={{pathFor 'jobView' id=result.jobId}} title="edit">
+              <i class="edit link icon"></i>
+            </a>
+            <!-- <i class="edit link icon js-edit-vis" title="edit"></i> -->
           </div>          
         </div>
       </div>
