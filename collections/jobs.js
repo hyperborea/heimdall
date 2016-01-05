@@ -11,7 +11,7 @@ Meteor.methods({
     if (!jobId) {
       requireUser(this.userId);
       
-      doc.createdAt = Date.now();
+      doc.createdAt = new Date();
       doc.ownerId = this.userId;
       doc.owner = user.username;
 
@@ -90,6 +90,7 @@ scheduleJob = function(jobId, schedule) {
 
 
 runJob = function(jobId) {
+  var startedAt = new Date();
   var job = Jobs.findOne(jobId);
   var source = Sources.findOne(job.sourceId);
 
@@ -98,7 +99,7 @@ runJob = function(jobId) {
   function updateResult(result) {
     result = _.extend(job.result || {}, result, {
       jobId     : jobId,
-      updatedAt : Date.now()
+      updatedAt : new Date()
     })
     Jobs.update(jobId, {$set: {result: result}});
   }
@@ -108,6 +109,7 @@ runJob = function(jobId) {
   queryPostgres(source, job.query, function(result) {
     // TODO: need to sanitize data better (and recursively), keys cannot contain dots (.)
     updateResult(result);
+    logJobHistory(job, result, startedAt, new Date());
 
     if (job.email.enabled) {
       Email.send({

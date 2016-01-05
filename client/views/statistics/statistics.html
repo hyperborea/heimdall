@@ -1,9 +1,15 @@
 <template name="statistics">
-  <h2 class="ui dividing header"><i class="protect icon"></i> Owned</h2>
-  {{> statisticsNumbers count=counts.owned}}
+  {{#if statistics}}
+    <h2 class="ui dividing header"><i class="protect icon"></i> Owned</h2>
+    {{> statisticsNumbers count=statistics.owned}}  
 
-  <h2 class="ui dividing header"><i class="unhide icon"></i> Accessible</h2>
-  {{> statisticsNumbers count=counts.accessible}}
+    <h2 class="ui dividing header"><i class="unhide icon"></i> Accessible</h2>
+    {{> statisticsNumbers count=statistics.access}}
+
+    <h2 class="ui dividing header"><i class="heartbeat icon"></i> Job History 24h</h2>
+    {{> statisticsJobHistory24h stats=statistics.jobHistory24h.ok icon='green checkmark'}}
+    {{> statisticsJobHistory24h stats=statistics.jobHistory24h.error icon='red flag outline'}}
+  {{/if}}
 </template>
 
 
@@ -24,4 +30,30 @@
       <div class="label">sources</div>
     </div>
   </div>
+</template>
+
+
+<template name="statisticsJobHistory24h">
+  {{#if stats}}
+  <div class="ui four statistics">
+    <div class="statistic">
+      <div class="value"><i class="{{icon}} icon"></i> {{stats.count}}</div>
+    </div>
+
+    <div class="statistic">
+      <div class="value">{{stats.jobs.length}}</div>
+      <div class="label">Distinct Jobs</div>
+    </div>
+
+    <div class="statistic">
+      <div class="value">{{formatDuration stats.avgDuration}}</div>
+      <div class="label">Average seconds</div>
+    </div>
+
+    <div class="statistic">
+      <div class="value">{{formatDuration stats.maxDuration}}</div>
+      <div class="label">Maximum seconds</div>
+    </div>
+  </div>
+  {{/if}}
 </template>

@@ -18,7 +18,7 @@ Meteor.methods({
     if (!sourceId) {
       requireUser(this.userId);
       
-      doc.createdAt = Date.now();
+      doc.createdAt = new Date();
       doc.ownerId = this.userId;
       doc.owner = user.username;
 
@@ -46,7 +46,7 @@ Meteor.methods({
     requireOwnership(this.userId, source);
 
     function updateTest(result) {
-      result.updatedAt = Date.now();
+      result.updatedAt = new Date();
       Sources.update(sourceId, {$set: {test: result}});
     }
 

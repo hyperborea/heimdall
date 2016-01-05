@@ -4,7 +4,7 @@ Dashboards = new Mongo.Collection('dashboards');
 Dashboards.before.insert(function(userId, doc) {
   var user = Meteor.users.findOne(userId);
 
-  doc.createdAt = Date.now();
+  doc.createdAt = new Date();
   doc.ownerId = userId;
   doc.owner = user.username;
 });

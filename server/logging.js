@@ -1,6 +1,5 @@
 Requests = new Mongo.Collection('requests');
 
-
 Meteor.methods({
   logRequest: function(req) {
     this.unblock();
