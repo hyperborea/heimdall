@@ -38,10 +38,6 @@ Template.visualization.events({
     window.open(`/jobs/${template.data.result.jobId}/download`);
   },
 
-  'click .js-edit-vis': function(event, template) {
-    FlowRouter.go('jobView', { id: template.data.result.jobId });
-  },
-
   'click .js-cancel': function(event, template) {
     Meteor.call('cancelJob', template.data.result.jobId);
   }

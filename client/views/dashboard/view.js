@@ -12,7 +12,7 @@ Template.dashboardView.onRendered(function() {
     widget_margins: [10, 20],
     widget_base_dimensions: [200, 150],
     max_size_x: 10
-  }).data('gridster');
+  }).data('gridster').disable();
 
   this.autorun(() => {
     var dashboard = Dashboards.findOne(FlowRouter.getParam('id'));
