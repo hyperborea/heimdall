@@ -5,8 +5,22 @@ Meteor.publish('dashboards', function() {
   });
 });
 
-Meteor.publish('dashboard', function(_id) {
-  return Dashboards.find({$and: [filterByAccess(this.userId), { _id: _id }]});
+// Meteor.publish('dashboard', function(_id) {
+//   return Dashboards.find({$and: [filterByAccess(this.userId), { _id: _id }]});
+// });
+
+Meteor.publishComposite('dashboard', function(_id) {
+  return {
+    find: function() {
+      return Dashboards.find({$and: [filterByAccess(this.userId), { _id: _id }]});
+    },
+    children: [{
+      find: function(dashboard) {
+        const jobIds = _.map(dashboard.widgets, (w) => w.jobId );
+        return Jobs.find({ _id: { $in: jobIds } });
+      }
+    }]
+  }
 });
 
 

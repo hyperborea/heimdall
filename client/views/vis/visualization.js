@@ -36,7 +36,7 @@ Template.visualization.events({
 
   'click .js-download': function(event, template) {
     const csv = Papa.unparse(this.result.data, { delimiter: ';' });
-    const blob = new Blob([csv], {type: 'application/csv'});
+    const blob = new Blob([csv], {type: "application/csv"});
     saveAs(blob, `${this.name}.csv`);
   },
 

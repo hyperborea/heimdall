@@ -19,11 +19,7 @@ Template.dashboardView.onRendered(function() {
     var widgets = dashboard ? dashboard.widgets : [];
 
     grid.remove_all_widgets();
-
-    _.each(widgets, (widget) => {
-      this.subscribe('job', widget.jobId);
-      addWidget(grid, widget);
-    });
+    _.each(widgets, (widget) => addWidget(grid, widget));
   });
 });
 

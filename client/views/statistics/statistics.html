@@ -9,6 +9,8 @@
     <h2 class="ui dividing header"><i class="heartbeat icon"></i> Job History 24h</h2>
     {{> statisticsJobHistory24h stats=statistics.jobHistory24h.ok icon='green checkmark'}}
     {{> statisticsJobHistory24h stats=statistics.jobHistory24h.error icon='red flag outline'}}
+  {{else}}
+    <i class="big notched circle loading icon"></i> loading
   {{/if}}
 </template>
 
