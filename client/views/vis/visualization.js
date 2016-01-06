@@ -35,7 +35,9 @@ Template.visualization.events({
   },
 
   'click .js-download': function(event, template) {
-    window.open(`/jobs/${template.data.result.jobId}/download`);
+    const csv = Papa.unparse(this.result.data, { delimiter: ';' });
+    const blob = new Blob([csv], {type: 'application/csv'});
+    saveAs(blob, `${this.name}.csv`);
   },
 
   'click .js-cancel': function(event, template) {
