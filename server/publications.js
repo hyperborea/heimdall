@@ -5,10 +5,6 @@ Meteor.publish('dashboards', function() {
   });
 });
 
-// Meteor.publish('dashboard', function(_id) {
-//   return Dashboards.find({$and: [filterByAccess(this.userId), { _id: _id }]});
-// });
-
 Meteor.publishComposite('dashboard', function(_id) {
   return {
     find: function() {
@@ -26,7 +22,7 @@ Meteor.publishComposite('dashboard', function(_id) {
 
 Meteor.publish('jobs', function() {
   return Jobs.find(filterByAccess(this.userId), {
-    fields : { name: 1, owner: 1, ownerId: 1, createdAt: 1, schedule: 1 },
+    fields : { name: 1, owner: 1, ownerId: 1, createdAt: 1, schedule: 1, status: 1 },
     sort   : { name: 1 }
   });
 });

@@ -27,6 +27,11 @@ Template.jobList.helpers({
 
   search: () => Session.get('jobList.search'),
   filterOwn: () => Session.get('jobList.filterOwn'),
+  icon: (job) => 
+    (job.status === 'error') && 'red remove' || 
+    // (job.status === 'ok') && 'green checkmark' || 
+    'angle right',
+  hasError: (job) => job.status === 'error'
 });
 
 

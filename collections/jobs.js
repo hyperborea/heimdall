@@ -101,7 +101,7 @@ runJob = function(jobId) {
       jobId     : jobId,
       updatedAt : new Date()
     })
-    Jobs.update(jobId, {$set: {result: result}});
+    Jobs.update(jobId, {$set: {result: result, status: result.status}});
   }
 
   updateResult({ status: 'running' });
