@@ -13,7 +13,7 @@ Template.visHeatMap.onRendered(function() {
     return {
       day  : date && date.getDay(),
       hour : date && date.getHours(),
-      val  : d[settings.valueField]
+      val  : Number(d[settings.valueField])
     };
   });
 

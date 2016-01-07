@@ -9,7 +9,7 @@ Template.visWorldMap.onRendered(function() {
 
     const targetColor = context.settings.targetColor || '#0000FF';
 
-    let values = _.pluck(context.data, context.settings.valueField);
+    let values = _.pluck(context.data, context.settings.valueField).map(Number);
     let colors = d3.scale.linear()
       .domain([0, _.max(values)])
       .range(['#F5F5F5', targetColor]);
