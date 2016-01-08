@@ -1,0 +1,107 @@
+<template name="jobFormRules">
+  <input type="hidden" class="dummy">
+  <div class="ui small form">
+    <div class="field">
+      <div class="ui basic icon button js-add-rule">
+        <i class="plus icon"></i> Add rule
+      </div>  
+    </div>
+
+    {{#each rule in rules}}
+      {{> jobFormRulesItem ruleIdx=@index rule=rule fields=doc.result.fields}}
+    {{/each}}
+
+    <!-- Tricking semantic ui into not removing the bottom margin for the latest nested fields block -->
+    <div class="fields" style="display: hidden"></div>
+  </div>
+</template>
+
+
+<template name="jobFormRulesItem">
+  <div class="ui horizontal divider">
+    Rule #{{increment ruleIdx}} &ensp;
+    <small><a href="" class="js-remove-rule">(remove)</a></small>
+  </div>
+
+  <div class="fields">
+    <div class="two wide field">
+      <h3 class="ui header">WHAT</h3>
+    </div>
+    <div class="fourteen wide field">
+      <div class="fields">
+        <div class="ten wide field">
+          <input type="text" name="rules[{{ruleIdx}}][description]" value={{rule.description}} placeholder="Description">
+        </div>
+        <div class="three wide field">
+          <div class="ui compact selection dropdown">
+            <input type="hidden" name="rules[{{ruleIdx}}][severity]" value={{rule.severity}}>
+            <i class="dropdown icon"></i>
+            <span class="text"></span>
+            <div class="menu">
+              <div class="item">info</div>
+              <div class="item">warning</div>
+              <div class="item">critical</div>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fields">
+    <div class="two wide field">
+      <h3 class="ui header">WHEN</h3>
+    </div>
+    <div class="fourteen wide field">
+      {{#each condition in rule.conditions}}
+        {{> jobFormRulesItemCondition condIdx=@index ruleIdx=ruleIdx condition=condition fields=fields}}
+      {{/each}}
+    </div>
+  </div>
+</template>
+
+
+<template name="jobFormRulesItemCondition">
+  <div class="fields">
+    <div class="four wide field">
+      <div class="ui single search selection dropdown">
+        <input type="hidden" name="{{path}}[field]" value={{condition.field}}>
+        <i class="dropdown icon"></i>
+        <span class="default text">select field</span>
+        <div class="menu">
+          {{#each field in fields}}
+            <div class="item" data-value={{field}}>{{field}}</div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+
+    <div class="two wide field">
+      <div class="ui compact selection dropdown">
+        <input type="hidden" name="{{path}}[op]" value={{condition.op}}>
+        <i class="dropdown icon"></i>
+        <span class="default text">operator</span>
+        <div class="menu">
+          <div class="item" data-value="eq">=</div>
+          <div class="item" data-value="ne">!=</div>
+          <div class="item" data-value="lt">&lt;</div>
+          <div class="item" data-value="gt">&gt;</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="four wide field">
+      <input type="text" name="{{path}}[value]" value={{condition.value}} placeholder="value or @field">
+    </div>
+
+    <div class="two wide field">
+      <div class="ui blue basic circular icon button js-add-condition">
+        <i class="plus icon"></i>  
+      </div>
+
+      <div class="ui red basic circular icon button js-remove-condition">
+        <i class="minus icon"></i>  
+      </div>
+    </div>
+  </div>
+</template>

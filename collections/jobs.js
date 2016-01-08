@@ -5,8 +5,11 @@ Meteor.methods({
     const user = Meteor.users.findOne(this.userId);
 
     var jobId = job._id;
-    var doc = _.omit(job, '_id', 'owner', 'ownerId', 'createdAt');
     var oldDoc = {};
+    var doc = _.omit(job, '_id', 'owner', 'ownerId', 'createdAt');
+    _.defaults(doc, {
+      rules: []
+    });
 
     if (!jobId) {
       requireUser(this.userId);
@@ -58,6 +61,38 @@ Meteor.methods({
     requireOwnership(this.userId, Jobs.findOne(jobId));
 
     runJob(jobId);
+  },
+
+
+  checkJob: function(jobId) {
+    check(jobId, String);
+    const job = Jobs.findOne(jobId);
+    const rules = job.rules || [];
+
+    requireOwnership(this.userId, job);
+    if (job.result.status !== 'ok') return;
+
+    _.each(rules, (rule) => {
+      _.each(job.result.data, (row) => {
+        var isMatch = _.every(rule.conditions, (condition) => {
+          var field = row[condition.field];
+          var value = condition.value;
+
+          switch(condition.op) {
+            case 'eq': return field == value;
+            case 'ne': return field != value;
+            case 'gt': return field > value;
+            case 'lt': return field < value;
+            default:
+              throw new Meteor.Error('rule-error', `Unrecognized rule operator "${condition.op}"`);
+          }
+        });
+
+        if (isMatch) {
+          console.log(row, rule);
+        }
+      });
+    });
   },
 
 

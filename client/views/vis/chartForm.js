@@ -1,7 +1,10 @@
-const SERIES_DEFAULT = {
-  type: 'line',
-  yAxis: 'y'
-};
+function newSeries() {
+  return {
+    _id: Random.id(),
+    type: 'line',
+    yAxis: 'y'
+  };
+}
 
 
 Template.visChartForm.onRendered(function() {
@@ -11,7 +14,7 @@ Template.visChartForm.onRendered(function() {
 
 
 Template.visChartFormSeries.onCreated(function() {
-  this.series = new ReactiveVar(this.data.settings.series || [SERIES_DEFAULT]);
+  this.series = new ReactiveVar(this.data.settings.series || [newSeries()]);
 });
 
 Template.visChartFormSeriesItem.onRendered(function() {
@@ -29,20 +32,16 @@ Template.visChartFormSeries.events({
   'click .js-add-series': function(event, template) {
     var series = template.series.get();
     
-    series.push(SERIES_DEFAULT);
+    series.push(newSeries());
     template.series.set(series);
   },
 
   'click .js-remove-series': function(event, template) {
-    var index = $(event.target).data('index');
+    var index = Blaze.getData(event.target).index;
     var series = template.series.get();
     
     series.splice(index, 1);
     template.series.set(series);
-
-    Tracker.afterFlush(() => {
-      template.$('.ui.dropdown').dropdown('save defaults').dropdown('restore defaults');
-    });
   }
 });
 

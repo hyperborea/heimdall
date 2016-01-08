@@ -42,8 +42,7 @@ Template.jobForm.onRendered(function() {
 
 Template.jobForm.helpers({
   doc: function() {
-    var job = Jobs.findOne(FlowRouter.getParam('id'))
-    return job;
+    return Jobs.findOne(FlowRouter.getParam('id'))
   },
 
   sources: function() {

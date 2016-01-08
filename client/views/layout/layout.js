@@ -29,14 +29,21 @@ Template.layout.helpers({
     return user && user.displayName.replace(/[^A-Z]/g, '');
   },
 
-  isLoading: function() {
-    return Session.get('isLoading');
-  }
+  isLoading: () => Session.get('isLoading'),
+  mayAdmin: () => mayAdmin(Meteor.user()),
+  isAdmin: (trueValue, falseValue) => isAdmin(Meteor.user()) ? trueValue || true : falseValue,
 });
 
 
 Template.layout.events({
   'click .js-open-disclaimer': function(event, template) {
     $('.ui.disclaimer.modal').modal('show');
+  },
+
+  'click .js-toggle-admin': function(event, template) {
+    Meteor.users.update(Meteor.userId(), {
+      $set: { 'profile.adminEnabled': !Meteor.user().profile.adminEnabled }
+    });
+    location.reload();
   }
 });

@@ -45,6 +45,14 @@
         {{#if hasPermissions doc}}<i class="lightning icon"></i>{{/if}}
       </div>
       <div class="content">{{> jobFormPermissions doc=doc}}</div>
+
+      {{#if doc.result.fields}}
+        <div class="title">
+          <i class="dropdown icon"></i> Monitoring
+          {{#if doc.rules}}<i class="lightning icon"></i>{{/if}}
+        </div>
+        <div class="content">{{> jobFormRules doc=doc}}</div>
+      {{/if}}
     </div>
 
     <div class="action field {{ ownerOrNewVisibility doc }}">

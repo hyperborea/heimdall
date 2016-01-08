@@ -19,8 +19,8 @@
     <a href={{pathFor 'sourceList'}} class="{{isActiveRoute regex='^source'}} item">
       <i class="database icon"></i> Sources
     </a>
-    <a href={{pathFor 'statistics'}} class="{{isActiveRoute regex='^statistics'}} item">
-      <i class="line chart icon"></i> Statistics
+    <a href={{pathFor 'alarmList'}} class="{{isActiveRoute regex='^alarm'}} item">
+      <i class="alarm icon"></i> Alarms
     </a>
 
     <div class="spacer item"></div>
@@ -28,11 +28,19 @@
     <a class="item js-open-disclaimer"><i class="flag icon"></i> Alpha Version</a>
     <a href="https://confluence.internal.machines/display/teamriskdept/Guide+to+Dashboard" target="_blank" class="item"><i class="student icon"></i> Learn More</a>
     <a href="https://docs.google.com/spreadsheets/d/16uRGYiW6BejlE86pQGqOjzNmYH-jkiMmhyDSODpr70I" target="_blank" class="item"><i class="comment icon"></i> Feedback</a>
+    <a href={{pathFor 'statistics'}} class="{{isActiveRoute regex='^statistics'}} item">
+      <i class="line chart icon"></i> Statistics
+    </a>
     <div class="item">
       {{currentUser.displayName}}
       <div class="menu">
-          <a href={{pathFor 'logout'}} class="item"><i class="sign out icon"></i> Logout</a>
-        </div>
+        {{#if mayAdmin}}
+          <a href="" class="{{isAdmin 'active'}} item js-toggle-admin">
+            <i class="rocket icon"></i> Admin {{isAdmin 'enabled' 'disabled'}}
+          </a>
+        {{/if}}
+        <a href={{pathFor 'logout'}} class="item"><i class="sign out icon"></i> Logout</a>
+      </div>
     </div>
   </div>
 
