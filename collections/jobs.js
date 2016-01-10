@@ -64,38 +64,6 @@ Meteor.methods({
   },
 
 
-  checkJob: function(jobId) {
-    check(jobId, String);
-    const job = Jobs.findOne(jobId);
-    const rules = job.rules || [];
-
-    requireOwnership(this.userId, job);
-    if (job.result.status !== 'ok') return;
-
-    _.each(rules, (rule) => {
-      _.each(job.result.data, (row) => {
-        var isMatch = _.every(rule.conditions, (condition) => {
-          var field = row[condition.field];
-          var value = condition.value;
-
-          switch(condition.op) {
-            case 'eq': return field == value;
-            case 'ne': return field != value;
-            case 'gt': return field > value;
-            case 'lt': return field < value;
-            default:
-              throw new Meteor.Error('rule-error', `Unrecognized rule operator "${condition.op}"`);
-          }
-        });
-
-        if (isMatch) {
-          console.log(row, rule);
-        }
-      });
-    });
-  },
-
-
   cancelJob: function(jobId) {
     if (!Meteor.isServer) return;
 
@@ -131,19 +99,22 @@ runJob = function(jobId) {
 
   requireAccess(job.ownerId, source);
 
-  function updateResult(result) {
-    result = _.extend(job.result || {}, result, {
+  function updateJob(result) {
+    job.status = result.status;
+    _.extend(job.result || {}, result, {
       jobId     : jobId,
       updatedAt : new Date()
-    })
-    Jobs.update(jobId, {$set: {result: result, status: result.status}});
+    });
+
+    Jobs.update(jobId, {$set: {result: job.result, status: job.status}});
   }
 
-  updateResult({ status: 'running' });
+  updateJob({ status: 'running' });
 
   queryPostgres(source, job.query, function(result) {
     // TODO: need to sanitize data better (and recursively), keys cannot contain dots (.)
-    updateResult(result);
+    updateJob(result);
+    checkJobForAlarms(job);
     logJobHistory(job, result, startedAt, new Date());
 
     if (job.email.enabled) {
@@ -162,7 +133,7 @@ runJob = function(jobId) {
       });
     }
   }, function(pid) {
-    updateResult({
+    updateJob({
       status: 'running',
       pid: pid
     });

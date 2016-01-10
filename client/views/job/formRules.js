@@ -68,12 +68,20 @@ Template.jobFormRulesItem.onRendered(function() {
   this.$('.ui.dropdown').dropdown();
 });
 
+Template.jobFormRulesItem.helpers({
+  path: (addendum) => {
+    var data = Template.currentData();
+    return `rules[${data.ruleIdx}]${addendum}`;
+  }
+});
+
 
 Template.jobFormRulesItemCondition.onRendered(function() {
   this.$('.ui.dropdown').dropdown();
 });
 
 Template.jobFormRulesItemCondition.helpers({
+  operators: () => _.values(OPERATORS),
   path: () => {
     var data = Template.currentData();
     return `rules[${data.ruleIdx}][conditions][${data.condIdx}]`;

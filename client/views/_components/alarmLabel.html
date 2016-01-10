@@ -1,0 +1,7 @@
+<template name="alarmLabel">
+  {{#if severity}}
+    <a href={{pathFor 'alarmList'}} class="ui basic tiny {{color severity}} label">
+      <i class="alarm icon"></i> <span>{{severity}}</span>
+    </a>
+  {{/if}}
+</template>

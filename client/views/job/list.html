@@ -25,6 +25,7 @@
     {{#each job in jobs}}
       <a href={{pathFor 'jobEdit' id=job._id}} class="item">
         <div class="right floated content">
+          {{> alarmLabel severity=job.alarmStatus}}
           {{#if job.schedule}}
             <div class="ui tag label">{{job.schedule}}</div>
           {{/if}}

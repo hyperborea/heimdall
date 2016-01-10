@@ -1,0 +1,12 @@
+<template name="severityDropdown">
+  <div class="ui compact selection dropdown">
+    <input type="hidden" name={{name}} value={{value}}>
+    <i class="dropdown icon"></i>
+    <span class="default text">select severity</span>
+    <div class="menu">
+      {{#each severity in severities}}
+        <div class="item">{{severity.name}}</div>
+      {{/each}}
+    </div>
+  </div>
+</template>
