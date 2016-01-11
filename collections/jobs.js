@@ -101,7 +101,7 @@ runJob = function(jobId) {
 
   function updateJob(result) {
     job.status = result.status;
-    _.extend(job.result || {}, result, {
+    job.result = _.extend(job.result || {}, result, {
       jobId     : jobId,
       updatedAt : new Date()
     });

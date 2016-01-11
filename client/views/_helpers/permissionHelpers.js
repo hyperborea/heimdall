@@ -7,5 +7,6 @@ Template.registerHelper('ownerVisibility', function(doc) {
 });
 
 Template.registerHelper('ownerOrNewVisibility', function(doc) {
-  return !doc || isOwner(Meteor.user(), doc) ? 'visible' : 'hidden';
+  doc = doc || {};
+  return !doc._id || isOwner(Meteor.user(), doc) ? 'visible' : 'hidden';
 });
