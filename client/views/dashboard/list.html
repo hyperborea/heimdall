@@ -22,14 +22,6 @@
   </div>
 
   <div class="ui cards">
-    <a href={{pathFor 'dashboardNew'}} class="green card">
-      <div class="content">
-        <div class="header">
-          <i class="plus squared icon"></i> Create Dashboard
-        </div>
-      </div>
-    </a>
-
     {{#each item in items}}
       <a href={{pathFor 'dashboardView' id=item._id}} class="card">
         <div class="content">
