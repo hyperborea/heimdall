@@ -15,7 +15,7 @@ Template.visChart.onRendered(function() {
         _.each(series.columns, (field) => {
           fieldSettings[field] = {
             type  : series.type || 'line',
-            yAxis : series.yAxis || 'y'
+            yAxis : series.yAxis || 'y',
           };
         });
       });
@@ -27,7 +27,8 @@ Template.visChart.onRendered(function() {
           keys: { value: _.keys(fieldSettings) },
           groups: _.map(settings.series, (series) => series.columns),
           types: _.object(_.keys(fieldSettings), _.pluck(fieldSettings, 'type')),
-          axes: _.object(_.keys(fieldSettings), _.pluck(fieldSettings, 'yAxis'))
+          axes: _.object(_.keys(fieldSettings), _.pluck(fieldSettings, 'yAxis')),
+          colors: _.object( _.map(settings.series, (series) => [series.columns[0], series.color]) )
         },
         size: {
           height: $wrapper.height() - 50

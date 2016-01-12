@@ -1,6 +1,27 @@
 <template name="dashboardList">
+  <div class="ui grid">
+    <div class="three wide column">
+      <a href={{pathFor 'dashboardNew'}} class="ui fluid basic labeled icon button">
+        <i class="plus icon"></i> Dashboard
+      </a>
+    </div>
+
+    <div class="ten wide column">
+      <div class="ui fluid icon input">
+        <i class="search icon"></i>
+        <input type="text" name="search" placeholder="Search..." value={{search}}>
+      </div>
+    </div>
+
+    <div class="three wide column">
+      <div class="ui toggle checkbox">
+        <input type="checkbox" name="filterOwn" checked={{filterOwn}}>
+        <label>show only own</label>
+      </div>
+    </div>
+  </div>
+
   <div class="ui cards">
-  
     <a href={{pathFor 'dashboardNew'}} class="green card">
       <div class="content">
         <div class="header">
@@ -24,6 +45,5 @@
         </div>
       </a>
     {{/each}}
-
   </div>
 </template>

@@ -28,6 +28,13 @@ Template.visChartFormSeries.helpers({
   }
 });
 
+Template.visChartFormSeriesItem.helpers({
+  namePath: (addendum) => {
+    var data = Template.currentData();
+    return `series[${data.index}]${addendum}`;
+  }
+});
+
 Template.visChartFormSeries.events({
   'click .js-add-series': function(event, template) {
     var series = template.series.get();

@@ -2,8 +2,6 @@ loadHandler(Template.jobList);
 
 Template.jobList.onCreated(function() {
   this.subscribe('jobs');
-  Session.setDefault('jobList.search', '');
-  Session.setDefault('jobList.filterOwn', false);
 });
 
 

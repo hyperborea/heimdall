@@ -1,9 +1,10 @@
 <template name="colorPicker">
-  <div class="ui single selection dropdown">
+  <div class="ui compact single selection dropdown">
     <input type="hidden" name={{name}} value={{value}}>
     <i class="dropdown icon"></i>
     <span class="default text">select color</span>
     <div class="menu">
+      <div class="item" data-value><div class="ui empty circular label"></div> auto</div>
       <div class="item" data-value="#DB2828"><div class="ui red empty circular label"></div> red</div>
       <div class="item" data-value="#F2711C"><div class="ui orange empty circular label"></div> orange</div>
       <div class="item" data-value="#FBBD08"><div class="ui yellow empty circular label"></div> yellow</div>

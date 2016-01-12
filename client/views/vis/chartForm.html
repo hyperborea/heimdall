@@ -22,7 +22,7 @@
   <div class="fields">
     <div class="three wide field">
       <div class="ui single selection dropdown">
-        <input type="hidden" name="series[{{index}}][type]" value={{series.type}}>
+        <input type="hidden" name={{namePath '[type]'}} value={{series.type}}>
         <i class="dropdown icon"></i>
         <span class="default text">Chart Type</span>
         <div class="menu">
@@ -33,9 +33,9 @@
         </div>
       </div>
     </div>
-    <div class="nine wide field">
+    <div class="eight wide field">
       <div class="ui multiple search selection dropdown">
-        <input type="hidden" name="series[{{index}}][columns]:list" value={{series.columns}}>
+        <input type="hidden" name={{namePath '[columns]:list'}} value={{series.columns}}>
         <i class="dropdown icon"></i>
         <span class="default text">columns</span>
         <div class="menu">
@@ -45,9 +45,12 @@
         </div>
       </div>
     </div>
-    <div class="three wide field">
-      <div class="ui single search selection dropdown">
-        <input type="hidden" name="series[{{index}}][yAxis]" value={{series.yAxis}}>
+    <div class="two wide field">
+      {{> colorPicker name=(namePath '[color]') value=series.color}}
+    </div>
+    <div class="two wide field">
+      <div class="ui compact single search selection dropdown">
+        <input type="hidden" name={{namePath '[yAxis]'}} value={{series.yAxis}}>
         <i class="dropdown icon"></i>
         <span class="text"></span>
         <div class="menu">

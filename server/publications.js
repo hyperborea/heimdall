@@ -1,7 +1,7 @@
 Meteor.publish('dashboards', function() {
   return Dashboards.find(filterByAccess(this.userId), {
-    fields : { title: 1, owner: 1 },
-    sort   : { name: 1 }
+    fields : { title: 1, owner: 1, ownerId: 1 },
+    sort   : { title: 1 }
   });
 });
 
