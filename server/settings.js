@@ -1,5 +1,14 @@
 _.extend(LDAP_SETTINGS, {
-  allowedGroups: ['risk', 'risk.e', 'product', 'dispute.resolutions.mgmt', 'management', 'us.leadership'],
+  allowedGroups: [
+    'risk',
+    'risk.e',
+    'product',
+    'dispute.resolutions.mgmt',
+    'management',
+    'us.leadership',
+    'workforce.management',
+    'finance'
+  ],
   
   roleMapping: {
     admin: ['risk.infrastructure']
