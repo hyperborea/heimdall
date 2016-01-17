@@ -1,5 +1,17 @@
 Jobs = new Mongo.Collection('jobs');
 
+
+Jobs.helpers({
+  visualizations: function() {
+    return Visualizations.find({
+      jobId: this._id
+    }, {
+      sort: { title: 1 }
+    });
+  }
+});
+
+
 Meteor.methods({
   saveJob: function(job) {
     const user = Meteor.users.findOne(this.userId);
@@ -33,15 +45,6 @@ Meteor.methods({
 
     return jobId;
   },
-
-
-  saveJobVis: function(jobId, settings) {
-    var job = Jobs.findOne(jobId);
-    requireOwnership(this.userId, job);
-
-    Jobs.update(jobId, {$set: {vis: settings}});
-  },
-
 
   removeJob: function(jobId) {
     check(jobId, String);

@@ -16,8 +16,3 @@ jobRoutes.route('/:id/edit', {
   name: 'jobEdit',
   action: render('jobForm')
 });
-
-jobRoutes.route('/:id', {
-  name: 'jobView',
-  action: render('jobView')
-});

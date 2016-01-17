@@ -7,7 +7,8 @@ _.extend(LDAP_SETTINGS, {
     'management',
     'us.leadership',
     'workforce.management',
-    'finance'
+    'finance',
+    'heimdall.debug'
   ],
   
   roleMapping: {

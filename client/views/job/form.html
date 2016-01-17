@@ -65,15 +65,30 @@
       </div>
 
       {{#if doc._id}}
-        &ensp;
-        <a href="{{pathFor 'jobView' id=doc._id}}" class="ui basic circular icon button">
-          <i class="area chart icon"></i>
-        </a>
-        
         <div class="ui right floated negative button js-delete">delete</div>
       {{/if}}
     </div>
   </form>
+
+  {{#if doc.result}}
+    <h4 class="ui dividing header">
+      Visualizations
+    </h4>
+
+    <div class="ui list">
+      {{#each vis in doc.visualizations}}
+        <a href={{pathFor 'visualizationEdit' id=vis._id}} class="item">
+          <i class="area chart icon"></i>
+          {{vis.title}}
+        </a>
+      {{/each}}
+    </div>
+
+    <div class="ui tiny basic blue labeled icon button js-add-visualization">
+      <i class="plus icon"></i>
+      Add new visualization
+    </div>
+  {{/if}}
 
   {{#if doc.result}}
     <h4 class="ui dividing header">

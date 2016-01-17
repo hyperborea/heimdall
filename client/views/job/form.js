@@ -41,13 +41,8 @@ Template.jobForm.onRendered(function() {
 
 
 Template.jobForm.helpers({
-  doc: function() {
-    return Jobs.findOne(FlowRouter.getParam('id'))
-  },
-
-  sources: function() {
-    return Sources.find();
-  },
+  doc: () => Jobs.findOne(FlowRouter.getParam('id')),
+  sources: () => Sources.find(),
 
   saveBtnClass: function() {
     return Template.instance().unsavedChanges.get() ? 'positive' : 'disabled';
@@ -88,5 +83,11 @@ Template.jobForm.events({
       Meteor.call('removeJob', FlowRouter.getParam('id'));
       FlowRouter.go('jobList');
     }
+  },
+
+  'click .js-add-visualization': function() {
+    Meteor.call('addVisualization', FlowRouter.getParam('id'), function(err, _id) {
+      FlowRouter.go('visualizationEdit', {id: _id});
+    });
   }
 });

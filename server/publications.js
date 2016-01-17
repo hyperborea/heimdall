@@ -12,9 +12,11 @@ Meteor.publishComposite('dashboard', function(_id) {
     },
     children: [{
       find: function(dashboard) {
-        const jobIds = _.map(dashboard.widgets, (w) => w.jobId );
-        return Jobs.find({ _id: { $in: jobIds } });
-      }
+        return Visualizations.find({ _id: { $in: _.pluck(dashboard.widgets, 'visId') } });
+      },
+      children: [{
+        find: (vis) => Jobs.find(vis.jobId)
+      }]
     }]
   };
 });
@@ -22,13 +24,36 @@ Meteor.publishComposite('dashboard', function(_id) {
 
 Meteor.publish('jobs', function() {
   return Jobs.find(filterByAccess(this.userId), {
-    fields : { name: 1, owner: 1, ownerId: 1, createdAt: 1, schedule: 1, status: 1, alarmStatus: 1 },
-    sort   : { name: 1 }
+    fields : { name: 1, owner: 1, ownerId: 1, createdAt: 1, schedule: 1, status: 1, alarmStatus: 1 }
   });
 });
 
 Meteor.publish('job', function(_id) {
-  return Jobs.find({$and: [filterByAccess(this.userId), { _id: _id }]});
+  requireAccess(this.userId, Jobs.findOne(_id));
+
+  return [
+    Jobs.find(_id),
+    Visualizations.find({ jobId: _id })
+  ];
+});
+
+Meteor.publishComposite('visualizations', function() {
+  return {
+    find: () => Jobs.find(filterByAccess(this.userId), { fields: { name: 1, owner: 1 } }),
+    children: [{
+      find: (job) => Visualizations.find({ jobId: job._id })
+    }]
+  }
+});
+
+Meteor.publish('visualization', function(_id) {
+  const vis = Visualizations.findOne(_id);
+  requireAccess(this.userId, vis.job());
+
+  return [
+    Visualizations.find(_id),
+    Jobs.find(vis.jobId)
+  ];
 });
 
 Meteor.publishComposite('jobAlarms', function(options) {
@@ -54,14 +79,11 @@ Meteor.publishComposite('jobAlarms', function(options) {
 
 Meteor.publish('sources', function() {
   return Sources.find(filterByAccess(this.userId), {
-    fields : { password: 0 },
-    sort   : { name: 1 }
+    fields : { password: 0 }
   });
 });
 
 
 Meteor.publish('groups', function() {
-  return Groups.find({}, {
-    sort: { name: 1 }
-  });
+  return Groups.find();
 });

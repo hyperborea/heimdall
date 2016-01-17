@@ -45,3 +45,4 @@ klarna:accounts-ldap-ui
 meteorhacks:aggregate
 pfafman:filesaver
 reywood:publish-composite
+dburles:collection-helpers

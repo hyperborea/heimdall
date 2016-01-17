@@ -4,14 +4,15 @@
     <div class="ui form">
       <div class="field">
         <div class="ui search selection dropdown">
-          <input type="hidden" name="jobId" value={{jobId}}>
+          <input type="hidden" name="visId" value={{visId}}>
           <i class="dropdown icon"></i>
-          <div class="default text">Job</div>
+          <div class="default text">select visualization</div>
           <div class="menu">
-            {{#each job in jobs}}
-              <div class="item" data-value={{job._id}}>
-                {{job.name}}
-                <div class="description">{{job.owner}}</div>
+            {{#each vis in visualizations}}
+              <div class="item" data-value={{vis._id}}>
+                {{vis.title}}
+                <div class="description">{{vis.job.owner}}</div>
+                <div class="meta">{{vis.job.name}}</div>
               </div>
             {{/each}}
           </div>

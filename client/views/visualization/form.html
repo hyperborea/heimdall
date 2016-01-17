@@ -1,0 +1,51 @@
+<template name="visualizationForm">
+{{#let job=vis.job}}
+  <form class="ui form segment">
+    <input type="hidden" name="_id" value={{vis._id}}>
+
+    <div class="field">
+      <div class="ui header">
+        Visualization for job
+        <div class="sub header">
+          <a href={{pathFor 'jobEdit' id=job._id}}>{{job.name}}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="fields">
+      <div class="four wide field">
+        <label>Type</label>
+        <div class="ui search selection dropdown">
+          <input type="hidden" name="type" value={{vis.type}}>
+          <i class="dropdown icon"></i>
+          <div class="default text">select visualization type</div>
+          <div class="menu">
+            <div class="item" data-value="Chart"><i class="line chart icon"></i> Line Chart</div>
+            <div class="item" data-value="PieChart"><i class="pie chart icon"></i> Pie Chart</div>
+            <div class="item" data-value="WorldMap"><i class="world icon"></i> World Map</div>
+            <div class="item" data-value="HeatMap"><i class="fire icon"></i> Heat Map</div>
+            <div class="item" data-value="DataTable"><i class="table icon"></i> Data Table</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="twelve wide field">
+        <label>Title</label>
+        <input type="text" name="title" value={{vis.title}} placeholder="title...">
+      </div>
+    </div>
+    
+
+    {{> Template.dynamic template=(typeForm vis) data=(typeData vis)}}
+
+    <div class="action field {{ ownerVisibility job }}">
+      <div class="ui submit button">Apply</div>
+      <div class="ui right floated negative button js-delete">delete</div>
+    </div>
+  </form>
+
+  {{> visualization visType=vis.type visHeight='400px' result=job.result vis=vis}}  
+
+  {{> visualization visType="DataTable" visBasic=true result=job.result}}
+{{/let}}
+</template>

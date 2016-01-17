@@ -49,10 +49,15 @@ Template.dashboardView.events({
 function addWidget(grid, options) {
   options = options || {};
 
-  var job = Jobs.findOne(options.jobId);
+  var vis = Visualizations.findOne(options.visId);
 
-  if (job) {
-    var widget = Blaze.renderWithData(Template.visualization, job, grid.$el.get(0));
+  if (vis) {
+    var data = {
+      vis    : vis,
+      result : vis.job().result,
+    };
+
+    var widget = Blaze.renderWithData(Template.visualization, data, grid.$el.get(0));
     var widgetNode = widget.firstNode();
 
     grid.add_widget(widgetNode, options.size_x, options.size_y, options.col, options.row);  

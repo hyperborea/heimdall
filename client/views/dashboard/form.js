@@ -26,7 +26,7 @@ Template.dashboardForm.onRendered(function() {
         row: wgd.row,
         size_x: wgd.size_x,
         size_y: wgd.size_y,
-        jobId: $w.find('[name=jobId]').val()
+        visId: $w.find('[name=visId]').val()
       };
     }
   }).data('gridster');
@@ -56,8 +56,7 @@ Template.dashboardForm.events({
     event.preventDefault();
 
     var _id = FlowRouter.getParam('id');
-    var data = $(event.target).form('get values');
-    data['accessGroups'] = _.without( (data['accessGroups'] || '').split(','), '');
+    var data = $(event.target).serializeJSON();
     data.widgets = getGrid(template).serialize();
 
     _id ? Dashboards.update(_id, {$set: data}) : _id = Dashboards.insert(data);

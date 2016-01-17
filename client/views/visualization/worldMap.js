@@ -34,7 +34,8 @@ Template.visWorldMap.onRendered(function() {
       scope: context.settings.mapType,
       geographyConfig: {
         popupTemplate: function(geography, data) {
-          return `<div class="hoverinfo"><strong>${geography.properties.name}</strong>: ${data.value}</div>`;
+          var value = data ? data.value : '-';
+          return `<div class="hoverinfo"><strong>${geography.properties.name}</strong>: ${value}</div>`;
         }
       }
     });

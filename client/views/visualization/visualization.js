@@ -21,9 +21,8 @@ Template.visualization.helpers({
   },
 
   visData: function() {
-    const context = Template.currentData();
-    return _.extend(context.result || {}, {
-      settings: context.vis
+    return _.extend(_.clone(this.result) || {}, {
+      settings: this.vis
     });
   }
 });
@@ -31,7 +30,7 @@ Template.visualization.helpers({
 
 Template.visualization.events({
   'click .js-run': function(event, template) {
-    Meteor.call('runJob', template.data.result.jobId);
+    Meteor.call('runJob', this.vis.jobId);
   },
 
   'click .js-download': function(event, template) {
@@ -41,6 +40,6 @@ Template.visualization.events({
   },
 
   'click .js-cancel': function(event, template) {
-    Meteor.call('cancelJob', template.data.result.jobId);
+    Meteor.call('cancelJob', this.vis.jobId);
   }
 });

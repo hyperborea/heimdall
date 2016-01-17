@@ -11,14 +11,14 @@
       <div class="ui top attached segment grid">
         <div class="two column row">
           <div class="column">
-            <strong>{{name}}</strong>  
+            <strong>{{vis.title}}</strong>  
           </div>
           <div class="right aligned column">
             <span class="timeAgo">{{timeAgo result.updatedAt}}</span>
             &ensp;
             <i class="download link icon js-download" title="download"></i>
             <i class="refresh link icon js-run" title="refresh"></i>
-            <a href={{pathFor 'jobView' id=result.jobId}} title="edit">
+            <a href={{pathFor 'visualizationEdit' id=vis._id}} title="edit">
               <i class="edit link icon"></i>
             </a>
           </div>          

@@ -1,20 +1,24 @@
 Template.dashboardFormWidget.onCreated(function() {
-  this.subscribe('jobs');
+  this.subscribe('visualizations');
 });
 
 
 Template.dashboardFormWidget.onRendered(function() {
-  this.$('.ui.dropdown').dropdown();
+  this.$('.ui.dropdown').dropdown({
+    fullTextSearch: true
+  });
 
   this.autorun(() => {
     Jobs.find().fetch(); // rerun reactively
-    this.$('.ui.dropdown').dropdown('set selected', this.data.jobId);  
+    this.$('.ui.dropdown').dropdown('set selected', this.data.visId);  
   });
 });
 
 
 Template.dashboardFormWidget.helpers({
-  jobs: function() {
-    return Jobs.find();
+  visualizations: function() {
+    return Visualizations.find({}, {
+      sort: { title: 1 }
+    });
   }
 });
