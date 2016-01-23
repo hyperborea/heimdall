@@ -1,4 +1,11 @@
 .dashboardFormWidget {
-  background-color: #EEEEEE;
+  background-color: #F8F8F8;
+  border: 1px solid #CCCCCC;
   padding: 1em;
+  overflow: auto;
+}
+
+.dashboardFormWidget .CodeMirror {
+  height: auto;
+  /*min-height: 2em;*/
 }

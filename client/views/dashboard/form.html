@@ -1,7 +1,7 @@
 <template name="dashboardForm">
-  <form class="ui form container">
+  <form class="ui form segment">
     <div class="fields">
-      <div class="ten wide field">
+      <div class="twelve wide field">
         <div class="ui left labeled input">
           {{#if doc._id}}
             <a href={{pathFor 'dashboardView' id=doc._id}} class="ui label">dashboard</a>
@@ -10,11 +10,6 @@
         </div>
       </div>
 
-      <div class="two wide field">
-        <div class="ui fluid basic blue labeled icon button js-add-widget">
-          <i class="plus icon"></i> Widget
-        </div>
-      </div>
 
       <div class="two wide field">
         <div class="ui fluid submit button">Save</div>
@@ -25,8 +20,22 @@
       </div>
     </div>
 
-    <div class="field">
-      {{> groupsInput name='accessGroups:list' value=doc.accessGroups}}
+    <div class="fields">
+      <div class="ten wide field">
+        {{> groupsInput name='accessGroups:list' value=doc.accessGroups}}  
+      </div>
+      
+      <div class="three wide field">
+        <div class="ui fluid basic blue labeled icon button js-add-vis-widget">
+          <i class="plus icon"></i> Visualization
+        </div>
+      </div>
+
+      <div class="three wide field">
+        <div class="ui fluid basic blue labeled icon button js-add-text-widget">
+          <i class="plus icon"></i> Text
+        </div>
+      </div>
     </div>
   </form>
 

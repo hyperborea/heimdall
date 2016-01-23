@@ -1,7 +1,16 @@
+.hidden { display: none; }
+
 a .link.icon {
   color: black;
 }
 
 .ui.grid .column .ui.checkbox {
   padding: 0.5em 0;
+}
+
+.ui.dropdown .meta {
+  font-size: 0.7em;
+}
+.ui.dropdown .text .meta {
+  display: none;
 }

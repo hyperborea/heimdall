@@ -2,29 +2,50 @@
   <div class="dashboardFormWidget">
 
     <div class="ui form">
-      <div class="field">
-        <div class="ui search selection dropdown">
-          <input type="hidden" name="visId" value={{visId}}>
-          <i class="dropdown icon"></i>
-          <div class="default text">select visualization</div>
-          <div class="menu">
-            {{#each vis in visualizations}}
-              <div class="item" data-value={{vis._id}}>
-                {{vis.title}}
-                <div class="description">{{vis.job.owner}}</div>
-                <div class="meta">{{vis.job.name}}</div>
-              </div>
-            {{/each}}
-          </div>
-        </div>  
-      </div>
+      <input type="hidden" name="type" value={{type}}>
+      <div class="fields">
+        <div class="fifteen wide field">
+          {{> Template.dynamic template=widgetTemplate}}
+        </div>
 
-      <div class="divider"></div>
-      
-      <div class="field">
-        <div class="ui basic button js-remove-widget">Remove</div>
-      </div>
+        <div class="one wide field">
+          <div class="ui right pointing settings dropdown" style="float: right">
+            <i class="setting icon"></i>
+            <div class="menu">
+              <div class="item js-remove-widget"><i class="trash icon"></i> remove</div>
+            </div>
+          </div>
+        </div>
+      </div>    
     </div>
     
   </div>
+</template>
+
+
+<template name="dashboardFormVisualizationWidget">
+  <div class="ui search selection dropdown">
+    <input type="hidden" name="visId" value={{visId}}>
+    <i class="dropdown icon"></i>
+    <div class="default text">select visualization</div>
+    <div class="menu">
+      {{#each vis in visualizations}}
+        <div class="item" data-value={{vis._id}}>
+          {{vis.title}}
+          <div class="description">{{vis.job.owner}}</div>
+          <div class="meta">{{vis.job.name}}</div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</template>
+
+
+<template name="dashboardFormTextWidget">
+  <textarea name="text">{{text}}</textarea>
+  
+  <small>
+    Above text can be written in
+    <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown syntax</a>
+  </small>
 </template>

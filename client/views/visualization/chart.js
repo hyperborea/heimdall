@@ -31,7 +31,7 @@ Template.visChart.onRendered(function() {
           colors: _.object( _.map(settings.series, (series) => [series.columns[0], series.color]) )
         },
         size: {
-          height: $wrapper.height() - 50
+          height: $wrapper.height() - 70
         },
         axis: {
           x: {

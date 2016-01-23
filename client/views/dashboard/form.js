@@ -14,9 +14,9 @@ Template.dashboardForm.onRendered(function() {
   });
 
   var grid = this.$('.gridster').gridster({
-    widget_margins: [10, 20],
-    widget_base_dimensions: [200, 150],
-    max_size_x: 10,
+    widget_margins: [10, 10],
+    widget_base_dimensions: [80, 60],
+    max_size_x: 20,
     resize: {
       enabled: true
     },
@@ -26,7 +26,9 @@ Template.dashboardForm.onRendered(function() {
         row: wgd.row,
         size_x: wgd.size_x,
         size_y: wgd.size_y,
-        visId: $w.find('[name=visId]').val()
+        type: $w.find('[name=type]').val(),
+        visId: $w.find('[name=visId]').val(),
+        text: $w.find('[name=text]').val()
       };
     }
   }).data('gridster');
@@ -70,9 +72,14 @@ Template.dashboardForm.events({
     }
   },
 
-  'click .js-add-widget': function(event, template) {
+  'click .js-add-vis-widget': function(event, template) {
     var grid = getGrid(template);
-    addWidget(grid, { size_x: 5, size_y: 2 });
+    addWidget(grid, { size_x: 10, size_y: 4, type: 'visualization' });
+  },
+
+  'click .js-add-text-widget': function(event, template) {
+    var grid = getGrid(template);
+    addWidget(grid, { size_x: 10, size_y: 1, type: 'text' });
   },
 
   'click .js-remove-widget': function(event, template) {

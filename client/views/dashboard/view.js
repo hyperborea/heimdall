@@ -9,9 +9,9 @@ Template.dashboardView.onCreated(function() {
 
 Template.dashboardView.onRendered(function() {
   var grid = this.$('.gridster').gridster({
-    widget_margins: [10, 20],
-    widget_base_dimensions: [200, 150],
-    max_size_x: 10
+    widget_margins: [10, 10],
+    widget_base_dimensions: [80, 60],
+    max_size_x: 20
   }).data('gridster').disable();
 
   this.autorun(() => {
@@ -48,18 +48,29 @@ Template.dashboardView.events({
 
 function addWidget(grid, options) {
   options = options || {};
+  var widgetNode = null;
 
-  var vis = Visualizations.findOne(options.visId);
+  if (options.type === 'visualization') {
+    var vis = Visualizations.findOne(options.visId);
 
-  if (vis) {
-    var data = {
-      vis    : vis,
-      result : vis.job().result,
-    };
+    if (vis) {
+      var data = {
+        vis    : vis,
+        result : vis.job().result,
+      };
 
-    var widget = Blaze.renderWithData(Template.visualization, data, grid.$el.get(0));
-    var widgetNode = widget.firstNode();
+      var widget = Blaze.renderWithData(Template.visualization, data, grid.$el.get(0));
+      widgetNode = widget.firstNode();
+    }
+  }
 
+  if (options.type === 'text') {
+    var html = Markdown(options.text);
+    console.log(html);
+    widgetNode = $(`<div>${html}</div>`);
+  }
+
+  if (widgetNode) {
     grid.add_widget(widgetNode, options.size_x, options.size_y, options.col, options.row);  
   }
 }
