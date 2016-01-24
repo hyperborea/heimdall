@@ -100,6 +100,15 @@ Template.dashboardForm.events({
     grid.remove_empty_cells();
   },
 
+  'click .js-clone-widget': function(event, template) {
+    var grid = getGrid(template);
+    var widgetNode = $(event.target).closest('.dashboardFormWidget');
+
+    var options = grid.serialize(widgetNode)[0];
+    options.row = options.row + options.size_y;
+    addWidget(grid, options);
+  },
+
   'click .js-remove-widget': function(event, template) {
     var grid = getGrid(template);
     var widgetNode = $(event.target).closest('.dashboardFormWidget');
