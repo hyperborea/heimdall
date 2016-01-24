@@ -58,8 +58,3 @@ Template.visHeatMap.onRendered(function() {
 
   cards.exit().remove();
 });
-
-
-Template.visHeatMapForm.onRendered(function() {
-  this.$('.ui.dropdown').dropdown();
-});

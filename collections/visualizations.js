@@ -20,8 +20,9 @@ Meteor.methods({
     requireOwnership(user, job);
 
     _id = Visualizations.insert({
-      title     : job.name,
-      jobId     : job._id
+      title : job.name,
+      jobId : job._id,
+      type  : 'DataTable'
     });
 
     return _id;

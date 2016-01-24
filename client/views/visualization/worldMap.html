@@ -20,36 +20,17 @@
 
     <div class="field">
       <label>Country Field</label>
-      <div class="ui selection dropdown">
-        <input type="hidden" name="countryField" value={{settings.countryField}}>
-        <i class="dropdown icon"></i>
-        <div class="default text">select field</div>
-        <div class="menu">
-          {{#each field in fields}}
-            <div class="item" data-value={{field}}>{{field}}</div>
-          {{/each}}
-        </div>
-      </div>
+      {{> dropdown name="countryField" value=settings.countryField items=fields}}
     </div>
 
     <div class="field">
       <label>Value Field</label>
-      <div class="ui selection dropdown">
-        <input type="hidden" name="valueField" value={{settings.valueField}}>
-        <i class="dropdown icon"></i>
-        <div class="default text">select field</div>
-        <div class="menu">
-          {{#each field in fields}}
-            <div class="item" data-value={{field}}>{{field}}</div>
-          {{/each}}
-        </div>
-      </div>
+      {{> dropdown name="valueField" value=settings.valueField items=fields}}
     </div>
 
     <div class="field">
       <label>Target Color</label>
       {{> colorPicker name="targetColor" value=settings.targetColor}}
-      <!-- <input type="color" name="targetColor" value={{settings.targetColor}} placeholder="target color"> -->
     </div>
   </div>
 </template>

@@ -1,30 +1,47 @@
 <template name="dashboardForm">
   <form class="ui form segment">
     <div class="fields">
-      <div class="twelve wide field">
-        <div class="ui left labeled input">
+      <div class="fourteen wide field">
+        <div class="ui left action input">
           {{#if doc._id}}
-            <a href={{pathFor 'dashboardView' id=doc._id}} class="ui label">dashboard</a>
+            <a href={{pathFor 'dashboardView' id=doc._id}} class="ui icon button">
+              <i class="external icon"></i>
+            </a>
           {{/if}}
           <input type="text" name="title" placeholder="Dashboard Title" value={{doc.title}}>  
         </div>
       </div>
 
-
       <div class="two wide field">
-        <div class="ui fluid submit button">Save</div>
+        <div class="ui fluid red labeled icon button js-delete">
+          <i class="trash icon"></i> Delete
+        </div>
+      </div>
+    </div>
+
+    <div class="two fields">
+      <div class="field">
+        <div class="ui labeled input">
+          <div class="ui basic right pointing label">shared with</div>
+          {{> groupsInput name='accessGroups:list' value=doc.accessGroups}}
+        </div>
       </div>
 
-      <div class="two wide field">
-        <div class="ui fluid negative icon button js-delete">Delete</div>
+      <div class="field">
+        <div class="ui labeled input">
+          <div class="ui basic right pointing label">owned by</div>
+          {{> groupsInput name='ownerGroups:list' value=doc.ownerGroups}}
+        </div>
       </div>
     </div>
 
     <div class="fields">
       <div class="ten wide field">
-        {{> groupsInput name='accessGroups:list' value=doc.accessGroups}}  
+        <div class="ui fluid basic green labeled icon submit button">
+          <i class="checkmark icon"></i> Save
+        </div>
       </div>
-      
+
       <div class="three wide field">
         <div class="ui fluid basic blue labeled icon button js-add-vis-widget">
           <i class="plus icon"></i> Visualization

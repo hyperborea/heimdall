@@ -55,8 +55,9 @@ function addWidget(grid, options) {
 
     if (vis) {
       var data = {
-        vis    : vis,
-        result : vis.job().result,
+        vis      : vis,
+        result   : vis.job().result,
+        visBasic : options.basic
       };
 
       var widget = Blaze.renderWithData(Template.visualization, data, grid.$el.get(0));
@@ -66,7 +67,6 @@ function addWidget(grid, options) {
 
   if (options.type === 'text') {
     var html = Markdown(options.text);
-    console.log(html);
     widgetNode = $(`<div>${html}</div>`);
   }
 

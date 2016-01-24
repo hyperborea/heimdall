@@ -12,6 +12,8 @@
           <div class="ui right pointing settings dropdown" style="float: right">
             <i class="setting icon"></i>
             <div class="menu">
+              <div class="item js-move-widget-top"><i class="pointing up icon"></i> move to top</div>
+              <div class="divider"></div>
               <div class="item js-remove-widget"><i class="trash icon"></i> remove</div>
             </div>
           </div>
@@ -24,19 +26,28 @@
 
 
 <template name="dashboardFormVisualizationWidget">
-  <div class="ui search selection dropdown">
-    <input type="hidden" name="visId" value={{visId}}>
-    <i class="dropdown icon"></i>
-    <div class="default text">select visualization</div>
-    <div class="menu">
-      {{#each vis in visualizations}}
-        <div class="item" data-value={{vis._id}}>
-          {{vis.title}}
-          <div class="description">{{vis.job.owner}}</div>
-          <div class="meta">{{vis.job.name}}</div>
-        </div>
-      {{/each}}
+  <div class="field">
+    <div class="ui search selection dropdown">
+      <input type="hidden" name="visId" value={{visId}}>
+      <i class="dropdown icon"></i>
+      <div class="default text">select visualization</div>
+      <div class="menu">
+        {{#each vis in visualizations}}
+          <div class="item" data-value={{vis._id}}>
+            {{vis.title}}
+            <div class="description">{{vis.job.owner}}</div>
+            <div class="meta">{{vis.job.name}}</div>
+          </div>
+        {{/each}}
+      </div>
     </div>
+  </div>
+
+  <div class="field">
+    <div class="ui checkbox">
+      <input type="checkbox" name="basic" checked={{basic}}>
+      <label>basic <small>(no header and border)</small></label>
+    </div>  
   </div>
 </template>
 

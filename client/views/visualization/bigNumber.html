@@ -1,0 +1,48 @@
+<template name="visBigNumber">
+  <div class="ui {{settings.color}} statistic">
+    <div class="value"><i class="{{settings.icon}} icon"></i> {{value}}</div>
+    <div class="label">{{settings.label}}</div>
+  </div>
+</template>
+
+
+<template name="visBigNumberForm">
+  <div class="two fields">
+    <div class="field">
+      <label>Value Field</label>
+      {{> dropdown name="valueField" value=settings.valueField items=fields}}
+    </div>
+
+    <div class="field">
+      <label>Aggregation Method</label>
+      {{> dropdown name="valueAggregation" value=settings.valueAggregation items=aggregationMethods}}
+    </div>
+  </div>
+
+  <div class="three fields">
+    <div class="field">
+      <label>Label</label>
+      <input type="text" name="label" value={{settings.label}} placeholder="optional">
+    </div>
+
+    <div class="field">
+      <label>
+        Icon
+        <a href="http://semantic-ui.com/elements/icon.html" target="_blank">
+          <i class="external link icon"></i>
+        </a>
+      </label>
+      <input type="text" name="icon" value={{settings.icon}} placeholder="optional">
+    </div>
+
+    <div class="field">
+      <label>
+        Color &amp; Size
+        <a href="http://semantic-ui.com/views/statistic.html#colored" target="_blank">
+          <i class="external link icon"></i>
+        </a>
+      </label>
+      <input type="text" name="color" value={{settings.color}} placeholder="optional">
+    </div>
+  </div>
+</template>

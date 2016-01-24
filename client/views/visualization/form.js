@@ -20,7 +20,7 @@ Template.visualizationForm.helpers({
     if (vis) {
       return {
         settings: vis,
-        fields: vis.job().result.fields
+        fields: vis.job() && vis.job().result.fields
       };  
     }
   }
@@ -28,6 +28,8 @@ Template.visualizationForm.helpers({
 
 
 Template.visualizationForm.events({
+  'change .autosubmit': (event, template) => template.$('form').submit(),
+
   'submit .ui.form': function(event, template) {
     event.preventDefault();
 

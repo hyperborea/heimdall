@@ -18,6 +18,7 @@ Template.dashboardFormVisualizationWidget.onCreated(function() {
 
 Template.dashboardFormVisualizationWidget.onRendered(function() {
   this.$('.ui.dropdown').dropdown({ fullTextSearch: true });
+  this.$('.ui.checkbox').checkbox();
 
   this.autorun(() => {
     Jobs.find().fetch(); // rerun reactively

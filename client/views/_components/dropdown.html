@@ -1,0 +1,17 @@
+<template name="dropdown">
+  <div class="ui search selection dropdown">
+    <input type="hidden" name={{name}} value={{value}}>
+    <i class="dropdown icon"></i>
+    <span class="default text">{{defaultText}}</span>
+    <div class="menu">
+      {{#if allowEmpty}}
+        <div class="item" data-value="">{{defaultText}} (optional)</div>
+        <div class="divider"></div>
+      {{/if}}
+
+      {{#each item in items}}
+        <div class="item" data-value={{item}}>{{item}}</div>
+      {{/each}}
+    </div>
+  </div> 
+</template>

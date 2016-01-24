@@ -7,30 +7,12 @@
   <div class="two fields">
     <div class="field">
       <label>Date Field</label>
-      <div class="ui selection dropdown"> 
-        <input type="hidden" name="dateField" value={{settings.dateField}}>
-        <i class="dropdown icon"></i>
-        <span class="default text">select</span>
-        <div class="menu">
-          {{#each field in fields}}
-            <div class="item">{{field}}</div>
-          {{/each}}
-        </div>
-      </div>
+      {{> dropdown name="dateField" value=settings.dateField items=fields}}
     </div>
 
     <div class="field">
       <label>Value Field</label>
-      <div class="ui selection dropdown"> 
-        <input type="hidden" name="valueField" value={{settings.valueField}}>
-        <i class="dropdown icon"></i>
-        <span class="default text">select</span>
-        <div class="menu">
-          {{#each field in fields}}
-            <div class="item">{{field}}</div>
-          {{/each}}
-        </div>
-      </div>
+      {{> dropdown name="valueField" value=settings.valueField items=fields}}
     </div>
   </div>
 </template>

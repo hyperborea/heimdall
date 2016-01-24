@@ -53,7 +53,9 @@ Meteor.methods({
     if (Meteor.isServer) {
       SyncedCron.remove(jobId);
     }
+
     Jobs.remove(jobId);
+    Visualizations.remove({ jobId: jobId });
   },
 
 

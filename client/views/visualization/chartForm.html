@@ -79,33 +79,13 @@
 
   <div class="three fields">
     <div class="field">
-      <div class="ui single search selection dropdown">
-        <input type="hidden" name="categoryField" value={{settings.categoryField}}>
-        <i class="dropdown icon"></i>
-        <span class="text"></span>
-        <div class="menu">
-          <div class="item" data-value="">category field (optional)</div>
-          <div class="divider"></div>
-          {{#each field in fields}}
-            <div class="item">{{field}}</div>
-          {{/each}}
-        </div>
-      </div>
+      {{> dropdown name="categoryField" value=settings.categoryField items=fields 
+          placeholder="category field" allowEmpty=true}}
     </div>
 
     <div class="field">
-      <div class="ui single search selection dropdown">
-        <input type="hidden" name="timeField" value={{settings.timeField}}>
-        <i class="dropdown icon"></i>
-        <span class="text"></span>
-        <div class="menu">
-          <div class="item" data-value="">time field (optional)</div>
-          <div class="divider"></div>
-          {{#each field in fields}}
-            <div class="item">{{field}}</div>
-          {{/each}}
-        </div>
-      </div>
+      {{> dropdown name="timeField" value=settings.timeField items=fields 
+          placeholder="time field" allowEmpty=true}}
     </div>
 
     <div class="field">

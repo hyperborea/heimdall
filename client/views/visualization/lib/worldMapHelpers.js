@@ -249,6 +249,6 @@ var countryMapping = {
 };
 
 countryISO3 = function(cc) {
-  if (cc.length === 3) return cc;
-  else return countryMapping[cc];
+  cc = cc.toUpperCase();
+  return (cc.length === 3) ? cc : countryMapping[cc];
 }

@@ -21,15 +21,24 @@ Template.dashboardForm.onRendered(function() {
       enabled: true
     },
     serialize_params: function($w, wgd) {
-      return {
+      var type = $w.find('[name=type]').val();
+      var options = {
         col: wgd.col,
         row: wgd.row,
         size_x: wgd.size_x,
         size_y: wgd.size_y,
-        type: $w.find('[name=type]').val(),
-        visId: $w.find('[name=visId]').val(),
-        text: $w.find('[name=text]').val()
+        type: type
       };
+
+      if (options.type === 'visualization') {
+        options.visId = $w.find('[name=visId]').val();
+        options.basic = $w.find('[name=basic]').is(':checked');
+      }
+      if (options.type === 'text') {
+        options.text = $w.find('[name=text]').val();
+      }
+
+      return options;
     }
   }).data('gridster');
 
@@ -82,6 +91,15 @@ Template.dashboardForm.events({
     addWidget(grid, { size_x: 10, size_y: 1, type: 'text' });
   },
 
+  'click .js-move-widget-top': function(event, template) {
+    var grid = getGrid(template);
+    var widgetNode = $(event.target).closest('.dashboardFormWidget');
+
+    grid.empty_cells(1, 1, widgetNode.data('sizex'), widgetNode.data('sizey'));
+    grid.move_widget_to(widgetNode, 1, 1);
+    grid.remove_empty_cells();
+  },
+
   'click .js-remove-widget': function(event, template) {
     var grid = getGrid(template);
     var widgetNode = $(event.target).closest('.dashboardFormWidget');
@@ -92,7 +110,7 @@ Template.dashboardForm.events({
 
 
 function getGrid(template) {
-  return template.$('.gridster').gridster().data('gridster');
+  return template.$('.gridster').data('gridster');
 }
 
 function addWidget(grid, options) {
