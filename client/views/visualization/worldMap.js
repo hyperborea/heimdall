@@ -3,23 +3,25 @@ Template.visWorldMap.onRendered(function() {
 
   this.autorun(function() {
     let context = Template.currentData();
+    const settings = context.settings;
 
-    check(context.settings.countryField, String);
-    check(context.settings.valueField, String);
+    check(settings.countryField, String);
+    check(settings.valueField, String);
 
-    const targetColor = context.settings.targetColor || '#0000FF';
+    const targetColor = settings.targetColor || '#0000FF';
+    const exponent = settings.exponent || 1;
 
-    let values = _.pluck(context.data, context.settings.valueField).map(Number);
-    let colors = d3.scale.linear()
+    let values = _.pluck(context.data, settings.valueField).map(Number);
+    let colors = d3.scale.pow().exponent(exponent)
       .domain([0, _.max(values)])
       .range(['#F5F5F5', targetColor]);
 
     let dataset = {};
     context.data.forEach(function(item) {
-      let country = item[context.settings.countryField];
-      let value = item[context.settings.valueField];
+      let country = item[settings.countryField];
+      let value = item[settings.valueField];
 
-      if (context.settings.mapType === 'world') country = countryISO3(country);
+      if (settings.mapType === 'world') country = countryISO3(country);
 
       dataset[country] = { value: value, fillColor: colors(value) };
     });
@@ -31,7 +33,7 @@ Template.visWorldMap.onRendered(function() {
       fills: { defaultFill: '#F5F5F5' },
       data: dataset,
       responsive: true,
-      scope: context.settings.mapType,
+      scope: settings.mapType,
       geographyConfig: {
         popupTemplate: function(geography, data) {
           var value = data ? data.value : '-';

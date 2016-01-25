@@ -4,7 +4,7 @@
 
 
 <template name="visWorldMapForm">
-  <div class="four fields">
+  <div class="five fields">
     <div class="field">
       <label>Map Type</label>
       <div class="ui selection dropdown">
@@ -31,6 +31,11 @@
     <div class="field">
       <label>Target Color</label>
       {{> colorPicker name="targetColor" value=settings.targetColor}}
+    </div>
+
+    <div class="field">
+      <label>Color Exponent</label>
+      <input type="number" name="exponent:number" value={{settings.exponent}} placeholder="1">
     </div>
   </div>
 </template>
