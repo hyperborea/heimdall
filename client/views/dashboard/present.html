@@ -1,0 +1,43 @@
+<template name="dashboardPresent">
+  {{#unless isFullscreen}}
+  <form class="ui form segment">
+    <input type="hidden" name="fullscreen" value={{isFullscreen}}>
+
+    <div class="fields">
+      <div class="fourteen wide field">
+        <label>Dashboards in rotation</label>
+        {{> dropdown items=dashboardItems multiple=true name='ids' value=requestedIds}}
+      </div>
+
+      <div class="two wide field">
+        <label>Speed in ms</label>
+        <input type="text" name="speed" value={{queryParam 'speed'}} placeholder="10000">
+      </div>
+    </div>
+
+    <div class="two fields">
+      <div class="field">
+        <button type="submit" class="ui fluid basic green labeled icon button">
+          <i class="checkmark icon"></i> Apply
+        </button>
+      </div>
+
+      <div class="field">
+        <div class="ui fluid basic blue labeled icon button js-go-fullscreen">
+          <i class="maximize icon"></i> Full Screen
+        </div>
+      </div>
+    </div>
+  </form>
+  {{else}}
+    <i class="close link icon js-close-fullscreen" style="position: absolute; right: 1em; z-index: 999"></i>
+  {{/unless}}
+
+  <div class="carousel">
+    {{#each _id in requestedIds}}
+      <div id="dashboard-{{_id}}" class="dashboardWrapper invisible">
+        {{> dashboardView id=_id hideTopbar=true}}
+      </div>
+    {{/each}}
+  </div>
+</template>

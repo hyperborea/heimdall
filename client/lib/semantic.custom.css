@@ -1,10 +1,11 @@
 .hidden { display: none; }
+.invisible { opacity: 0; }
 
 a .link.icon {
   color: black;
 }
 
-.ui.grid .column .ui.checkbox {
+.ui.grid .column .ui.checkbox, .ui.form .field .ui.checkbox {
   padding: 0.5em 0;
 }
 

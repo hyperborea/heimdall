@@ -1,8 +1,10 @@
 loadHandler(Template.dashboardView);
+var _id = () => Template.currentData().id;
+
 
 Template.dashboardView.onCreated(function() {
   this.autorun(() => {
-    this.subscribe('dashboard', FlowRouter.getParam('id'));
+    this.subscribe('dashboard', _id());
   });
 });
 
@@ -15,7 +17,7 @@ Template.dashboardView.onRendered(function() {
   }).data('gridster').disable();
 
   this.autorun(() => {
-    var dashboard = Dashboards.findOne(FlowRouter.getParam('id'));
+    var dashboard = Dashboards.findOne(_id());
     var widgets = dashboard ? dashboard.widgets : [];
 
     grid.remove_all_widgets();
@@ -26,7 +28,7 @@ Template.dashboardView.onRendered(function() {
 
 Template.dashboardView.helpers({
   doc: function() {
-    return Dashboards.findOne(FlowRouter.getParam('id'));
+    return Dashboards.findOne(_id());
   },
 
   loadingClass: function() {
@@ -34,27 +36,30 @@ Template.dashboardView.helpers({
   },
 
   starredClass: function(doc) {
-    return hasStarred('dashboard', FlowRouter.getParam('id')) ? 'yellow' : 'empty';
+    return hasStarred('dashboard', _id()) ? 'yellow' : 'empty';
   },
 
   fullscreenClass: function() {
-    return isFullscreen() ? 'remove' : 'maximize';
+    return isFullscreen() ? 'minimize' : 'maximize';
   }
 });
 
 
 Template.dashboardView.events({
   'click .js-toggle-star': function() {
-    toggleStar('dashboard', FlowRouter.getParam('id'));
+    toggleStar('dashboard', _id());
   },
 
   'click .js-toggle-fullscreen': function() {
-    // var query = isFullscreen() ? {} : {fullscreen: true};
     FlowRouter.go('dashboardView', {
-      id: FlowRouter.getParam('id')
+      id: _id()
     }, {
       fullscreen: !isFullscreen()
     });
+  },
+
+  'click .js-present-mode': function() {
+    FlowRouter.go('dashboardPresent', {}, { ids: _id() });
   }
 });
 
@@ -66,7 +71,7 @@ function addWidget(grid, options) {
   if (options.type === 'visualization') {
     var vis = Visualizations.findOne(options.visId);
 
-    if (vis) {
+    if (vis && vis.job()) {
       var data = {
         vis      : vis,
         result   : vis.job().result,

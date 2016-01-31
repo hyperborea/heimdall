@@ -1,4 +1,5 @@
 <template name="dashboardView">
+  {{#unless hideTopbar}}
   <h1 class="ui dividing header">
     <div class="ui grid">
       <div class="fourteen wide column">
@@ -10,11 +11,13 @@
         {{/if}}
       </div>
       <div class="two wide right aligned column">
+        <i class="play link icon js-present-mode" title="present"></i>
         <i class="{{fullscreenClass}} link icon js-toggle-fullscreen" title="fullscreen"></i>
         <i class="{{starredClass}} star link icon js-toggle-star" title="star"></i>
       </div>
     </div>    
   </h1>
+  {{/unless}}
 
   <div class="gridster {{loadingClass}}"></div>
 </template>

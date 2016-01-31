@@ -6,7 +6,7 @@
 
 <template name="layoutBasic">
   <div class="ui basic segment">
-    {{> Template.dynamic template=main}}
+    {{> Template.dynamic template=template data=data}}
   </div>
 </template>
 
@@ -53,7 +53,7 @@
 
   <div class="pusher">
     <div class="ui basic segment">
-      {{> Template.dynamic template=main}}  
+      {{> Template.dynamic template=template data=data}}  
     </div>
   </div>
 

@@ -7,6 +7,11 @@ dashboardRoutes.route('/', {
   action: render('dashboardList')
 });
 
+dashboardRoutes.route('/present', {
+  name: 'dashboardPresent',
+  action: render('dashboardPresent')
+});
+
 dashboardRoutes.route('/new', {
   name: 'dashboardNew',
   action: render('dashboardForm')
