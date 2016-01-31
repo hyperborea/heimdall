@@ -35,6 +35,10 @@ Template.dashboardView.helpers({
 
   starredClass: function(doc) {
     return hasStarred('dashboard', FlowRouter.getParam('id')) ? 'yellow' : 'empty';
+  },
+
+  fullscreenClass: function() {
+    return isFullscreen() ? 'remove' : 'maximize';
   }
 });
 
@@ -43,6 +47,15 @@ Template.dashboardView.events({
   'click .js-toggle-star': function() {
     toggleStar('dashboard', FlowRouter.getParam('id'));
   },
+
+  'click .js-toggle-fullscreen': function() {
+    // var query = isFullscreen() ? {} : {fullscreen: true};
+    FlowRouter.go('dashboardView', {
+      id: FlowRouter.getParam('id')
+    }, {
+      fullscreen: !isFullscreen()
+    });
+  }
 });
 
 

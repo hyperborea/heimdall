@@ -4,6 +4,13 @@
 </head>
 
 
+<template name="layoutBasic">
+  <div class="ui basic segment">
+    {{> Template.dynamic template=main}}
+  </div>
+</template>
+
+
 <template name="layout">
   <div class="ui sidebar inverted vertical visible main menu">
     <div class="header item">

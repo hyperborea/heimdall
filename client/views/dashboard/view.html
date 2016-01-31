@@ -1,7 +1,7 @@
 <template name="dashboardView">
   <h1 class="ui dividing header">
     <div class="ui grid">
-      <div class="fifteen wide column">
+      <div class="fourteen wide column">
         {{doc.title}}
         {{#if isOwner doc}}
           <span class="sub header">
@@ -9,7 +9,8 @@
           </span>
         {{/if}}
       </div>
-      <div class="one wide right aligned column">
+      <div class="two wide right aligned column">
+        <i class="{{fullscreenClass}} link icon js-toggle-fullscreen" title="fullscreen"></i>
         <i class="{{starredClass}} star link icon js-toggle-star" title="star"></i>
       </div>
     </div>    

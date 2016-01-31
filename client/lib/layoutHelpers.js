@@ -1,8 +1,13 @@
+isFullscreen = function() {
+  return FlowRouter.getQueryParam('fullscreen') === 'true';
+};
+
 render = function(templateName) {
-  return function() {
-    BlazeLayout.render('layout', {main: templateName});
+  return function(params, queryParams) {
+    var layout = isFullscreen() ? 'layoutBasic' : 'layout';
+    BlazeLayout.render(layout, {main: templateName});
   }
-}
+};
 
 loadHandler = function(TemplateClass) {
   TemplateClass.onCreated(function() {
@@ -12,4 +17,4 @@ loadHandler = function(TemplateClass) {
   TemplateClass.onDestroyed(function() {
     Session.set('isLoading', false);
   });
-}
+};
