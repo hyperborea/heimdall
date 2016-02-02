@@ -28,7 +28,8 @@ Template.visChart.onRendered(function() {
           groups: _.map(settings.series, (series) => series.columns),
           types: _.object(_.keys(fieldSettings), _.pluck(fieldSettings, 'type')),
           axes: _.object(_.keys(fieldSettings), _.pluck(fieldSettings, 'yAxis')),
-          colors: _.object( _.map(settings.series, (series) => [series.columns[0], series.color]) )
+          colors: _.object( _.map(settings.series, (series) => [series.columns[0], series.color]) ),
+          classes: _.object( _.map(settings.series, (series) => [series.columns[0], series.lineType]) ),
         },
         size: {
           height: $wrapper.height() - 70
@@ -78,6 +79,9 @@ Template.visChart.onRendered(function() {
             show: settings.gridY,
             lines: _.where(settings.gridLines, {axis: 'y'})
           }
+        },
+        point: {
+          show: !settings.hidePoints
         }
       };
 

@@ -2,12 +2,14 @@ function newSeries() {
   return {
     _id: Random.id(),
     type: 'line',
+    lineType: 'solid',
     yAxis: 'y'
   };
 }
 
 
 Template.visChartForm.onRendered(function() {
+  this.$('.ui.checkbox').checkbox();
   this.$('.ui.single.dropdown').dropdown();
   this.$('.tabular.menu .item').tab();
 });
@@ -29,6 +31,8 @@ Template.visChartFormSeries.helpers({
 });
 
 Template.visChartFormSeriesItem.helpers({
+  lineTypes: ['solid', 'dashed', 'dotted', 'alternating', 'animated'],
+
   namePath: (addendum) => {
     var data = Template.currentData();
     return `series[${data.index}]${addendum}`;

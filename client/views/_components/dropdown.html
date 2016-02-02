@@ -1,5 +1,5 @@
 <template name="dropdown">
-  <div class="ui {{multiple}} search selection dropdown">
+  <div class="ui compact {{multiple}} search selection dropdown">
     <input type="hidden" name={{name}} value={{value}}>
     <i class="dropdown icon"></i>
     <span class="default text">{{defaultText}}</span>
@@ -13,5 +13,5 @@
         <div class="item" data-value={{valueOf item}}>{{textOf item}}</div>
       {{/each}}
     </div>
-  </div> 
+  </div>
 </template>

@@ -33,20 +33,14 @@
         </div>
       </div>
     </div>
-    <div class="eight wide field">
-      <div class="ui multiple search selection dropdown">
-        <input type="hidden" name={{namePath '[columns]:list'}} value={{series.columns}}>
-        <i class="dropdown icon"></i>
-        <span class="default text">columns</span>
-        <div class="menu">
-          {{#each field in ../fields}}
-            <div class="item" data-value={{field}}>{{field}}</div>
-          {{/each}}
-        </div>
-      </div>
+    <div class="six wide field">
+      {{> dropdown items=../fields multiple=true name=(namePath '[columns]:list') value=series.columns}}
     </div>
     <div class="two wide field">
       {{> colorPicker name=(namePath '[color]') value=series.color}}
+    </div>
+    <div class="two wide field">
+      {{> dropdown items=lineTypes name=(namePath '[lineType]') value=series.lineType}}
     </div>
     <div class="two wide field">
       <div class="ui compact single search selection dropdown">
@@ -95,6 +89,13 @@
         </a>
         <input type="text" name="timeFormat" value={{settings.timeFormat}} placeholder="%Y-%m-%d">  
       </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="ui checkbox">
+      <input type="checkbox" name="hidePoints:boolean" checked={{settings.hidePoints}}>
+      <label>hide points</label>
     </div>
   </div>
 </template>
