@@ -1,12 +1,9 @@
 <template name="visualization">
   <div class="visualizationWrapper" style="height: {{visHeight}}">
     {{#if visBasic}}
-      {{#if isRunning}}
-        <div class="ui active inline loader"></div> &ensp;
-        <div class="ui basic red button js-cancel">cancel</div>
-      {{/if}}
-
-      {{> Template.dynamic template=templateName data=visData}} 
+      <div class="ui {{isRunning}} basic segment">
+        {{> Template.dynamic template=templateName data=visData}}   
+      </div>
     {{else}}
       <div class="ui top attached segment grid">
         <div class="two column row">
