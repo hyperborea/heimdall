@@ -24,7 +24,7 @@ queryPostgres = function(source, query, endCallback, startCallback) {
       database : source.database,
       ssl      : source.ssl
     };
-    query = `SET statement_timeout TO ${TIMEOUT};` + query;
+    // query = `SET statement_timeout TO ${TIMEOUT};` + query;
   
     pg.connect(connectionConfig, Meteor.bindEnvironment((err, client, done) => {      
       if (err) return results('error', `${err} - could not connect with data source.`);
@@ -41,7 +41,7 @@ queryPostgres = function(source, query, endCallback, startCallback) {
             fields: _.pluck(result.fields, 'name')
           });
         }
-        done();
+        done(true);
       }));
     }));
   }
