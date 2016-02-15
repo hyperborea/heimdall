@@ -42,6 +42,7 @@ queryPostgres = function(source, query, endCallback, startCallback) {
           });
         }
         done(true);
+        client.end();
       }));
     }));
   }
