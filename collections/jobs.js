@@ -20,7 +20,8 @@ Meteor.methods({
     var oldDoc = {};
     var doc = _.omit(job, '_id', 'owner', 'ownerId', 'createdAt');
     _.defaults(doc, {
-      rules: []
+      rules: [],
+      scheduleError: false
     });
 
     if (!jobId) {
@@ -84,14 +85,28 @@ Meteor.methods({
 });
 
 
-scheduleJob = function(jobId, schedule) {
+scheduleJob = function(jobId, scheduleString) {
   SyncedCron.remove(jobId);
 
-  if (schedule) {
+  if (scheduleString) {
     SyncedCron.add({
-      name     : jobId,
-      schedule : (parser) => parser.text(schedule),
-      job      : () => runJob(jobId)
+      name: jobId,
+      job: () => runJob(jobId),
+      schedule: function(parser) {
+        var schedule = parser.text(scheduleString);
+
+        if (schedule.error !== -1) {
+          var stringBeforeError = scheduleString.substring(0, schedule.error);
+          var stringAfterError = scheduleString.substring(schedule.error, scheduleString.length);
+          var errorMessage = `syntax error: "${stringBeforeError}[=>]${stringAfterError}"`;
+
+          Jobs.update(jobId, {$set: { scheduleError: errorMessage }});
+          return parser.recur();
+        }
+        else {
+          return schedule;
+        }
+      }
     });
   }
 };

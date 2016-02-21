@@ -31,6 +31,7 @@
       <div class="title">
         <i class="dropdown icon"></i> Schedule
         {{#if doc.schedule}}<i class="lightning icon"></i>{{/if}}
+        {{#if doc.scheduleError}}<i class="warning sign icon"></i>{{/if}}
       </div>
       <div class="content">{{> jobFormSchedule doc=doc}}</div>
 
@@ -111,8 +112,12 @@
       <a href="http://bunkat.github.io/later/parsers.html#text" target="_blank">Text Parser documentation</a>.  
     </div>
     <div class="field">
-      <input type="text" name="schedule" value={{doc.schedule}} placeholder="e.g. every 1 day">  
+      <input type="text" name="schedule" value={{doc.schedule}} placeholder="e.g. every 1 day">
     </div>
+
+    {{#if doc.scheduleError}}
+      <div class="ui small negative message">{{doc.scheduleError}}</div>
+    {{/if}}
   </div>
 </template>
 
