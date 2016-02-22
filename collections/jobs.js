@@ -8,6 +8,10 @@ Jobs.helpers({
     }, {
       sort: { title: 1 }
     });
+  },
+
+  isRunning: function() {
+    return this.result && this.result.status === 'running'
   }
 });
 

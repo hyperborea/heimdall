@@ -100,6 +100,11 @@
       {{> alarmLabel severity=doc.alarmStatus}}
     </h4>
 
+    {{#if doc.isRunning}}
+      <div class="ui active small inline loader"></div>
+      <div class="ui red basic button js-cancel">cancel</div>
+    {{/if}}
+
     {{> visualization visType="DataTable" result=doc.result visBasic=true}}
   {{/if}}
 </template>

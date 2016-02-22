@@ -1,7 +1,7 @@
 <template name="visualization">
   <div class="visualizationWrapper" style="height: {{visHeight}}">
     {{#if visBasic}}
-      <div class="ui {{isRunning}} basic segment">
+      <div class="ui basic segment">
         {{> Template.dynamic template=templateName data=visData}}   
       </div>
     {{else}}
@@ -14,14 +14,14 @@
             <span class="timeAgo">{{timeAgo result.updatedAt}}</span>
             &ensp;
             <i class="download link icon js-download" title="download"></i>
-            <i class="refresh link icon js-run" title="refresh"></i>
+            <i class="refresh {{loading}} link icon js-run" title="refresh"></i>
             <a href={{pathFor 'visualizationEdit' id=vis._id}} title="edit">
               <i class="edit link icon"></i>
             </a>
           </div>          
         </div>
       </div>
-      <div class="ui bottom attached {{isRunning}} segment">
+      <div class="ui bottom attached segment">
         {{> Template.dynamic template=templateName data=visData}}   
       </div>
     {{/if}}

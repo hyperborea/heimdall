@@ -15,7 +15,7 @@ Template.visualization.helpers({
     }
   },
 
-  isRunning: function() {
+  loading: function() {
     var data = Template.currentData();
     return (data && data.result && data.result.status === 'running') ? 'loading' : false;
   },
@@ -38,9 +38,5 @@ Template.visualization.events({
     const csv = Papa.unparse(this.result.data, { delimiter: ';' });
     const blob = new Blob([csv], {type: "application/csv"});
     saveAs(blob, `${job.name}.csv`);
-  },
-
-  'click .js-cancel': function(event, template) {
-    Meteor.call('cancelJob', this.vis.jobId);
   }
 });

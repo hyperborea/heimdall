@@ -78,6 +78,10 @@ Template.jobForm.events({
     Meteor.call('runJob', FlowRouter.getParam('id'));
   },
 
+  'click .js-cancel': function(event, template) {
+    Meteor.call('cancelJob', FlowRouter.getParam('id'));
+  },
+
   'click .js-delete': function() {
     if (confirm('Sure you want to delete this job?')) {
       Meteor.call('removeJob', FlowRouter.getParam('id'));
