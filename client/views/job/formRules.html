@@ -4,11 +4,11 @@
     <!-- <div class="fields">
       <div class="twelve wide field">
         <label>Email Recipients</label>
-        <input type="text" placeholder="comma separated">
+        <input type="text" name="alarm[recipients]" value={{doc.alarm.recipients}} placeholder="comma separated">
       </div>
       <div class="four wide field">
         <label>Severity</label>
-        {{> severityDropdown}}
+        {{> severityDropdown name="alarm[severity]" value=doc.alarm.severity}}
       </div>
     </div> -->
 

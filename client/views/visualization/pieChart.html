@@ -4,7 +4,7 @@
 
 
 <template name="visPieChartForm">
-  <div class="three fields">
+  <div class="four fields">
     <div class="field">
       <label>Chart Type</label>
       <div class="ui selection dropdown">
@@ -26,6 +26,15 @@
     <div class="field">
       <label>Value Field</label>
       {{> dropdown name="valueField" value=settings.valueField items=fields}} 
+    </div>
+
+    <div class="field">
+      <label>Settings</label>
+      <!-- <input type="text" name="valueFormat" value={{settings.valueFormat}}> -->
+      <div class="ui toggle checkbox">
+        <input type="checkbox" name="showValue:boolean" checked={{settings.showValue}}>
+        <label>show value</label>
+      </div>
     </div>
   </div>
 </template>

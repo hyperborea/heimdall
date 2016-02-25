@@ -28,6 +28,16 @@ Template.visPieChart.onRendered(function() {
         size: {
           height: $wrapper.height() - 50
         },
+        pie: {
+          label: {
+            format: (value, ratio) => {
+              if (settings.showValue) 
+                return d3.format(',')(value);
+              else
+                return d3.format('.1%')(ratio);
+            }
+          }
+        }
       });
     }
   });
