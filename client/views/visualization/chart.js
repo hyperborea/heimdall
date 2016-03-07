@@ -30,6 +30,7 @@ Template.visChart.onRendered(function() {
           axes: _.object(_.keys(fieldSettings), _.pluck(fieldSettings, 'yAxis')),
           colors: _.object( _.map(settings.series, (series) => [series.columns[0], series.color]) ),
           classes: _.object( _.map(settings.series, (series) => [series.columns[0], series.lineType]) ),
+          order: null,
         },
         size: {
           height: $wrapper.height() - 70
