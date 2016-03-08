@@ -21,6 +21,24 @@ Meteor.publishComposite('dashboard', function(_id) {
   };
 });
 
+Meteor.publishComposite('dashboardForm', function(_id) {
+  return {
+    find: function() {
+      return Dashboards.find({ $and: [filterByAccess(this.userId), { _id: _id }] });
+    },
+    children: [{
+      find: function(dashboard) {
+        return Visualizations.find({ _id: { $in: _.pluck(dashboard.widgets, 'visId') } }, {
+          fields: { title: 1, jobId: 1 }
+        });
+      },
+      children: [{
+        find: (vis) => Jobs.find(vis.jobId, { fields: { name: 1, owner: 1 } })
+      }]
+    }]
+  };
+});
+
 
 Meteor.publish('jobs', function() {
   return Jobs.find(filterByAccess(this.userId), {

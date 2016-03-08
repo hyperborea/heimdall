@@ -1,6 +1,6 @@
 Template.dashboardForm.onCreated(function() {
   this.autorun(() => {
-    this.subscribe('dashboard', FlowRouter.getParam('id'));
+    this.subscribe('dashboardForm', FlowRouter.getParam('id'));
   });
 });
 

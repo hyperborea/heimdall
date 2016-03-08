@@ -12,10 +12,6 @@ Template.dashboardFormWidget.helpers({
 });
 
 
-Template.dashboardFormVisualizationWidget.onCreated(function() {
-  this.subscribe('visualizations');
-});
-
 Template.dashboardFormVisualizationWidget.onRendered(function() {
   this.$('.ui.dropdown').dropdown({ fullTextSearch: true });
   this.$('.ui.checkbox').checkbox();
