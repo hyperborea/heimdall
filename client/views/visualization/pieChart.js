@@ -37,6 +37,16 @@ Template.visPieChart.onRendered(function() {
                 return d3.format('.1%')(ratio);
             }
           }
+        },
+        donut: {
+          label: {
+            format: (value, ratio) => {
+              if (settings.showValue) 
+                return d3.format(',')(value);
+              else
+                return d3.format('.1%')(ratio);
+            }
+          }
         }
       });
     }
