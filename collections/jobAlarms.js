@@ -88,11 +88,11 @@ checkJobForAlarms = function(job) {
     .map((alarm) => alarm.rule.severity)
     .sortBy((level) => SEVERITIES[level].rank)
     .first().value();
-  var worstStatusRank = SEVERITIES[worstStatus].rank;
 
   Jobs.update(job._id, { $set: { alarmStatus: worstStatus } });
 
   if (job.alarm && matches.length > 0) {
+    var worstStatusRank = SEVERITIES[worstStatus].rank;
     var jobUrl = Meteor.absoluteUrl(`jobs/${job._id}/edit`);
     var alarmsUrl = Meteor.absoluteUrl(`alarms/${job._id}/${runId}`);
 
