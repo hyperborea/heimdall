@@ -1,7 +1,7 @@
 <template name="dashboardForm">
-  <form class="ui form segment">
+  <form class="ui small form segment">
     <div class="fields">
-      <div class="fourteen wide field">
+      <div class="eight wide field">
         <div class="ui left action input">
           {{#if doc._id}}
             <a href={{pathFor 'dashboardView' id=doc._id}} class="ui icon button">
@@ -9,6 +9,13 @@
             </a>
           {{/if}}
           <input type="text" name="title" placeholder="Dashboard Title" value={{doc.title}}>  
+        </div>
+      </div>
+
+      <div class="six wide field">
+        <div class="ui labeled input">
+          <div class="ui basic right pointing label">tags</div>
+          {{> dropdown name="tags:list" value=doc.tags placeholder="add tags" multiple=true allowAdditions=true}}
         </div>
       </div>
 
@@ -60,6 +67,6 @@
 
   <div class="ui info message">
     <div class="header">Did you know?</div>
-    Sharing a dashboard now automatically shares the underlying data sources as well, no need to additionally grant permissions on all jobs!
+    Sharing a dashboard automatically shares the underlying data sources as well, no need to additionally grant permissions on all jobs!
   </div>
 </template>

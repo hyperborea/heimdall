@@ -1,41 +1,78 @@
 <template name="dashboardList">
-  <div class="ui grid" style="margin-bottom: 1em">
-    <div class="three wide column">
-      <a href={{pathFor 'dashboardNew'}} class="ui fluid basic labeled icon button">
-        <i class="plus icon"></i> Dashboard
-      </a>
-    </div>
+  <div class="ui form">
+    <div class="fields">
+      <div class="three wide field">
+        <a href={{pathFor 'dashboardNew'}} class="ui fluid basic labeled icon button">
+          <i class="plus icon"></i> Dashboard
+        </a>
+      </div>
 
-    <div class="ten wide column">
-      <div class="ui fluid icon input">
-        <i class="search icon"></i>
-        <input type="text" name="search" placeholder="Search..." value={{search}}>
+      <div class="ten wide field">
+        <div class="ui fluid icon input">
+          <i class="search icon"></i>
+          <input type="text" name="search" placeholder="Search..." value={{search}}>
+        </div>
+      </div>
+
+      <div class="three wide field">
+        <div class="ui toggle checkbox">
+          <input type="checkbox" name="filterOwn" checked={{filterOwn}}>
+          <label>show only own</label>
+        </div>
       </div>
     </div>
 
-    <div class="three wide column">
-      <div class="ui toggle checkbox">
-        <input type="checkbox" name="filterOwn" checked={{filterOwn}}>
-        <label>show only own</label>
-      </div>
+    <div class="field">
+      {{#if tags}}
+        <a class="ui {{tagLabelClass undefined}} label js-select-tag">show all</a>
+      {{/if}}
+      {{#each tag in tags}}
+        <a class="ui {{tagLabelClass tag}} label js-select-tag" data-value={{tag}}>
+          <i class="tag icon"></i>
+          {{tag}}
+        </a>
+      {{/each}}
     </div>
   </div>
+  <br>
 
+  {{#if starredDashboards.count}}
+  <div class="ui horizontal divider"><i class="star icon"></i> Favorite Dashboards</div>
   <div class="ui cards">
-    {{#each item in items}}
-      <a href={{pathFor 'dashboardView' id=item._id}} class="card">
-        <div class="content">
-          <div class="header">
-            {{item.title}}
-            {{#if hasStarred item._id}}
-              <i class="yellow star icon"></i>
-            {{/if}}
-          </div>
-        </div>
-        <div class="extra content">
-          <i class="user icon"></i> {{item.owner}}
-        </div>
-      </a>
+    {{#each dashboard in starredDashboards}}
+      {{> dashboardListItem dashboard=dashboard}}
     {{/each}}
   </div>
+  <br>
+  {{/if}}
+
+  <div class="ui horizontal divider"><i class="grid layout icon"></i> All Dashboards</div>
+  <div class="ui cards">
+    {{#each dashboard in dashboards}}
+      {{> dashboardListItem dashboard=dashboard}}
+    {{/each}}
+  </div>
+</template>
+
+
+<template name="dashboardListItem">
+  <a href={{pathFor 'dashboardView' id=dashboard._id}} class="card">
+    <div class="content">
+      <div class="header">
+        {{dashboard.title}}
+        {{#if hasStarred dashboard}}
+          <i class="yellow star icon"></i>
+        {{/if}}
+      </div>
+      {{#if dashboard.tags}}
+        <div class="meta">
+          <i class="tags icon"></i>
+          {{list dashboard.tags}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="extra content">
+      <i class="user icon"></i> {{dashboard.owner}}
+    </div>
+  </a>
 </template>

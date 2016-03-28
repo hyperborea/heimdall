@@ -1,22 +1,24 @@
 <template name="jobList">
-  <div class="ui grid">
-    <div class="three wide column">
-      <a href={{pathFor 'jobNew'}} class="ui fluid basic labeled icon button">
-        <i class="plus icon"></i> Create Job
-      </a>
-    </div>
-
-    <div class="ten wide column">
-      <div class="ui fluid icon input">
-        <i class="search icon"></i>
-        <input type="text" name="search" placeholder="Search..." value={{search}}>
+  <div class="ui form">
+    <div class="fields">
+      <div class="three wide field">
+        <a href={{pathFor 'jobNew'}} class="ui fluid basic labeled icon button">
+          <i class="plus icon"></i> Create Job
+        </a>
       </div>
-    </div>
 
-    <div class="three wide column">
-      <div class="ui toggle checkbox">
-        <input type="checkbox" name="filterOwn" checked={{filterOwn}}>
-        <label>show only own</label>
+      <div class="ten wide field">
+        <div class="ui fluid icon input">
+          <i class="search icon"></i>
+          <input type="text" name="search" placeholder="Search..." value={{search}}>
+        </div>
+      </div>
+
+      <div class="three wide field">
+        <div class="ui toggle checkbox">
+          <input type="checkbox" name="filterOwn" checked={{filterOwn}}>
+          <label>show only own</label>
+        </div>
       </div>
     </div>
   </div>

@@ -7,6 +7,7 @@ dashboardRoutes.route('/', {
   action: render('dashboardList')
 });
 
+
 dashboardRoutes.route('/present', {
   name: 'dashboardPresent',
   action: render('dashboardPresent')

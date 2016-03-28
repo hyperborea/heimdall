@@ -1,8 +1,18 @@
+// name: string
+// value: string
+// placeholder: string
+// items: list of strings or objects {value, text}
+// allowEmpty: bool
+// multiple: bool
+// allowAdditions: bool
+
 Template.dropdown.onRendered(function() {  
   this.autorun(() => {
-    Template.currentData();
+    var data = Template.currentData();
     Tracker.afterFlush(() => {
-      this.$('.ui.dropdown').dropdown()
+      this.$('.ui.dropdown').dropdown({
+        allowAdditions: data.allowAdditions
+      })
     });
   });
 });

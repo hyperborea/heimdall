@@ -5,30 +5,59 @@ Template.dashboardList.onCreated(function() {
 });
 
 
+function dashboardFilter() {
+  var selector = {};
+
+  if (FlowRouter.getQueryParam('search'))
+    selector['$or'] = [
+      { title: { $regex: FlowRouter.getQueryParam('search'), $options: 'i' } },
+      { tags: FlowRouter.getQueryParam('search') }
+    ];
+  if (FlowRouter.getQueryParam('filterOwn') === 'true')
+    selector['ownerId'] = Meteor.userId();
+  if (FlowRouter.getQueryParam('tag'))
+    selector['tags'] = FlowRouter.getQueryParam('tag');
+  
+  return selector;
+}
+
+
 Template.dashboardList.helpers({
-  items: function() {
-    var selector = {};
+  dashboards: () => Dashboards.find(dashboardFilter()),
+  starredDashboards: () => Dashboards.find(_.extend(dashboardFilter(), {
+    _id: { $in: getStarred('dashboard', Meteor.userId()) }
+  })),
 
-    if (Session.get('dashboardList.search'))
-      selector['title'] = { $regex: Session.get('dashboardList.search'), $options: 'i' };
-    if (Session.get('dashboardList.filterOwn'))
-      selector['ownerId'] = Meteor.userId();
-
-    return Dashboards.find(selector);
-  },
+  tags: () => _.chain(Dashboards.find().fetch())
+    .pluck('tags')
+    .flatten()
+    .compact()
+    .uniq()
+    .sortBy((x) => x)
+    .value(),
 
   search: () => Session.get('dashboardList.search'),
   filterOwn: () => Session.get('dashboardList.filterOwn'),
-  hasStarred: (_id) => hasStarred('dashboard', _id)
+
+  tagLabelClass: (tag) => (FlowRouter.getQueryParam('tag') == tag) ? 'basic blue' : 'basic',
 });
 
 
 Template.dashboardList.events({
   'keyup, change input[name=search]': function(event) {
-    Session.set('dashboardList.search', event.target.value);
+    FlowRouter.setQueryParams({ search: event.target.value });
   },
 
   'change input[name=filterOwn]': function(event) {
-    Session.set('dashboardList.filterOwn', event.target.checked);
+    FlowRouter.setQueryParams({ filterOwn: event.target.checked });
+  },
+
+  'click .js-select-tag': function(event, template) {
+    FlowRouter.setQueryParams({ tag: event.target.dataset.value });
   }
+});
+
+
+Template.dashboardListItem.helpers({
+  hasStarred: (dashboard) => hasStarred('dashboard', dashboard._id)
 });
