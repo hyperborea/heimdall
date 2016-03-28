@@ -105,7 +105,7 @@ checkJobForAlarms = function(job) {
           from    : 'noreply@heimdall.klarna.com',
           to      : job.alarm.email,
           subject : `[heimdall] [${worstStatus}] ${job.name}`,
-          text    : 'some content coming here',
+          html    : `Job <a href="${jobUrl}">${job.name}</a> triggered <b>${worstStatus}</b>, <a href="${alarmsUrl}">check it out</a>.`,
           attachments: [
             {
               fileName    : 'results.csv',
@@ -127,29 +127,17 @@ checkJobForAlarms = function(job) {
             username: 'heimdall',
             channel: channel,
             text: `Job <${jobUrl}|${job.name}> triggered *${worstStatus}*, <${alarmsUrl}|check it out>`,
-            // attachments: _.map(matches, (alarm) => {
-            //   var rule = alarm.rule;
-            //   var message = `*${rule.name}*`;
+            attachments: _.chain(matches)
+              .groupBy((alarm) => alarm.rule.name)
+              .map((group, ruleName) => {
+                var ruleName = ruleName;
+                var ruleSeverity = group[0].rule.severity;
 
-            //   if (alarmLevelRank >= SEVERITIES[rule.severity].rank) {
-            //     return {
-            //       color: SEVERITIES[rule.severity].hexColor,
-            //       fallback: message,
-            //       text: message,
-            //       mrkdwn_in: ["text"],
-            //       fields: _.map(rule.conditions, (cond) => {
-            //         var operator = OPERATORS[cond.op];
-            //         var fieldValue = alarm.row[cond.field];
-
-            //         return {
-            //           title: '',
-            //           value: `${cond.field} (${fieldValue}) ${operator.display} ${cond.value}`,
-            //           short: true
-            //         };
-            //       })
-            //     };
-            //   }
-            // })
+                return {
+                  color: SEVERITIES[ruleSeverity].hexColor,
+                  text: `${ruleName} (${group.length}x)`
+                };
+              }).value()
           });
         });
       }
