@@ -59,7 +59,7 @@ Meteor.publishComposite('visualizations', function() {
   return {
     find: () => Jobs.find(filterByAccess(this.userId), { fields: { name: 1, owner: 1 } }),
     children: [{
-      find: (job) => Visualizations.find({ jobId: job._id })
+      find: (job) => Visualizations.find({ jobId: job._id }, { fields: { title: 1, jobId: 1 } })
     }]
   }
 });
