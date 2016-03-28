@@ -28,12 +28,12 @@ Meteor.methods({
     return _id;
   },
 
-  saveVisualization: function(data) {
-    const _id = data._id;
-    requireOwnership(this.userId, Visualizations.findOne(_id).job());
+  saveVisualization: function(doc) {
+    var vis = Visualizations.findOne(doc._id);
+    requireOwnership(this.userId, vis.job());
 
-    var doc = _.omit(data, '_id', 'jobId', 'createdAt');
-    Visualizations.update(_id, { $set: doc });
+    doc.jobId = vis.jobId;
+    Visualizations.update(doc._id, doc);
   },
 
   removeVisualization: function(_id) {

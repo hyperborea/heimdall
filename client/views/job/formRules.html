@@ -1,16 +1,31 @@
 <template name="jobFormRules">
   <input type="hidden" class="dummy">
   <div class="ui small form">
-    <!-- <div class="fields">
+    <div class="fields">
       <div class="twelve wide field">
-        <label>Email Recipients</label>
-        <input type="text" name="alarm[recipients]" value={{doc.alarm.recipients}} placeholder="comma separated">
+        <div class="ui left labeled input">
+          <div class="ui label"><i class="mail icon"></i> Email</div>
+          <input type="text" name="alarm[email]" value={{doc.alarm.email}} placeholder="recipients, comma separated">
+        </div>
       </div>
       <div class="four wide field">
-        <label>Severity</label>
-        {{> severityDropdown name="alarm[severity]" value=doc.alarm.severity}}
+        {{> severityDropdown name="alarm[emailSeverity]" value=doc.alarm.emailSeverity}}
       </div>
-    </div> -->
+    </div>
+
+    {{#if settings 'slackEnabled'}}
+    <div class="fields">
+      <div class="twelve wide field">
+        <div class="ui left labeled input">
+          <div class="ui label"><i class="slack icon"></i> Slack</div>
+          <input type="text" name="alarm[slack]:list" value={{list doc.alarm.slack}} placeholder="#channel, @user">  
+        </div>
+      </div>
+      <div class="four wide field">
+        {{> severityDropdown name="alarm[slackSeverity]" value=doc.alarm.slackSeverity}}
+      </div>
+    </div>
+    {{/if}}
 
     {{#each rule in rules}}
       {{> jobFormRulesItem ruleIdx=@index rule=rule fields=doc.result.fields}}
@@ -70,33 +85,15 @@
 <template name="jobFormRulesItemCondition">
   <div class="fields">
     <div class="four wide field">
-      <div class="ui single search selection dropdown">
-        <input type="hidden" name="{{path}}[field]" value={{condition.field}}>
-        <i class="dropdown icon"></i>
-        <span class="default text">select field</span>
-        <div class="menu">
-          {{#each field in fields}}
-            <div class="item" data-value={{field}}>{{field}}</div>
-          {{/each}}
-        </div>
-      </div>
+      {{> dropdown name=(path '[field]') value=condition.field items=fields placeholder="select field"}}
     </div>
 
     <div class="two wide field">
-      <div class="ui compact selection dropdown">
-        <input type="hidden" name="{{path}}[op]" value={{condition.op}}>
-        <i class="dropdown icon"></i>
-        <span class="default text">operator</span>
-        <div class="menu">
-          {{#each operator in operators}}
-            <div class="item" data-value={{operator.name}}>{{operator.display}}</div>
-          {{/each}}
-        </div>
-      </div>
+      {{> dropdown name=(path '[op]') value=condition.op items=operators placeholder="operator"}}
     </div>
 
     <div class="four wide field">
-      <input type="text" name="{{path}}[value]" value={{condition.value}} placeholder="value or @field">
+      <input type="text" name={{path '[value]'}} value={{condition.value}} placeholder="value or @field">
     </div>
 
     <div class="two wide field">

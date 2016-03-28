@@ -6,7 +6,7 @@
 
 standard-minifiers
 meteor-base
-mobile-experience
+# mobile-experience
 mongo
 blaze-html-templates
 session
@@ -48,3 +48,4 @@ reywood:publish-composite
 dburles:collection-helpers
 perak:markdown
 meteorhacks:kadira
+http

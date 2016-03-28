@@ -6,6 +6,10 @@ _.extend($.serializeJSON.defaultOptions.defaultTypes, {
     return str ? Number(str) : undefined;
   },
   list: function(str) {
-    return _.without( (str || '').split(','), '');
+    var items = (str || '').split(',')
+    return _.chain(items)
+      .map((s) => s.trim())
+      .without('')
+      .value();
   }
 });

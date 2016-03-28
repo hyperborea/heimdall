@@ -5,7 +5,7 @@ Template.visualizationForm.onCreated(function() {
 
 Template.visualizationForm.onRendered(function() {
   this.$('.ui.dropdown').dropdown();
-  this.$('.ui.form').form({});
+  this.$('.ui.main.form').form({});
 });
 
 

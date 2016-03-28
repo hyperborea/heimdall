@@ -81,9 +81,12 @@ Template.jobFormRulesItemCondition.onRendered(function() {
 });
 
 Template.jobFormRulesItemCondition.helpers({
-  operators: () => _.values(OPERATORS),
-  path: () => {
+  operators: () => _.map(OPERATORS, (op) => Object({
+    value : op.name,
+    text  : op.display
+  })),
+  path: (addendum) => {
     var data = Template.currentData();
-    return `rules[${data.ruleIdx}][conditions][${data.condIdx}]`;
+    return `rules[${data.ruleIdx}][conditions][${data.condIdx}]${addendum}`;
   }
 });

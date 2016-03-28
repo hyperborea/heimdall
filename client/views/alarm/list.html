@@ -8,7 +8,7 @@
 
   <div class="ui small feed">
     {{#each alarm in alarms}}
-      {{> alarmListItem alarm=alarm}}
+      {{> alarmItem alarm=alarm}}
     {{/each}}
   </div>
 
@@ -17,88 +17,4 @@
       Wohoo, no alarms to show! Or haven't you set up any job monitoring yet?  
     </div>
   {{/unless}}
-</template>
-
-
-<template name="alarmListItem">
-  <div class="event">
-    <div class="label">
-      <i class="circular {{iconClass alarm.rule.severity}} icon"></i>
-    </div>
-    <div class="content">
-      <div class="summary">
-        <a href={{pathFor 'jobEdit' id=alarm.jobId}}>{{jobName alarm}}</a> triggered "{{alarm.rule.name}}"
-        <div class="date">{{timeAgo alarm.insertedAt}}</div>
-      </div>
-
-      <div class="extra text">
-        <table class="ui small table">
-          <thead>
-            <tr>
-              {{#each key in (rowKeys alarm.row)}}
-                <th>{{key}}</th>
-              {{/each}}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              {{#each key in (rowKeys alarm.row)}}
-                <td class={{isConditionKey alarm.rule key}}>
-                  {{rowValue alarm.row key}}
-                </td>
-              {{/each}}
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="meta">
-        <a class="js-comment"><i class="comment icon"></i> comment</a>
-        {{#if isAcknowledged alarm}}
-          <div class="ui mini green label">acknowledged</div>
-        {{else}}
-          <a class="js-ack-alarm"><i class="checkmark icon"></i> acknowledge</a>
-        {{/if}}
-      </div>
-
-      <div class="ui minimal comments">
-        {{#each comment in alarm.comments}}
-          {{> alarmListItemComment comment=comment alarmId=alarm._id}}
-        {{/each}}
-      </div>
-
-      <form class="ui small hidden comment form">
-        <div class="fields">
-          <div class="ten wide field">
-            <div class="ui action input">
-              <input type="text" name="comment" placeholder="type here to comment" autocomplete="off">
-              <button class="ui teal basic button">Comment</button>
-            </div>
-          </div>
-        </div>
-      </form>
-
-    </div>
-  </div>
-</template>
-
-
-<template name="alarmListItemComment">
-  <div class="comment">
-    <div class="avatar">
-      <i class="circular user icon"></i>
-    </div>
-    <div class="content">
-      <span class="author">{{comment.author}}</span>
-      <div class="metadata">
-        <span class="date">{{timeAgo comment.insertedAt}}</span>
-      </div>
-      <div class="text">{{comment.content}}</div>
-      <div class="actions">
-        {{#if isAuthor comment}}
-          <a class="js-delete-comment"><i class="trash icon"></i> delete</a>
-        {{/if}}
-      </div>
-    </div>
-  </div>
 </template>

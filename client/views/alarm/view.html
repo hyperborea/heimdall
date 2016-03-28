@@ -1,0 +1,11 @@
+<template name="alarmView">
+  <h1 class="ui dividing header">
+    Alarms for run <small>{{param 'runId'}}</small>
+  </h1>
+
+  <div class="ui small feed">
+    {{#each alarm in alarms}}
+      {{> alarmItem alarm=alarm}}
+    {{/each}}
+  </div>
+</template>

@@ -94,6 +94,15 @@ Meteor.publishComposite('jobAlarms', function(options) {
   };
 });
 
+Meteor.publish('jobAlarmsForRun', function(jobId, runId) {
+  requireAccess(this.userId, Jobs.findOne(jobId));
+
+  return [
+    JobAlarms.find({ jobId: jobId, runId: runId }),
+    Jobs.find(jobId, { fields: { name: 1 } })
+  ];
+})
+
 
 Meteor.publish('sources', function() {
   return Sources.find(filterByAccess(this.userId), {

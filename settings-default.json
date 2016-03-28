@@ -1,0 +1,8 @@
+{
+  "public": {
+    "slackEnabled": false
+  },
+
+  "salt": null,
+  "slackHookURL": null
+}
