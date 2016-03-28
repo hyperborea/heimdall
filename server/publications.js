@@ -111,10 +111,6 @@ Meteor.publish('sources', function() {
 });
 
 
-Meteor.publish('groups', function(searchString) {
-  var selector = {};
-  if (searchString)
-    selector = { name: { $regex: searchString, $options: 'i' } };
-
-  return Groups.find(selector, { limit: 20 });
+Meteor.publish('groups', function() {
+  return Groups.find();
 });
