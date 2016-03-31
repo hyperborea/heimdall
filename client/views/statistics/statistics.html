@@ -75,7 +75,7 @@
     <tbody>
       {{#each dashboard in dashboards}}
         <tr>
-          <td><a href={{pathFor 'dashboardView' dashboard._id}}>{{dashboard.title}}</a></td>
+          <td><a href={{pathFor 'dashboardView' id=dashboard._id}}>{{dashboard.title}}</a></td>
           <td>{{dashboard.owner}}</td>
           <td>{{dashboard.userCount}}</td>
           <td>{{dashboard.totalCount}}</td>
