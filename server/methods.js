@@ -27,12 +27,12 @@ Meteor.methods({
       }
     ]);
 
-    var dashboardToplist7d = Requests.aggregate([
+    var dashboardToplist = Requests.aggregate([
       { $match:
         {
           routeName: 'dashboardView',
           "params.id": { $in: accessDashboardIds },
-          requestedAt: { $gt: moment().subtract(7, 'days').toDate() },
+          requestedAt: { $gt: moment().subtract(1, 'month').toDate() },
         },
       },
       { $group:
@@ -67,7 +67,7 @@ Meteor.methods({
         .map( (row) => [row._id, _.omit(row, '_id')] )
         .object()
         .value(),
-      dashboardToplist7d: _.map(dashboardToplist7d, (item) => {
+      dashboardToplist: _.map(dashboardToplist, (item) => {
         var dashboard = Dashboards.findOne(item._id, { fields: { title: 1, owner: 1 } });
         return _.extend(item, dashboard);
       })

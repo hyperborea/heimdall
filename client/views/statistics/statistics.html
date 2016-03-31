@@ -10,8 +10,8 @@
     {{> statisticsJobHistory24h stats=statistics.jobHistory24h.ok icon='green checkmark'}}
     {{> statisticsJobHistory24h stats=statistics.jobHistory24h.error icon='red flag outline'}}
 
-    <h2 class="ui dividing header"><i class="trophy icon"></i> Dashboard Toplist 7d</h2>
-    {{> statisticsDashboardToplist7d dashboards=statistics.dashboardToplist7d}}
+    <h2 class="ui dividing header"><i class="trophy icon"></i> Dashboard Toplist 1m</h2>
+    {{> statisticsDashboardToplist dashboards=statistics.dashboardToplist}}
   {{else}}
     <i class="big notched circle loading icon"></i> loading
   {{/if}}
@@ -64,7 +64,7 @@
 </template>
 
 
-<template name="statisticsDashboardToplist7d">
+<template name="statisticsDashboardToplist">
   <table class="ui striped table">
     <thead>
       <th>Dashboard</th>
