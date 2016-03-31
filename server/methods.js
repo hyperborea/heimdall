@@ -3,8 +3,11 @@ Meteor.methods({
     const ownerFilter  = filterByOwnership(this.userId);
     const accessFilter = filterByAccess(this.userId);
 
-    var ownedJobs = Jobs.find(ownerFilter);
+    var ownedJobs = Jobs.find(ownerFilter, { fields: { _id: 1 } });
     var ownedJobIds = _.pluck(ownedJobs.fetch(), '_id');
+
+    var accessDashboards = Dashboards.find(accessFilter, { fields: { _id: 1 } });
+    var accessDashboardIds = _.pluck(accessDashboards.fetch(), '_id');
 
     var jobHistory24h = JobHistory.aggregate([
       { $match: 
@@ -24,6 +27,31 @@ Meteor.methods({
       }
     ]);
 
+    var dashboardToplist7d = Requests.aggregate([
+      { $match:
+        {
+          routeName: 'dashboardView',
+          "params.id": { $in: accessDashboardIds },
+          requestedAt: { $gt: moment().subtract(7, 'days').toDate() },
+        },
+      },
+      { $group:
+        {
+          _id: { dashboardId: '$params.id', user: '$userId' },
+          count: { $sum: 1 }
+        }
+      },
+      { $group:
+        {
+          _id: '$_id.dashboardId',
+          userCount: { $sum: 1 },
+          totalCount: { $sum: '$count' }
+        }
+      },
+      { $sort: { totalCount: -1 } },
+      { $limit: 15 }
+    ]);
+
     return {
       owned: {
         dashboards : Dashboards.find(ownerFilter).count(),
@@ -38,7 +66,11 @@ Meteor.methods({
       jobHistory24h: _.chain(jobHistory24h)
         .map( (row) => [row._id, _.omit(row, '_id')] )
         .object()
-        .value()
+        .value(),
+      dashboardToplist7d: _.map(dashboardToplist7d, (item) => {
+        var dashboard = Dashboards.findOne(item._id, { fields: { title: 1, owner: 1 } });
+        return _.extend(item, dashboard);
+      })
     };
   }
 });

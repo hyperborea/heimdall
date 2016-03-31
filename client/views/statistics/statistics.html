@@ -9,6 +9,9 @@
     <h2 class="ui dividing header"><i class="heartbeat icon"></i> Job History 24h</h2>
     {{> statisticsJobHistory24h stats=statistics.jobHistory24h.ok icon='green checkmark'}}
     {{> statisticsJobHistory24h stats=statistics.jobHistory24h.error icon='red flag outline'}}
+
+    <h2 class="ui dividing header"><i class="trophy icon"></i> Dashboard Toplist 7d</h2>
+    {{> statisticsDashboardToplist7d dashboards=statistics.dashboardToplist7d}}
   {{else}}
     <i class="big notched circle loading icon"></i> loading
   {{/if}}
@@ -58,4 +61,26 @@
     </div>
   </div>
   {{/if}}
+</template>
+
+
+<template name="statisticsDashboardToplist7d">
+  <table class="ui striped table">
+    <thead>
+      <th>Dashboard</th>
+      <th>Owner</th>
+      <th>Unique Visitors</th>
+      <th>Visits</th>
+    </thead>
+    <tbody>
+      {{#each dashboard in dashboards}}
+        <tr>
+          <td><a href={{pathFor 'dashboardView' dashboard._id}}>{{dashboard.title}}</a></td>
+          <td>{{dashboard.owner}}</td>
+          <td>{{dashboard.userCount}}</td>
+          <td>{{dashboard.totalCount}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
 </template>

@@ -15,4 +15,4 @@ Template.statistics.helpers({
 
 Template.statisticsJobHistory24h.helpers({
   formatDuration: (ms) => Math.round( moment.duration(ms).asSeconds() )
-})
+});
