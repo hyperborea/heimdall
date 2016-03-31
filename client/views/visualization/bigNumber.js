@@ -10,10 +10,10 @@ Template.visBigNumber.helpers({
       return aggregationFunction(values);
     }
     else return '-';
-  }
+  },
 });
 
 
 Template.visBigNumberForm.helpers({
-  aggregationMethods: _.keys(AGGREGATIONS)
+  aggregationMethods: _.keys(AGGREGATIONS),
 });

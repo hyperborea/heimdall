@@ -1,4 +1,4 @@
-var pg = Meteor.npmRequire('pg');
+var pg = require('pg');
 
 const TIMEOUT = 300000;
 

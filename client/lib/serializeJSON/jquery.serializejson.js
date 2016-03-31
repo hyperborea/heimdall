@@ -8,14 +8,16 @@
   and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
 */
 (function (factory) {
-  if (typeof define === 'function' && define.amd) { // AMD. Register as an anonymous module.
-    define(['jquery'], factory);
-  } else if (typeof exports === 'object') { // Node/CommonJS
-    var jQuery = require('jquery');
-    module.exports = factory(jQuery);
-  } else { // Browser globals (zepto supported)
-    factory(window.jQuery || window.Zepto || window.$); // Zepto supported on browsers as well
-  }
+  // if (typeof define === 'function' && define.amd) { // AMD. Register as an anonymous module.
+  //   define(['jquery'], factory);
+  // } else if (typeof exports === 'object') { // Node/CommonJS
+  //   var jQuery = require('jquery');
+  //   module.exports = factory(jQuery);
+  // } else { // Browser globals (zepto supported)
+  //   factory(window.jQuery || window.Zepto || window.$); // Zepto supported on browsers as well
+  // }
+  
+  factory(window.jQuery || window.Zepto || window.$);
 
 }(function ($) {
   "use strict";
