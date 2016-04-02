@@ -83,7 +83,7 @@ Meteor.methods({
 
     const pid = job.result.pid;
     if (job.result.status === 'running' && pid) {
-      queryPostgres(source, `select pg_terminate_backend(${pid})`);
+      source.query(`select pg_terminate_backend(${pid})`);
     }
   }
 });
@@ -135,7 +135,7 @@ runJob = function(jobId) {
 
   updateJob({ status: 'running' });
 
-  queryPostgres(source, job.query, function(result) {
+  source.query(job.query, function(result) {
     // TODO: need to sanitize data better (and recursively), keys cannot contain dots (.)
     updateJob(result);
     checkJobForAlarms(job);

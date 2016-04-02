@@ -1,9 +1,7 @@
-var pg = require('pg');
-
-const TIMEOUT = 300000;
+import pg from 'pg';
 
 
-queryPostgres = function(source, query, endCallback, startCallback) {
+SOURCE_TYPES.postgres.query = function(source, sql, endCallback, startCallback) {
   function results(status, data, extras) {
     extras = extras || {};
 
@@ -12,10 +10,10 @@ queryPostgres = function(source, query, endCallback, startCallback) {
       data: data
     };
 
-    endCallback && endCallback(_.extend(result, extras));
+    endCallback(_.extend(result, extras));
   }
 
-  if (source && query) {
+  if (source && sql) {
     const connectionConfig = {
       user     : source.username,
       password : decryptString(source.password),
@@ -24,15 +22,14 @@ queryPostgres = function(source, query, endCallback, startCallback) {
       database : source.database,
       ssl      : source.ssl
     };
-    // query = `SET statement_timeout TO ${TIMEOUT};` + query;
   
     pg.connect(connectionConfig, Meteor.bindEnvironment((err, client, done) => {      
       if (err) return results('error', `${err} - could not connect with data source.`);
 
       const pid = client.processID;
-      startCallback && startCallback(pid);
+      startCallback(pid);
 
-      client.query(query, Meteor.bindEnvironment((err, result) => {
+      client.query(sql, Meteor.bindEnvironment((err, result) => {
         if (err) {
           results('error', err.toString());
         }

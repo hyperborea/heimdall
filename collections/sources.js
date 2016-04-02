@@ -1,14 +1,30 @@
 Sources = new Mongo.Collection('sources');
 
 
+Sources.helpers({
+  query(sql, endCallback, startCallback) {
+    startCallback = startCallback || function(){};
+    endCallback = endCallback || function(){};
+
+    try {
+      SOURCE_TYPES[this.type].query(this, sql, endCallback, startCallback);
+    }
+    catch(err) {
+      endCallback({
+        status: 'error',
+        data: err.toString(),
+      });
+    }
+  }
+});
+
+
 Meteor.methods({
   saveSource: function(data) {
     const user = Meteor.users.findOne(this.userId);
 
     var sourceId = data._id;
     var doc = _.omit(data, '_id', 'owner', 'ownerId', 'createdAt');
-
-    if (!doc.port) doc.port = '5432';
     if (!doc.name) doc.name = doc.host;
 
     if (Meteor.isServer) {
@@ -51,6 +67,6 @@ Meteor.methods({
     }
 
     updateTest({status: 'running'});
-    queryPostgres(source, 'select now()', updateTest);
+    source.query('select 1 as test', updateTest);
   }
 });

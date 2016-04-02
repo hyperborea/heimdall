@@ -5,9 +5,15 @@
 
     <h4 class="ui dividing header">Connection Details</h4>
 
-    <div class="field">
-      <label>Name</label>
-      <input type="text" name="name" value={{doc.name}}>
+    <div class="fields">
+      <div class="twelve wide field">
+        <label>Name</label>
+        <input type="text" name="name" value={{doc.name}}>  
+      </div>
+      <div class="four wide field">
+        <label>Type</label>
+        {{> dropdown name="type" value=doc.type items=sourceTypes}}
+      </div>
     </div>
 
     <div class="field">
@@ -17,7 +23,7 @@
           <input type="text" name="host" value={{doc.host}} placeholder="host address">
         </div>
         <div class="four wide field">
-          <input type="number" name="port" value={{doc.port}} placeholder="5432">
+          <input type="number" name="port" value={{doc.port}} placeholder="port">
         </div>
         <div class="four wide field">
           <input type="text" name="database" value={{doc.database}} placeholder="database">

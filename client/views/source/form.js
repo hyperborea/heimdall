@@ -9,8 +9,9 @@ Template.sourceForm.onCreated(function() {
 Template.sourceForm.onRendered(function() {
   var form = this.$('form').form({
     fields : {
+      name     : 'empty',
+      type     : 'empty',
       host     : 'empty',
-      database : 'empty',
       username : 'empty'
     },
     inline: true,
@@ -21,11 +22,15 @@ Template.sourceForm.onRendered(function() {
 
 
 Template.sourceForm.helpers({
+  sourceTypes: () => _.values(SOURCE_TYPES),
+
   doc: function() {
-    var source = Sources.findOne(FlowRouter.getParam('id'));
+    var source = Sources.findOne(FlowRouter.getParam('id')) || {
+      type: 'postgres'
+    };
     
-    return _.extend(source || {}, {
-      password: PASSWORD_NOCHANGE
+    return _.extend(source, {
+      password: PASSWORD_NOCHANGE,
     });
   },
 
