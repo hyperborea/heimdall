@@ -88,6 +88,8 @@ Meteor.publishComposite('jobAlarms', function(options) {
         return JobAlarms.find({
           jobId: job._id,
           status: options.showAck ? { $in: ['open', 'ack'] } : 'open'
+        }, {
+          limit: 100
         });
       }
     }]
