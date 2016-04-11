@@ -136,7 +136,16 @@ runJob = function(jobId) {
   updateJob({ status: 'running' });
 
   source.query(job.query, function(result) {
-    // TODO: need to sanitize data better (and recursively), keys cannot contain dots (.)
+    // sanitize data, keys are not allowed to contain dots
+    _.isObject(result.data) && _.each(result.data, (row) => {
+      _.each(row, (value, key) => {
+        if (_.contains(key, '.')) {
+          row[key.replace('.', '_')] = value;
+          delete row[key];
+        }
+      });
+    });
+
     updateJob(result);
     checkJobForAlarms(job);
     logJobHistory(job, result, startedAt, new Date());
