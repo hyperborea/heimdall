@@ -1,0 +1,6 @@
+.carousel .hidden.transition {
+  position: absolute;
+  top: 0;
+  display: inline-block;
+  z-index: -1;
+}
