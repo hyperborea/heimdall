@@ -4,7 +4,7 @@ var _id = () => Template.currentData().id;
 
 Template.dashboardView.onCreated(function() {
   this.autorun(() => {
-    this.subscribe('dashboard', _id());
+    Template.currentData().embedded || this.subscribe('dashboard', _id());
   });
 });
 

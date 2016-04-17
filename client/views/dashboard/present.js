@@ -1,13 +1,13 @@
+function _getDashboardIds() {
+  return (FlowRouter.getQueryParam('ids') || '').split(',');
+}
+
+
 Template.dashboardPresent.onCreated(function() {
   this.subscribe('dashboards');
-});
+  this.currentDashboardId = new ReactiveVar();
 
-
-Template.dashboardPresent.onRendered(function() {
   var template = this;
-
-  template.$('.ui.checkbox').checkbox();
-
   var currentDashboard = undefined;
   var timer = undefined;
 
@@ -15,10 +15,12 @@ Template.dashboardPresent.onRendered(function() {
     FlowRouter.watchPathChange();
     if (timer) Meteor.clearTimeout(timer);
 
-    var ids = (FlowRouter.getQueryParam('ids') || '').split(',');
+    var ids = _getDashboardIds();
     var speed = FlowRouter.getQueryParam('speed') || 10000;
-    var animation = FlowRouter.getQueryParam('animation') || 'fade';
-    var duration = '100ms';
+
+    ids.forEach((dashboardId) => {
+      template.subscribe('dashboard', dashboardId);
+    });
 
     function transition(delay) {
       timer = Meteor.setTimeout(function() {
@@ -28,31 +30,8 @@ Template.dashboardPresent.onRendered(function() {
         // break cycle if there's nothing to rotate
         if (currentDashboard === ids[nextIndex]) return;
 
-        function showNext() {
-          currentDashboard = ids[nextIndex];
-          var $el = template.$('#dashboard-' + currentDashboard);
-
-          if ($el.hasClass('invisible')) {
-            $el.removeClass('invisible');
-          } else {
-            $el.transition({
-              animation: animation,
-              duration: duration
-            });
-          }
-        }
-
-        if (currentDashboard) {
-          template.$('#dashboard-' + currentDashboard).transition({
-            animation: animation,
-            duration: duration,
-            onComplete: showNext
-          });
-        }
-        else {
-          showNext();
-        }
-
+        currentDashboard = ids[nextIndex];
+        template.currentDashboardId.set(currentDashboard);
         transition(speed);
       }, delay);
     }
@@ -62,7 +41,15 @@ Template.dashboardPresent.onRendered(function() {
 });
 
 
+Template.dashboardPresent.onRendered(function() {
+  this.$('.ui.checkbox').checkbox();
+});
+
+
 Template.dashboardPresent.helpers({
+  dashboardIds: _getDashboardIds,
+  currentDashboardId: () => Template.instance().currentDashboardId.get(),
+  
   dashboardItems: function() {
     return Dashboards.find().map((dashboard) => {
       return {
@@ -71,11 +58,6 @@ Template.dashboardPresent.helpers({
       }
     });
   },
-
-  requestedIds: function() {
-    var ids = FlowRouter.getQueryParam('ids') || '';
-    return ids.split(',');
-  }
 });
 
 

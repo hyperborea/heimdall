@@ -6,7 +6,7 @@
     <div class="fields">
       <div class="fourteen wide field">
         <label>Dashboards in rotation</label>
-        {{> dropdown items=dashboardItems multiple=true name='ids' value=requestedIds}}
+        {{> dropdown items=dashboardItems multiple=true name='ids' value=dashboardIds}}
       </div>
 
       <div class="two wide field">
@@ -33,11 +33,5 @@
     <i class="close link icon js-close-fullscreen" style="position: absolute; right: 1em; z-index: 999"></i>
   {{/unless}}
 
-  <div class="carousel">
-    {{#each _id in requestedIds}}
-      <div id="dashboard-{{_id}}" class="dashboardWrapper invisible">
-        {{> dashboardView id=_id hideTopbar=true}}
-      </div>
-    {{/each}}
-  </div>
+  {{> dashboardView id=currentDashboardId embedded=true}}
 </template>
