@@ -13,7 +13,8 @@ _.extend(LDAP_SETTINGS, {
   ],
   
   roleMapping: {
-    admin: ['risk.infrastructure']
+    admin: ['risk.infrastructure'],
+    fullAccess: ['management']
   },
 
   guestUser: {
