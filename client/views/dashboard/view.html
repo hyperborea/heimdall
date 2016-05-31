@@ -19,5 +19,9 @@
   </h1>
   {{/unless}}
 
-  <div class="gridster {{loadingClass}}"></div>
+  <div class="gridster"></div>
+
+  {{#unless Template.subscriptionsReady}}
+    <div class="ui active centered inline loader"></div>
+  {{/unless}}
 </template>

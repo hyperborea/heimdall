@@ -17,11 +17,13 @@ Template.dashboardView.onRendered(function() {
   }).data('gridster').disable();
 
   this.autorun(() => {
-    var dashboard = Dashboards.findOne(_id());
-    var widgets = dashboard ? dashboard.widgets : [];
+    if (this.subscriptionsReady()) {
+      var dashboard = Dashboards.findOne(_id());
+      var widgets = dashboard ? dashboard.widgets : [];
 
-    grid.remove_all_widgets();
-    _.each(widgets, (widget) => addWidget(grid, widget));
+      grid.remove_all_widgets();
+      _.each(widgets, (widget) => addWidget(grid, widget));  
+    }
   });
 });
 
@@ -29,10 +31,6 @@ Template.dashboardView.onRendered(function() {
 Template.dashboardView.helpers({
   doc: function() {
     return Dashboards.findOne(_id());
-  },
-
-  loadingClass: function() {
-    return Session.get('isLoading') && 'hidden';
   },
 
   starredClass: function(doc) {
