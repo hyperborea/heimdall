@@ -39,10 +39,13 @@ Meteor.publishComposite('dashboardForm', function(_id) {
   };
 });
 
+Meteor.publish('jobs', function(filter, options={}) {
+  filter = { $and: [filter || {}, filterByAccess(this.userId)] };
 
-Meteor.publish('jobs', function() {
-  return Jobs.find(filterByAccess(this.userId), {
-    fields : { name: 1, owner: 1, ownerId: 1, createdAt: 1, schedule: 1, status: 1, alarmStatus: 1 }
+  return Jobs.find(filter, {
+    fields : { name: 1, owner: 1, ownerId: 1, createdAt: 1, schedule: 1, status: 1, alarmStatus: 1 },
+    sort   : { createdAt: -1 },
+    limit  : options.limit,
   });
 });
 
@@ -61,7 +64,7 @@ Meteor.publishComposite('visualizations', function() {
     children: [{
       find: (job) => Visualizations.find({ jobId: job._id }, { fields: { title: 1, jobId: 1 } })
     }]
-  }
+  };
 });
 
 Meteor.publish('visualization', function(_id) {
@@ -74,7 +77,7 @@ Meteor.publish('visualization', function(_id) {
   ];
 });
 
-Meteor.publishComposite('jobAlarms', function(options) {
+Meteor.publishComposite('jobAlarms', function(options={}) {
   _.defaults(options, {
     showAck: false,
   });
@@ -105,14 +108,15 @@ Meteor.publish('jobAlarmsForRun', function(jobId, runId) {
   ];
 })
 
-
 Meteor.publish('sources', function() {
   return Sources.find(filterByAccess(this.userId), {
     fields : { password: 0 }
   });
 });
 
+Meteor.publish('groups', function(search='', limit=10) {
+  var filter = {};
+  if (search) filter['name'] = { $regex: search };
 
-Meteor.publish('groups', function() {
-  return Groups.find();
+  return Groups.find(filter, { limit: limit });
 });

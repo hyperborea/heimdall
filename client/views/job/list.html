@@ -40,4 +40,8 @@
       </a>
     {{/each}}
   </div>
+
+  {{#if hasMore jobs}}
+    <div class="ui fluid basic button js-load-more {{#unless Template.subscriptionsReady}}loading{{/unless}}">load more...</div>
+  {{/if}}
 </template>
