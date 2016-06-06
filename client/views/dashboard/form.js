@@ -1,8 +1,8 @@
 Template.dashboardForm.onCreated(function() {
-  this.autorun(() => {
-    this.subscribe('dashboardForm', FlowRouter.getParam('id'));
-    this.subscribe('visualizations');
-  });
+  this.includeNonOwned = new ReactiveVar(false);
+
+  this.autorun(() => this.subscribe('dashboardForm', FlowRouter.getParam('id')));
+  this.autorun(() => this.subscribe('visualizations', this.includeNonOwned.get()));
 });
 
 
@@ -13,6 +13,8 @@ Template.dashboardForm.onRendered(function() {
     },
     inline: true
   });
+
+  this.$('.ui.checkbox').checkbox();
 
   var grid = this.$('.gridster').gridster({
     widget_margins: [10, 10],
@@ -115,6 +117,10 @@ Template.dashboardForm.events({
     var widgetNode = $(event.target).closest('.dashboardFormWidget');
 
     grid.remove_widget(widgetNode);
+  },
+
+  'change input[name="includeNonOwned:skip"]': function(event, template) {
+    template.includeNonOwned.set(event.target.checked);
   }
 });
 

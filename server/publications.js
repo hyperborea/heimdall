@@ -46,7 +46,7 @@ Meteor.publish('jobs', function(filter, options={}) {
     fields : { name: 1, owner: 1, ownerId: 1, createdAt: 1, schedule: 1, status: 1, alarmStatus: 1 },
     sort   : { createdAt: -1 },
     limit  : options.limit,
-  });
+  })
 });
 
 Meteor.publish('job', function(_id) {
@@ -58,11 +58,18 @@ Meteor.publish('job', function(_id) {
   ];
 });
 
-Meteor.publishComposite('visualizations', function() {
+Meteor.publishComposite('visualizations', function(includeNonOwned=false) {
   return {
-    find: () => Jobs.find(filterByAccess(this.userId), { fields: { name: 1, owner: 1 } }),
+    find: () => {
+      // this.visCounter = 0;
+      var filter = includeNonOwned ? filterByAccess(this.userId) : filterByOwnership(this.userId);
+      return Jobs.find(filter, { fields: { name: 1, owner: 1 } });
+    },
     children: [{
-      find: (job) => Visualizations.find({ jobId: job._id }, { fields: { title: 1, jobId: 1 } })
+      find: (job) => {
+        // if (++this.visCounter > limit) return;
+        return Visualizations.find({ jobId: job._id }, { fields: { title: 1, jobId: 1 } });
+      }
     }]
   };
 });
