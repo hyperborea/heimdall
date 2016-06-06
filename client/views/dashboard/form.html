@@ -66,15 +66,19 @@
 
     <div class="fields">
       <div class="field">
-        <div class="ui toggle checkbox">
+        <div class="ui checkbox">
           <input type="checkbox" name="includeNonOwned:skip">
-          <label>include non-owned visualizations in dropdown</label>
+          <label><small>include non-owned visualizations in dropdown</small></label>
         </div>
       </div>
     </div>
   </form>
 
   <div class="gridster"></div>
+
+  {{#unless Template.subscriptionsReady}}
+    <div class="ui active centered inline loader"></div>
+  {{/unless}}
 
   <div class="ui info message">
     <div class="header">Did you know?</div>

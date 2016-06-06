@@ -46,9 +46,9 @@ Template.dashboardForm.onRendered(function() {
   }).data('gridster');
 
   this.autorun(() => {
-    var dashboard = Dashboards.findOne(FlowRouter.getParam('id'));
+    if (this.subscriptionsReady()) {
+      var dashboard = Dashboards.findOne(FlowRouter.getParam('id'));
 
-    if (dashboard) {
       grid.remove_all_widgets();
       _.each(dashboard.widgets, (widget) => {
         addWidget(grid, widget);
