@@ -136,6 +136,10 @@ runJob = function(jobId) {
   updateJob({ status: 'running' });
 
   source.query(job.query, function(result) {
+    // enforce maximum rows setting (bson size is limited to ~ 16MB)
+    if (result.status === 'ok' && result.data && result.data.length > SOURCE_TYPES._maxRows)
+      result = { status: 'error', data: `Exceeded limit of ${SOURCE_TYPES._maxRows} rows.` };
+
     // sanitize data, keys are not allowed to contain dots
     _.isObject(result.data) && _.each(result.data, (row) => {
       _.each(row, (value, key) => {

@@ -20,6 +20,7 @@ SOURCE_TYPES.mssql.query = function(source, sql, endCallback, startCallback) {
       server   : source.host,
       port     : source.port,
       database : source.database,
+      requestTimeout: SOURCE_TYPES._timeoutMs,
       options: {
         tdsVersion: '7_1'
       }
