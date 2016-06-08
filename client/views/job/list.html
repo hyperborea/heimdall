@@ -7,11 +7,15 @@
         </a>
       </div>
 
-      <div class="ten wide field">
+      <div class="seven wide field">
         <div class="ui fluid icon input">
           <i class="search icon"></i>
           <input type="text" name="search" placeholder="Search..." value={{search}}>
         </div>
+      </div>
+
+      <div class="three wide field">
+        {{> dropdown name="status" value=status items=statusOptions allowEmpty=true placeholder="no filter"}}
       </div>
 
       <div class="three wide field">

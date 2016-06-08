@@ -5,12 +5,12 @@
     <span class="default text">{{defaultText}}</span>
     <div class="menu">
       {{#if allowEmpty}}
-        <div class="item" data-value="">{{defaultText}} (optional)</div>
+        <div class="item" data-value="">{{defaultText}}</div>
         <div class="divider"></div>
       {{/if}}
 
       {{#each item in items}}
-        <div class="item" data-value={{valueOf item}}>{{textOf item}}</div>
+        <div class="item" data-value={{valueOf item}}>{{{textOf item}}}</div>
       {{/each}}
     </div>
   </div>
