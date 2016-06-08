@@ -57,6 +57,8 @@ checkJobForAlarms = function(job) {
         var value = condition.value;
         var op = condition.op;
 
+        if (!op) return;
+
         if (value.indexOf('@') ===0) {
           var key = value.substring(1, value.length);
           value = row[key];

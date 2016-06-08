@@ -50,7 +50,7 @@ Template.dashboardForm.onRendered(function() {
       var dashboard = Dashboards.findOne(FlowRouter.getParam('id'));
 
       grid.remove_all_widgets();
-      _.each(dashboard.widgets, (widget) => {
+      _.each(dashboard && dashboard.widgets, (widget) => {
         addWidget(grid, widget);
       });
     }
