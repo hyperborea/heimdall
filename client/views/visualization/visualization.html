@@ -5,21 +5,27 @@
         {{> Template.dynamic template=templateName data=visData}}   
       </div>
     {{else}}
-      <div class="ui top attached segment grid">
-        <div class="two column row">
-          <div class="column">
-            <strong>{{vis.title}}</strong>  
+      <div class="ui top attached segment">
+        {{#unless isFullscreen}}
+          <div class="ui grid">
+            <div class="two column row">
+              <div class="column">
+                <strong>{{vis.title}}</strong>  
+              </div>
+              <div class="right aligned column">
+                <span class="timeAgo">{{timeAgo result.updatedAt}}</span>
+                &ensp;
+                <i class="download link icon js-download" title="download"></i>
+                <i class="refresh {{loading}} link icon js-run" title="refresh"></i>
+                <a href={{pathFor 'visualizationEdit' id=vis._id}} title="edit">
+                  <i class="edit link icon"></i>
+                </a>
+              </div>
+            </div>       
           </div>
-          <div class="right aligned column">
-            <span class="timeAgo">{{timeAgo result.updatedAt}}</span>
-            &ensp;
-            <i class="download link icon js-download" title="download"></i>
-            <i class="refresh {{loading}} link icon js-run" title="refresh"></i>
-            <a href={{pathFor 'visualizationEdit' id=vis._id}} title="edit">
-              <i class="edit link icon"></i>
-            </a>
-          </div>          
-        </div>
+        {{else}}
+          <strong>{{vis.title}}</strong>
+        {{/unless}}
       </div>
       <div class="ui bottom attached segment">
         {{> Template.dynamic template=templateName data=visData}}   
