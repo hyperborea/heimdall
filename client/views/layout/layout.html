@@ -4,15 +4,8 @@
 </head>
 
 
-<template name="layoutBasic">
-  <div class="ui basic segment">
-    {{> Template.dynamic template=template data=data}}
-  </div>
-</template>
-
-
 <template name="layout">
-  <div class="ui sidebar inverted vertical visible main menu">
+  <div class="ui sidebar inverted vertical main menu {{isNotFullscreen 'visible'}}">
     <div class="header item">
       <canvas id="logo"></canvas> <span>eimdall</span>
     </div>
@@ -51,7 +44,7 @@
     </div>
   </div>
 
-  <div class="pusher">
+  <div class="{{isNotFullscreen 'pusher'}}">
     <div class="ui basic segment">
       {{> Template.dynamic template=template data=data}}  
     </div>

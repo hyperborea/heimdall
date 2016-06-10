@@ -1,13 +1,11 @@
-isFullscreen = function() {
-  return FlowRouter.getQueryParam('fullscreen') === 'true';
-};
-Template.registerHelper('isFullscreen', isFullscreen);
+isFullscreen = () => FlowRouter.getQueryParam('fullscreen') === 'true';
+Template.registerHelper('isFullscreen', (valueIfTrue=true) => isFullscreen() && valueIfTrue);
+Template.registerHelper('isNotFullscreen', (valueIfTrue=true) => !isFullscreen() && valueIfTrue);
 
 
 render = function(templateName) {
   return function(params, queryParams) {
-    var layout = isFullscreen() ? 'layoutBasic' : 'layout';
-    BlazeLayout.render(layout, {template: templateName, data: params});
+    BlazeLayout.render('layout', {template: templateName, data: params});
   }
 };
 
