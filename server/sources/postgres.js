@@ -29,7 +29,7 @@ SOURCE_TYPES.postgres.query = function(source, sql, endCallback, startCallback) 
       const pid = client.processID;
       startCallback(pid);
 
-      client.query(`SET statement_timeout TO ${SOURCE_TYPES._timeoutMs}`);
+      client.query(`SET statement_timeout TO ${SOURCE_SETTINGS.timeoutMs}`);
 
       client.query(sql, Meteor.bindEnvironment((err, result) => {
         if (err) {

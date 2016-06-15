@@ -24,7 +24,7 @@ SOURCE_TYPES.mysql.query = function(source, sql, endCallback, startCallback) {
 
     connection.connect();
 
-    connection.query({sql: sql, timeout: SOURCE_TYPES._timeoutMs}, Meteor.bindEnvironment((err, rows, fields) => {
+    connection.query({sql: sql, timeout: SOURCE_SETTINGS.timeoutMs}, Meteor.bindEnvironment((err, rows, fields) => {
       if (err) {
         results('error', err.toString());
       }
