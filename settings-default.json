@@ -4,7 +4,18 @@
   },
 
   "ldap": {
+    "allowedGroups": [
+      "heimdall.debug",
+    ],
+    
+    "roleMapping": {},
 
+    "guestUser": {
+      "username": "guest",
+      "password": "guest",
+      "displayName": "Guest User",
+      "groups": ["heimdall.debug"]
+    }
   },
 
   "salt": null,
