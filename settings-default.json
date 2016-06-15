@@ -5,7 +5,7 @@
 
   "ldap": {
     "allowedGroups": [
-      "heimdall.debug",
+      "heimdall.debug"
     ],
     
     "roleMapping": {},
