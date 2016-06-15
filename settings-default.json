@@ -3,6 +3,10 @@
     "slackEnabled": false
   },
 
+  "ldap": {
+
+  },
+
   "salt": null,
   "slackHookURL": null
 }

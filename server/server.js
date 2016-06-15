@@ -1,3 +1,6 @@
+_.extend(LDAP_SETTINGS, Meteor.settings.ldap);
+
+
 Meteor.startup(function() {
   SyncedCron.start();
 

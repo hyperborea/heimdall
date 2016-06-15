@@ -25,7 +25,6 @@ msavin:mongol
 arillo:flow-router-helpers
 matb33:collection-hooks
 momentjs:moment
-klarna:accounts-ldap
 reactive-var
 ecmascript
 email
@@ -38,7 +37,8 @@ hyperborea:c3
 matteodem:gridster
 hyperborea:datamaps
 hyperborea:ethergrid
-klarna:accounts-ldap-ui
+hyperborea:accounts-ldap
+hyperborea:accounts-ldap-ui
 meteorhacks:aggregate
 pfafman:filesaver
 reywood:publish-composite
