@@ -12,7 +12,7 @@ Template.sourceForm.onRendered(function() {
       name     : 'empty',
       type     : 'empty',
       host     : 'empty',
-      username : 'empty'
+      // username : 'empty'
     },
     inline: true,
   });
