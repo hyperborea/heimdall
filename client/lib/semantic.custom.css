@@ -15,3 +15,7 @@ a .link.icon {
 .ui.dropdown .text .meta {
   display: none;
 }
+
+.ui.borderless.table tr td {
+  border-top: 0;
+}

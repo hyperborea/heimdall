@@ -2,11 +2,15 @@
   <div class="ui small form field">
     <div class="ui pointing secondary tabular menu">
       <a class="active item" data-tab="series">Series</a>
+      <a class="item" data-tab="display">Display</a>
       <a class="item" data-tab="axes">Axes</a>
       <a class="item" data-tab="grid">Grid</a>
     </div>
     <div class="ui active tab container" data-tab="series">
       {{> visChartFormSeries}}
+    </div>
+    <div class="ui tab container" data-tab="display">
+      {{> visChartFormDisplay}}
     </div>
     <div class="ui tab container" data-tab="axes">
       {{> visChartFormAxes}}
@@ -19,31 +23,26 @@
 
 
 <template name="visChartFormSeriesItem">
-  <div class="fields">
-    <div class="three wide field">
-      <div class="ui single selection dropdown">
-        <input type="hidden" name={{namePath '[type]'}} value={{series.type}}>
-        <i class="dropdown icon"></i>
-        <span class="default text">Chart Type</span>
-        <div class="menu">
-          <div class="item" data-value="line"><i class="line chart icon"></i>line</div>
-          <div class="item" data-value="spline"><i class="line chart icon"></i>line (smooth)</div>
-          <div class="item" data-value="area"><i class="area chart icon"></i>area</div>
-          <div class="item" data-value="bar"><i class="bar chart icon"></i>bar</div>
-        </div>
+  <tr>
+    <td>
+      {{> dropdown items=types name=(namePath '[type]') value=series.type placeholder="Chart Type"}}
+    </td>
+    <td>
+      {{> dropdown items=../fields name=(namePath '[field]') value=series.field}}
+    </td>
+    <td>
+      <div class="ui input">
+        <input type="text" name={{namePath '[name]'}} value={{series.name}} placeholder={{series.field}}>
       </div>
-    </div>
-    <div class="six wide field">
-      {{> dropdown items=../fields multiple=true name=(namePath '[columns]:list') value=series.columns}}
-    </div>
-    <div class="two wide field">
+    </td>
+    <td>
       {{> colorPicker name=(namePath '[color]') value=series.color}}
-    </div>
-    <div class="two wide field">
+    </td>
+    <td>
       {{> dropdown items=lineTypes name=(namePath '[lineType]') value=series.lineType}}
-    </div>
-    <div class="two wide field">
-      <div class="ui compact single search selection dropdown">
+    </td>
+    <td>
+      <div class="ui compact single search selection fluid dropdown">
         <input type="hidden" name={{namePath '[yAxis]'}} value={{series.yAxis}}>
         <i class="dropdown icon"></i>
         <span class="text"></span>
@@ -52,37 +51,83 @@
           <div class="item" data-value="y2">Y2 axis</div>
         </div>
       </div>
+    </td>
+    <td>
+      <div class="ui basic red circular icon button js-remove-series">
+        <i class="minus icon"></i>
+      </div>
+    </td>
+  </tr>
+</template>
+
+
+<template name="visChartFormGroupItem">
+  <div class="fields">
+    <div class="twelve wide field">
+      {{> dropdown items=../fields multiple=true name=(path index) value=group}}
     </div>
     <div class="one wide field">
-      <i class="circular red inverted remove link icon js-remove-series"></i>
+      <div class="ui basic red circular icon button js-remove-group">
+        <i class="minus icon"></i>
+      </div>
     </div>
   </div>
 </template>
 
 
 <template name="visChartFormSeries">
-  <div class="field">
-    <div class="ui basic button js-add-series">
-      <i class="plus icon"></i> Add series
-    </div>
-  </div>  
+  <table class="ui very basic compact borderless table">
+    <thead>
+      <tr>
+        <th class="two wide">Chart Type</th>
+        <th class="four wide">Field</th>
+        <th class="three wide">Name</th>
+        <th class="two wide">Color</th>
+        <th class="two wide">Line Type</th>
+        <th class="two wide">Axis</th>
+        <th class="one wide"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each series in seriesArray}}
+        {{> visChartFormSeriesItem index=@index series=series}}
+      {{/each}}
+      <tr>
+        <td colspan="6">
+          <div class="ui basic button js-add-series">
+            <i class="plus icon"></i> Add series
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-  {{#each series in seriesArray}}
-    {{> visChartFormSeriesItem index=@index series=series}}
-  {{/each}}  
+  {{#each group in groupsArray}}
+    {{> visChartFormGroupItem index=@index group=group}}
+  {{/each}}
 
-  <div class="three fields">
-    <div class="field">
+  <div class="ui basic button js-add-group">
+    <i class="plus icon"></i> Add group
+  </div>
+
+  <div class="ui horizontal divider">advanced</div>
+
+  <div class="fields">
+    <div class="five wide field">
       {{> dropdown name="categoryField" value=settings.categoryField items=fields 
           placeholder="category field" allowEmpty=true}}
     </div>
 
-    <div class="field">
+    <div class="one wide field">
+      <center><em>or</em></center>
+    </div>
+
+    <div class="five wide field">
       {{> dropdown name="timeField" value=settings.timeField items=fields 
           placeholder="time field" allowEmpty=true}}
     </div>
 
-    <div class="field">
+    <div class="five wide field">
       <div class="ui labeled input">
         <a href="https://github.com/mbostock/d3/wiki/Time-Formatting" target="_blank" class="ui label">
           Time Format
@@ -91,7 +136,10 @@
       </div>
     </div>
   </div>
+</template>
 
+
+<template name="visChartFormDisplay">
   <div class="field">
     <div class="ui checkbox">
       <input type="checkbox" name="hidePoints:boolean" checked={{settings.hidePoints}}>
@@ -201,7 +249,9 @@
       </div>
     </div>
     <div class="one wide field">
-      <i class="circular red inverted remove link icon js-remove-line" data-index={{index}}></i>
+      <div class="ui basic red circular icon button js-remove-line" data-index={{index}}>
+        <i class="minus icon"></i>
+      </div>
     </div>
   </div>
 </template>

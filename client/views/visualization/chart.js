@@ -8,29 +8,24 @@ Template.visChart.onRendered(function() {
   this.autorun(() => {
     const context = Template.currentData();
     const settings = context.settings;
+    let series = settings.series || [];
 
     if (context.data) {
-      var fieldSettings = {};
-      _.each(settings.series, (series) => {
-        _.each(series.columns, (field) => {
-          fieldSettings[field] = {
-            type  : series.type || 'line',
-            yAxis : series.yAxis || 'y',
-          };
-        });
-      });
+      var fields = _.pluck(series, 'field');
+      series.forEach(s => s.name = s.name || s.field);
 
       var config = {
         bindto: container,
         data: {
-          json: context.data,
-          keys: { value: _.keys(fieldSettings) },
-          groups: _.map(settings.series, (series) => series.columns),
-          types: _.object(_.keys(fieldSettings), _.pluck(fieldSettings, 'type')),
-          axes: _.object(_.keys(fieldSettings), _.pluck(fieldSettings, 'yAxis')),
-          colors: _.object( _.map(settings.series, (series) => [series.columns[0], series.color]) ),
-          classes: _.object( _.map(settings.series, (series) => [series.columns[0], series.lineType]) ),
-          order: null,
+          json    : context.data,
+          keys    : { value: fields },
+          groups  : settings.groups,
+          types   : _.object(fields, _.pluck(series, 'type')),
+          axes    : _.object(fields, _.pluck(series, 'yAxis')),
+          colors  : _.object(fields, _.pluck(series, 'color')),
+          classes : _.object(fields, _.pluck(series, 'lineType')),
+          names   : _.object(fields, _.pluck(series, 'name')),
+          order   : null,
         },
         size: {
           height: $wrapper.height() - 70
@@ -59,7 +54,7 @@ Template.visChart.onRendered(function() {
             max: settings.maxY
           },
           y2: {
-            show: _.where(fieldSettings, {yAxis: 'y2'}).length > 0,
+            show: _.where(series, {yAxis: 'y2'}).length > 0,
             label: {
               text: settings.labelY2,
               position: settings.labelY2 && 'outer-top'

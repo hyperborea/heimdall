@@ -49,9 +49,9 @@ Template.jobList.helpers({
     return Jobs.find(jobsFilter(), { sort: { createdAt: -1 } });
   },
   statusOptions: [
-    { value: 'ok', text: '<i class="green checkmark icon"></i> success' },
-    { value: 'running', text: '<i class="refresh icon"></i> running' },
-    { value: 'error', text: '<i class="red remove icon"></i> error' },
+    { value: 'ok', text: 'success', icon: 'green checkmark' },
+    { value: 'running', text: 'running', icon: 'refresh' },
+    { value: 'error', text: 'error', icon: 'red remove' },
   ],
 
   search: () => Session.get('jobList.search'),

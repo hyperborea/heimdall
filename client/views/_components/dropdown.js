@@ -23,4 +23,5 @@ Template.dropdown.helpers({
 
   valueOf: (item) => _.isObject(item) ? item.value : item,
   textOf: (item) => _.isObject(item) ? item.text : item,
+  iconOf: (item) => _.isObject(item) ? item.icon : false,
 });

@@ -17,6 +17,7 @@ Template.visChartForm.onRendered(function() {
 
 Template.visChartFormSeries.onCreated(function() {
   this.series = new ReactiveVar(this.data.settings.series || [newSeries()]);
+  this.groups = new ReactiveVar(this.data.settings.groups || []);
 });
 
 Template.visChartFormSeriesItem.onRendered(function() {
@@ -25,18 +26,33 @@ Template.visChartFormSeriesItem.onRendered(function() {
 });
 
 Template.visChartFormSeries.helpers({
-  seriesArray: function() {
-    return Template.instance().series.get();
-  }
+  seriesArray: () => Template.instance().series.get(),
+  groupsArray: () => Template.instance().groups.get(),
 });
 
 Template.visChartFormSeriesItem.helpers({
   lineTypes: ['solid', 'dashed', 'dotted', 'alternating', 'animated'],
+  types: [
+    { value: 'line', text: 'line', icon: 'line chart' },
+    { value: 'spline', text: 'spline', icon: 'line chart' },
+    { value: 'area', text: 'area', icon: 'area chart' },
+    { value: 'bar', text: 'bar', icon: 'bar chart' },
+  ],
 
   namePath: (addendum) => {
     var data = Template.currentData();
     return `series[${data.index}]${addendum}`;
   }
+});
+
+Template.visChartFormSeriesItem.events({
+  'change [name$="[field]"]': function(event, template) {
+    template.$('[name$="[name]"]').attr('placeholder', event.target.value).val('');
+  }
+});
+
+Template.visChartFormGroupItem.helpers({
+  path: (index) => `groups[${index}]:list`
 });
 
 Template.visChartFormSeries.events({
@@ -53,7 +69,22 @@ Template.visChartFormSeries.events({
     
     series.splice(index, 1);
     template.series.set(series);
-  }
+  },
+
+  'click .js-add-group': function(event, template) {
+    var groups = template.groups.get();
+
+    groups.push([]);
+    template.groups.set(groups);
+  },
+
+  'click .js-remove-group': function(event, template) {
+    var index = Blaze.getData(event.target).index;
+    var groups = template.groups.get();
+    
+    groups.splice(index, 1);
+    template.groups.set(groups);
+  },
 });
 
 
