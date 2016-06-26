@@ -58,11 +58,11 @@
 <template name="dashboardListItem">
   <a href={{pathFor 'dashboardView' id=dashboard._id}} class="card">
     <div class="content">
+      {{#if hasStarred dashboard}}
+        <i class="right floated yellow star icon"></i>
+      {{/if}}
       <div class="header">
         {{dashboard.title}}
-        {{#if hasStarred dashboard}}
-          <i class="yellow star icon"></i>
-        {{/if}}
       </div>
       {{#if dashboard.tags}}
         <div class="meta">

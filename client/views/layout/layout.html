@@ -29,16 +29,17 @@
     <a href={{pathFor 'statistics'}} class="{{isActiveRoute regex='^statistics'}} item">
       <i class="line chart icon"></i> Statistics
     </a>
-    <div class="item">
+    <a href={{pathFor 'userOverview'}} class="{{isActiveRoute regex='^user'}} item">
+      <i class={{userIcon currentUser}}></i>
       {{currentUser.displayName}}
-      <div class="menu">
-        {{#if mayAdmin}}
-          <a href="" class="{{isAdmin 'active'}} item js-toggle-admin">
-            <i class="rocket icon"></i> Admin {{isAdmin 'enabled' 'disabled'}}
-          </a>
-        {{/if}}
-        <a href={{pathFor 'logout'}} class="item"><i class="sign out icon"></i> Logout</a>
-      </div>
+    </a>
+    <div class="menu">
+      {{#if mayAdmin}}
+        <a href="" class="{{isAdmin 'active'}} item js-toggle-admin">
+          Admin {{isAdmin 'enabled' 'disabled'}}
+        </a>
+      {{/if}}
+      <a href={{pathFor 'logout'}} class="item">Logout</a>
     </div>
   </div>
 
