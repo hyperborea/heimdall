@@ -3,6 +3,7 @@ const PASSWORD_NOCHANGE = '_PASSWORD_NOCHANGE_';
 
 Template.sourceForm.onCreated(function() {
   this.unsavedChanges = new ReactiveVar(false);
+  this.sourceTypeConfig = new ReactiveVar({});
 });
 
 
@@ -11,8 +12,6 @@ Template.sourceForm.onRendered(function() {
     fields : {
       name     : 'empty',
       type     : 'empty',
-      host     : 'empty',
-      // username : 'empty'
     },
     inline: true,
   });
@@ -25,13 +24,20 @@ Template.sourceForm.helpers({
   sourceTypes: () => _.values(SOURCE_TYPES),
 
   doc: function() {
-    var source = Sources.findOne(FlowRouter.getParam('id')) || {
-      type: 'postgres'
-    };
+    var source = Sources.findOne(FlowRouter.getParam('id')) || {};
+
+    if (source.type) {
+      Template.instance().sourceTypeConfig.set(SOURCE_TYPES[source.type]);  
+    }
     
     return _.extend(source, {
       password: PASSWORD_NOCHANGE,
     });
+  },
+
+  showField: function(field) {
+    var config = Template.instance().sourceTypeConfig.get();
+    return config && _.contains(config.fields, field);
   },
 
   saveBtnClass: function() {
@@ -55,6 +61,10 @@ Template.sourceForm.helpers({
 Template.sourceForm.events({
   'change input, keyup input': function(event, template) {
     template.unsavedChanges.set(true);
+  },
+
+  'change input[name=type]': function(event, template) {
+    template.sourceTypeConfig.set(SOURCE_TYPES[event.target.value]);
   },
 
   'submit form': function(event, template) {

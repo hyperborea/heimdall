@@ -29,12 +29,18 @@
           <input type="text" name="database" value={{doc.database}} placeholder="database">
         </div>
       </div>
+    </div>
+
+    {{#if showField 'ssl'}}
+    <div class="field">
       <div class="ui checkbox">
         <input type="checkbox" name="ssl:boolean" checked={{doc.ssl}}>
         <label>use SSL</label>
       </div>
     </div>
+    {{/if}}
 
+    {{#if showField 'credentials'}}
     <div class="field">
       <label>Credentials</label>
       <div class="two fields">
@@ -46,6 +52,7 @@
         </div>
       </div>
     </div>
+    {{/if}}
 
     <div class="field">
       <label>Access Groups</label>
@@ -56,7 +63,7 @@
 
     <div class="action field {{ ownerOrNewVisibility doc }}">
       <div class="ui buttons">
-        <div class="ui submit button {{saveBtnClass}}">save</div>
+        <div class="ui submit button js-save-source {{saveBtnClass}}">save</div>
         {{#if doc._id}}
           <div class="or" data-text="&amp;"></div>
           <div class="ui submit button js-test">test connection</div>

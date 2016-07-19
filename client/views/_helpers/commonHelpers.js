@@ -3,4 +3,4 @@ Template.registerHelper('increment', (n) => n+1);
 Template.registerHelper('moment', (date, spec) => moment(date).format(spec));
 Template.registerHelper('list', (arr) => arr && arr.join(', '));
 
-Template.registerHelper('userIcon', (user) => (user.profile.icon || 'user') + ' icon');
+Template.registerHelper('userIcon', (user) => ((user && user.profile.icon) || 'user') + ' icon');

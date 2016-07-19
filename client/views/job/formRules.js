@@ -14,7 +14,7 @@ function newCondition() {
 
 
 Template.jobFormRules.onCreated(function() {
-  var doc = Template.currentData().doc;
+  var doc = Template.currentData().doc || {};
   this.rules = new ReactiveVar(doc.rules || []);
 });
 
