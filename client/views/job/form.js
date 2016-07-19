@@ -34,7 +34,7 @@ Template.jobForm.onRendered(function() {
 
   this.subscribe('sources', () => {
     Tracker.afterFlush(() => {
-      this.$('.source.dropdown').dropdown();
+      this.$('.source-dropdown').dropdown();
     });
   });
 });

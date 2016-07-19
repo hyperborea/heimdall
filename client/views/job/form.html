@@ -4,7 +4,7 @@
 
     <div class="fields">
       <div class="four wide field">
-        <div class="ui single search selection source dropdown">
+        <div class="ui single search selection dropdown source-dropdown">
           <input type="hidden" name="sourceId" value={{doc.sourceId}}>
           <i class="dropdown icon"></i>
           <div class="default text">Source</div>
@@ -35,13 +35,13 @@
       </div>
       <div class="content">{{> jobFormSchedule doc=doc}}</div>
 
-      {{#if doc.result.fields}}
+      <!-- {{#if doc.result.fields}} -->
         <div class="title">
           <i class="dropdown icon"></i> Alarms
           {{#if doc.rules}}<i class="lightning icon"></i>{{/if}}
         </div>
         <div class="content">{{> jobFormRules doc=doc}}</div>
-      {{/if}}
+      <!-- {{/if}} -->
 
       <div class="title">
         <i class="dropdown icon"></i> Email

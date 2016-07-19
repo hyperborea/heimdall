@@ -25,3 +25,10 @@ body {
   height: 60px;
   vertical-align: middle;
 }
+
+div.hopscotch-bubble .hopscotch-bubble-container .hopscotch-bubble-close {
+  background: transparent url(hopscotch/sprite-green.png) -192px -92px no-repeat;
+}
+div.hopscotch-bubble .hopscotch-bubble-container .hopscotch-bubble-number {
+  background: transparent url(hopscotch/sprite-green.png) 0 0 no-repeat;
+}
