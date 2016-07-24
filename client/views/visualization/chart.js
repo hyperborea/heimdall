@@ -1,3 +1,5 @@
+import c3 from 'c3';
+
 Template.visChart.onRendered(function() {
   var template = this;
   var container = template.find('.chart');

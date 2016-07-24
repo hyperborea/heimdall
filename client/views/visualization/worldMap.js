@@ -1,3 +1,6 @@
+import d3 from 'd3';
+import Datamap from 'datamaps';
+
 Template.visWorldMap.onRendered(function() {
   let template = this;
 

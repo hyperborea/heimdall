@@ -1,3 +1,5 @@
+import 'c3/c3.min.css';
+
 Template.layout.onRendered(function() {
   this.$('.ui.disclaimer.modal').modal({
     blurring: true

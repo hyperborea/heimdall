@@ -1,3 +1,6 @@
+import d3 from 'd3';
+import c3 from 'c3';
+
 Template.visPieChart.onRendered(function() {
   var template = this;
   var container = template.find('.chart');

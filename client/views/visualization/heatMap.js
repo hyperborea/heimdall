@@ -1,3 +1,5 @@
+import d3 from 'd3';
+
 Template.visHeatMap.onRendered(function() {
   var context = Template.currentData();
   var settings = context.settings;

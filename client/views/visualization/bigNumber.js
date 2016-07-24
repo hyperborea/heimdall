@@ -1,3 +1,5 @@
+import { format } from 'd3';
+
 Template.visBigNumber.helpers({
   value: function() {
     const context = Template.currentData();
@@ -8,7 +10,7 @@ Template.visBigNumber.helpers({
       var values = _.pluck(context.data, settings.valueField);
       var result = aggregationFunction(values);
 
-      return _.isNumber(result) ? d3.format(',')(result) : result;
+      return _.isNumber(result) ? format(',')(result) : result;
     }
     else return '-';
   },
