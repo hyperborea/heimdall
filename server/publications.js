@@ -127,3 +127,7 @@ Meteor.publish('groups', function(search='', limit=10) {
 
   return Groups.find(filter, { limit: limit });
 });
+
+Meteor.publish('events', function() {
+  return Events.find();
+});

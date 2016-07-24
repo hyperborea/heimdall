@@ -1,0 +1,42 @@
+<template name="eventList">
+  <form class="ui form">
+    <div class="fields">
+      <div class="three wide field">
+        <div class="ui input left icon">
+          <i class="calendar icon"></i>
+          <input type="text" name="date" placeholder="YYYY-MM-DD" value={{moment undefined 'YYYY-MM-DD'}}>
+        </div>
+      </div>
+
+      <div class="ten wide field">
+        <input type="text" name="title" placeholder="Event title">
+      </div>
+
+      <div class="three wide field">
+        <button class="ui positive basic fluid button">Add</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="timeline"></div>
+
+  <div class="ui list">
+    {{#each event in events}}
+      {{> eventItem event}}
+    {{/each}}
+  </div>
+</template>
+
+
+<template name="eventItem">
+  <div class="item">
+    <div class="right floated content">
+      <div class="ui negative basic button js-delete">delete</div>
+    </div>
+    <i class="right triangle icon"></i>
+    <div class="content">
+      <div class="header">{{title}}</div>
+      <div class="description">{{date}}</div>
+    </div>
+  </div>
+</template>
