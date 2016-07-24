@@ -1,6 +1,6 @@
 /*
   DO NOT MODIFY - This file has been generated and will be regenerated
-  Semantic UI v2.1.4
+  Semantic UI v2.2.1
 */
 /*******************************
             Rail
@@ -27,8 +27,8 @@
 @splitCloseDistance: (@closeDistance / 2);
 @splitVeryCloseDistance: (@veryCloseDistance / 2);
 
-@closeWidth: @width + @splitCloseDistance;
-@veryCloseWidth: @width + @splitVeryCloseDistance;
+@closeWidth: ~"calc("@width~" + "@splitCloseDistance~")";
+@veryCloseWidth: ~"calc("@width~" + "@splitVeryCloseDistance~")";
 
 /* Dividing */
 @dividingBorder: 1px solid @borderColor;

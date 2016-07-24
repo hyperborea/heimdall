@@ -1,13 +1,12 @@
 /*
   DO NOT MODIFY - This file has been generated and will be regenerated
-  Semantic UI v2.1.4
+  Semantic UI v2.2.1
 */
 /*!
  * # Semantic UI - Tab
  * http://github.com/semantic-org/semantic-ui/
  *
  *
- * Copyright 2015 Contributors
  * Released under the MIT license
  * http://opensource.org/licenses/MIT
  *
@@ -16,6 +15,13 @@
 ;(function ($, window, document, undefined) {
 
 "use strict";
+
+window = (typeof window != 'undefined' && window.Math == Math)
+  ? window
+  : (typeof self != 'undefined' && self.Math == Math)
+    ? self
+    : Function('return this')()
+;
 
 $.fn.tab = function(parameters) {
 
@@ -452,7 +458,9 @@ $.fn.tab = function(parameters) {
                   'X-Remote': true
                 },
                 onSuccess : function(response) {
-                  module.cache.add(fullTabPath, response);
+                  if(settings.cacheType == 'response') {
+                    module.cache.add(fullTabPath, response);
+                  }
                   module.update.content(tabPath, response);
                   if(tabPath == activeTabPath) {
                     module.debug('Content loaded', tabPath);
@@ -463,6 +471,9 @@ $.fn.tab = function(parameters) {
                   }
                   settings.onFirstLoad.call($tab[0], tabPath, parameterArray, historyEvent);
                   settings.onLoad.call($tab[0], tabPath, parameterArray, historyEvent);
+                  if(settings.cacheType != 'response') {
+                    module.cache.add(fullTabPath, $tab.html());
+                  }
                 },
                 urlData: {
                   tab: fullTabPath
@@ -512,15 +523,19 @@ $.fn.tab = function(parameters) {
           },
           tab: function(tabPath) {
             var
-              $tab     = module.get.tabElement(tabPath),
-              isActive = $tab.hasClass(className.active)
+              $tab          = module.get.tabElement(tabPath),
+              $deactiveTabs = (settings.deactivate == 'siblings')
+                ? $tab.siblings($tabs)
+                : $tabs.not($tab),
+              isActive      = $tab.hasClass(className.active)
             ;
             module.verbose('Showing tab content for', $tab);
             if(!isActive) {
               $tab
                 .addClass(className.active)
-                .siblings($tabs)
-                  .removeClass(className.active + ' ' + className.loading)
+              ;
+              $deactiveTabs
+                .removeClass(className.active + ' ' + className.loading)
               ;
               if($tab.length > 0) {
                 settings.onVisible.call($tab[0], tabPath);
@@ -529,15 +544,19 @@ $.fn.tab = function(parameters) {
           },
           navigation: function(tabPath) {
             var
-              $navigation = module.get.navElement(tabPath),
+              $navigation         = module.get.navElement(tabPath),
+              $deactiveNavigation = (settings.deactivate == 'siblings')
+                ? $navigation.siblings($allModules)
+                : $allModules.not($navigation),
               isActive    = $navigation.hasClass(className.active)
             ;
             module.verbose('Activating tab navigation for', $navigation, tabPath);
             if(!isActive) {
               $navigation
                 .addClass(className.active)
-                .siblings($allModules)
-                  .removeClass(className.active + ' ' + className.loading)
+              ;
+              $deactiveNavigation
+                .removeClass(className.active + ' ' + className.loading)
               ;
             }
           }
@@ -660,7 +679,12 @@ $.fn.tab = function(parameters) {
             $.extend(true, settings, name);
           }
           else if(value !== undefined) {
-            settings[name] = value;
+            if($.isPlainObject(settings[name])) {
+              $.extend(true, settings[name], value);
+            }
+            else {
+              settings[name] = value;
+            }
           }
           else {
             return settings[name];
@@ -678,7 +702,7 @@ $.fn.tab = function(parameters) {
           }
         },
         debug: function() {
-          if(settings.debug) {
+          if(!settings.silent && settings.debug) {
             if(settings.performance) {
               module.performance.log(arguments);
             }
@@ -689,7 +713,7 @@ $.fn.tab = function(parameters) {
           }
         },
         verbose: function() {
-          if(settings.verbose && settings.debug) {
+          if(!settings.silent && settings.verbose && settings.debug) {
             if(settings.performance) {
               module.performance.log(arguments);
             }
@@ -700,8 +724,10 @@ $.fn.tab = function(parameters) {
           }
         },
         error: function() {
-          module.error = Function.prototype.bind.call(console.error, console, settings.name + ':');
-          module.error.apply(console, arguments);
+          if(!settings.silent) {
+            module.error = Function.prototype.bind.call(console.error, console, settings.name + ':');
+            module.error.apply(console, arguments);
+          }
         },
         performance: {
           log: function(message) {
@@ -840,32 +866,36 @@ $.fn.tab.settings = {
   name            : 'Tab',
   namespace       : 'tab',
 
+  silent          : false,
   debug           : false,
   verbose         : false,
   performance     : true,
 
-  auto            : false,  // uses pjax style endpoints fetching content from same url with remote-content headers
-  history         : false,  // use browser history
-  historyType     : 'hash', // #/ or html5 state
-  path            : false,  // base path of url
+  auto            : false,      // uses pjax style endpoints fetching content from same url with remote-content headers
+  history         : false,      // use browser history
+  historyType     : 'hash',     // #/ or html5 state
+  path            : false,      // base path of url
 
-  context         : false,  // specify a context that tabs must appear inside
-  childrenOnly    : false,  // use only tabs that are children of context
-  maxDepth        : 25,     // max depth a tab can be nested
+  context         : false,      // specify a context that tabs must appear inside
+  childrenOnly    : false,      // use only tabs that are children of context
+  maxDepth        : 25,         // max depth a tab can be nested
 
-  alwaysRefresh   : false,  // load tab content new every tab click
-  cache           : true,   // cache the content requests to pull locally
-  ignoreFirstLoad : false,  // don't load remote content on first load
+  deactivate      : 'siblings', // whether tabs should deactivate sibling menu elements or all elements initialized together
 
-  apiSettings     : false,  // settings for api call
-  evaluateScripts : 'once', // whether inline scripts should be parsed (true/false/once). Once will not re-evaluate on cached content
+  alwaysRefresh   : false,      // load tab content new every tab click
+  cache           : true,       // cache the content requests to pull locally
+  cacheType       : 'response', // Whether to cache exact response, or to html cache contents after scripts execute
+  ignoreFirstLoad : false,      // don't load remote content on first load
+
+  apiSettings     : false,      // settings for api call
+  evaluateScripts : 'once',     // whether inline scripts should be parsed (true/false/once). Once will not re-evaluate on cached content
 
   onFirstLoad : function(tabPath, parameterArray, historyEvent) {}, // called first time loaded
   onLoad      : function(tabPath, parameterArray, historyEvent) {}, // called on every load
   onVisible   : function(tabPath, parameterArray, historyEvent) {}, // called every time tab visible
   onRequest   : function(tabPath, parameterArray, historyEvent) {}, // called ever time a tab beings loading remote content
 
-  templates    : {
+  templates : {
     determineTitle: function(tabArray) {} // returns page title for path
   },
 
@@ -899,4 +929,4 @@ $.fn.tab.settings = {
 
 };
 
-})( jQuery, window , document );
+})( jQuery, window, document );
