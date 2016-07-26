@@ -1,23 +1,39 @@
 Events = new Mongo.Collection('events');
 
 
-Events.before.insert(function(userId, doc) {
-  var user = Meteor.users.findOne(userId);
+Meteor.methods({
+  saveEvent: function(data) {
+    const user = Meteor.users.findOne(this.userId);
 
-  doc.createdAt = new Date();
-  doc.ownerId = userId;
-  doc.owner = user.username;
-});
+    var eventId = data._id;
+    var doc = _.omit(data, '_id', 'owner', 'ownerId', 'createdAt');
 
+    if (!eventId) {
+      requireUser(this.userId);
+      
+      doc.createdAt = new Date();
+      doc.ownerId = this.userId;
+      doc.owner = user.username;
 
-Events.allow({
-  insert: function(userId, doc) {
-    return isUser(userId);
+      eventId = Events.insert(doc);
+    }
+    else {
+      requireOwnership(user, Events.findOne(eventId));
+      Events.update(eventId, {$set: doc});
+    }
+
+    _.each(doc.tags, (tag) => {
+      var tagObj = { type: 'event', name: tag };
+      Tags.upsert(tagObj, tagObj);
+    });
+
+    return eventId;
   },
-  update: function(userId, doc, fieldNames) {
-    return isOwner(userId, doc) && (!_.contains(['owner', 'ownerId', 'createdAt'], fieldNames));
-  },
-  remove: function(userId, doc) {
-    return isOwner(userId, doc);
+
+  removeEvent: function(eventId) {
+    check(eventId, String);
+    requireOwnership(this.userId, Events.findOne(eventId));
+
+    Events.remove(eventId);
   }
 });

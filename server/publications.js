@@ -129,5 +129,11 @@ Meteor.publish('groups', function(search='', limit=10) {
 });
 
 Meteor.publish('events', function() {
+  requireUser(this.userId);
   return Events.find();
+});
+
+Meteor.publish('tags', function(type) {
+  requireUser(this.userId);
+  return Tags.find({ type: type });
 });
