@@ -1,3 +1,4 @@
+import d3 from 'd3';
 import c3 from 'c3';
 
 Template.visChart.onRendered(function() {
