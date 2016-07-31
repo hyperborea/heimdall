@@ -31,7 +31,7 @@ Template.visChartFormSeries.helpers({
 });
 
 Template.visChartFormSeriesItem.helpers({
-  lineTypes: ['solid', 'dashed', 'dotted', 'alternating', 'animated'],
+  lineTypes: ['solid', 'bold', 'dashed', 'dotted', 'alternating', 'animated'],
   types: [
     { value: 'line', text: 'line', icon: 'line chart' },
     { value: 'spline', text: 'spline', icon: 'line chart' },

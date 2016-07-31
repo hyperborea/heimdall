@@ -1,11 +1,11 @@
 <template name="visualization">
   <div class="visualizationWrapper" style="height: {{visHeight}}">
     {{#if visBasic}}
-      <div class="ui basic segment">
+      <div class="ui basic segment visualizationCanvas">
         {{> Template.dynamic template=templateName data=visData}}   
       </div>
     {{else}}
-      <div class="ui top attached segment">
+      <div class="ui top attached segment visualizationTopbar">
         {{#unless isFullscreen}}
           <div class="ui grid">
             <div class="two column row">
@@ -27,7 +27,7 @@
           <strong>{{vis.title}}</strong>
         {{/unless}}
       </div>
-      <div class="ui bottom attached segment">
+      <div class="ui bottom attached segment visualizationCanvas">
         {{> Template.dynamic template=templateName data=visData}}   
       </div>
     {{/if}}

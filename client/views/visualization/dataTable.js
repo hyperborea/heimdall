@@ -11,5 +11,5 @@ Template.visDataTable.helpers({
       return moment(value).format('YYYY-MM-DD HH:mm:ss');
     else
       return _.isNull(value) ? null : value.toString();
-  }
+  },
 });

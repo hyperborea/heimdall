@@ -1,3 +1,4 @@
+.c3-target-bold path { stroke-width: 2px }
 .c3-target-dashed path { stroke-dasharray: 10, 10 }
 .c3-target-dotted path { stroke-width: 2px; stroke-dasharray: 2, 5 }
 .c3-target-alternating path { stroke-dasharray: 15, 10, 5, 10 }

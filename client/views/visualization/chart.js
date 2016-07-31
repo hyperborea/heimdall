@@ -4,9 +4,6 @@ Template.visChart.onRendered(function() {
   var template = this;
   var container = template.find('.chart');
 
-  var $node = $(template.firstNode);
-  var $wrapper = $node.closest('.visualizationWrapper');
-
   this.autorun(() => {
     const context = Template.currentData();
     const settings = context.settings;
@@ -30,7 +27,7 @@ Template.visChart.onRendered(function() {
           order   : null,
         },
         size: {
-          height: $wrapper.height() - 70
+          height: settings.height
         },
         axis: {
           x: {
@@ -88,6 +85,17 @@ Template.visChart.onRendered(function() {
         config.data.keys.value.push(settings.timeField);
         config.axis.x.type = 'timeseries';
         config.axis.x.tick = { format: settings.timeFormat || '%Y-%m-%d' };
+
+        // xGrid = config.grid.x.lines;
+        // xGrid = xGrid || [];
+        
+        // this.subscribe('events');
+        // Events.find().forEach((event) => {
+        //   xGrid.push({
+        //     value: event.date,
+        //     text: event.title
+        //   });
+        // });
       }
 
       if (settings.categoryField) {

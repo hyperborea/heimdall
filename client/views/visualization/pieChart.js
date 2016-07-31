@@ -5,9 +5,6 @@ Template.visPieChart.onRendered(function() {
   var template = this;
   var container = template.find('.chart');
 
-  var $node = $(template.firstNode);
-  var $wrapper = $node.closest('.visualizationWrapper');
-
   this.autorun(() => {
     const context = Template.currentData();
     const settings = context.settings;
@@ -29,7 +26,7 @@ Template.visPieChart.onRendered(function() {
           type: settings.chartType || 'pie',
         },
         size: {
-          height: $wrapper.height() - 50
+          height: settings.height
         },
         pie: {
           label: {

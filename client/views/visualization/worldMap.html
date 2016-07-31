@@ -7,15 +7,7 @@
   <div class="five fields">
     <div class="field">
       <label>Map Type</label>
-      <div class="ui selection dropdown">
-        <input type="hidden" name="mapType" value={{settings.mapType}}>
-        <i class="dropdown icon"></i>
-        <div class="default text">select</div>
-        <div class="menu">
-          <div class="item" data-value="world">World Map</div>
-          <div class="item" data-value="usa">US Map</div>
-        </div>
-      </div>
+      {{> dropdown name="mapType" value=settings.mapType items=mapTypes}}
     </div>
 
     <div class="field">

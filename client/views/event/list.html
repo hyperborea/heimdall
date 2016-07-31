@@ -1,4 +1,30 @@
 <template name="eventList">
+  <h3 class="ui top attached green segment"><i class="plus icon"></i> Create Event</h3>
+  <form class="ui create-event form bottom attached segment" style="display: none">
+    <div class="fields">
+      <div class="three wide field">
+        <div class="ui input left icon">
+          <i class="calendar icon"></i>
+          <input type="text" name="date" placeholder="YYYY-MM-DD" value={{moment undefined 'YYYY-MM-DD'}}>
+        </div>
+      </div>
+
+      <div class="thirteen wide field">
+        <input type="text" name="title" placeholder="Event title">
+      </div>
+    </div>
+
+    <div class="fields">
+      <div class="thirteen wide field">
+        {{> dropdown name="tags:list" items=tags multiple=true allowAdditions=true placeholder="Tag 1, Tag 2"}}
+      </div>
+
+      <div class="three wide field">
+        <button class="ui positive basic fluid button">Add</button>
+      </div>
+    </div>
+  </form>
+
   <h3 class="ui top attached blue segment"><i class="filter icon"></i> Filter Events</h3>
   <form class="ui filter-events form bottom attached segment">
     <div class="fields">
@@ -30,46 +56,26 @@
     </div>
   </form>
 
+  {{#if hasMore events}}
+    <div class="ui warning message">
+      Only showing most recent results!
+    </div>
+  {{/if}}
+
   <div class="timeline"></div>
 
-  <h3 class="ui top attached green segment"><i class="plus icon"></i> Create Event</h3>
-  <form class="ui create-event form bottom attached segment">
-    <div class="fields">
-      <div class="three wide field">
-        <div class="ui input left icon">
-          <i class="calendar icon"></i>
-          <input type="text" name="date" placeholder="YYYY-MM-DD" value={{moment undefined 'YYYY-MM-DD'}}>
-        </div>
-      </div>
-
-      <div class="thirteen wide field">
-        <input type="text" name="title" placeholder="Event title">
-      </div>
-    </div>
-
-    <div class="fields">
-      <div class="thirteen wide field">
-        {{> dropdown name="tags:list" items=tags multiple=true allowAdditions=true placeholder="Tag 1, Tag 2"}}
-      </div>
-
-      <div class="three wide field">
-        <button class="ui positive basic fluid button">Add</button>
-      </div>
-    </div>
-  </form>
-
-  <div class="ui list">
+  <div class="ui celled list">
     {{#each event in events}}
-      {{> eventItem event}}
+      {{> eventListItem event}}
     {{/each}}
   </div>
 </template>
 
 
-<template name="eventItem">
+<template name="eventListItem">
   <div class="item">
     <div class="right floated content">
-      <div class="ui negative basic button js-delete">delete</div>
+      <div class="ui negative basic icon button js-delete"><i class="trash icon"></i></div>
     </div>
     <i class="right triangle icon"></i>
     <div class="content">

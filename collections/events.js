@@ -1,5 +1,9 @@
 Events = new Mongo.Collection('events');
 
+if (Meteor.isServer) {
+  Events._ensureIndex({ date: -1 });
+}
+
 
 Meteor.methods({
   saveEvent: function(data) {

@@ -1,9 +1,19 @@
+Template.visualization.onCreated(function() {
+  this.rendered = new ReactiveVar(false);
+});
+
+Template.visualization.onRendered(function() {
+  this.rendered.set(true);
+});
+
+
 Template.visualization.helpers({
   templateName: function() {
+    const template = Template.instance();
     const context = Template.currentData();
     const result = context.result;
 
-    if (result) {
+    if (result && template.rendered.get()) {
       switch (result.status) {
         case false:
           return undefined
@@ -21,8 +31,20 @@ Template.visualization.helpers({
   },
 
   visData: function() {
+    var template = Template.instance();
+    var settings = _.clone(this.vis) || {};
+
+    if (template.rendered.get()) {
+      var wrapper = template.find('.visualizationWrapper');
+      var topbar = template.find('.visualizationTopbar');
+      var canvas = template.find('.visualizationCanvas');
+
+      settings.height = wrapper.offsetHeight - (topbar ? topbar.offsetHeight : 0) - 28;
+      settings.width = canvas.offsetWidth;
+    }
+
     return _.extend(_.clone(this.result) || {}, {
-      settings: this.vis
+      settings: settings
     });
   }
 });

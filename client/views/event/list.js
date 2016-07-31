@@ -1,6 +1,19 @@
 import d3 from 'd3';
 import d3KitTimeline from 'd3kit-timeline';
 
+/*
+TODO:
+- update form
+- integration with time series visualizations
+- limit event subscription & infinite scroll
+- comments
+- access control
+- new visualization type for event displays
+- download as csv
+*/
+
+loadHandler(Template.eventList);
+
 
 function filterQuery() {
   var filters = Template.instance().filters;
@@ -19,6 +32,7 @@ Template.eventList.onCreated(function() {
   this.subscribe('tags', 'event');
 
   this.filters = new ReactiveDict();
+  this.cursor = new ReactiveVar();
 });
 
 
@@ -34,7 +48,10 @@ Template.eventList.onRendered(function() {
   // this.$('.ui.calendar').calendar({ type: 'date' });
 });
 
+const LIMIT = 10;
+
 Template.eventList.onRendered(function() {
+  var template = this;
   var colorScale = d3.scale.category10();
 
   var container = this.find('.timeline');
@@ -46,21 +63,36 @@ Template.eventList.onRendered(function() {
     labelBgColor : (d) => colorScale(d.text),
     dotColor     : (d) => colorScale(d.text),
     linkColor    : (d) => colorScale(d.text),
-    labella      : { maxPos: width }
+    dotRadius    : (d) => d.dotRadius || 3,
+    layerGap     : 30,
+    labella      : { maxPos: width - 40, algorithm: 'simple', density: 0.5 },
+    // textStyle    : { cursor: 'pointer' }
   });
 
+  // chart.on('labelClick', function(d) {
+  //   console.log(d);
+  // });
+
   this.autorun(function() {
-    var data = Events.find(filterQuery()).map((event) => Object({
+    var cursor = Events.find(filterQuery(), {
+      sort: { date: -1 },
+      limit: LIMIT
+    });
+
+    var data = cursor.map((event) => Object({
+      eventId: event._id,
       time: new Date(event.date),
       text: event.title
     }));
 
     chart.data(data).resizeToFit();
+    template.cursor.set(cursor);
   });
 });
 
 Template.eventList.helpers({
-  events: () => Events.find(),
+  events: () => Template.instance().cursor.get(),
+  hasMore: (events) => events && events.count() >= LIMIT,
   tags: () => Tags.find({ type: 'event' }).map((tag) => tag.name),
   filterValue: (key) => Template.instance().filters.get(key),
 });
@@ -81,12 +113,21 @@ Template.eventList.events({
 
     var data = $(event.target).serializeJSON();
     _.each(data, (value, key) => template.filters.set(key, value));
+  },
+
+  'click h3': function(event, template) {
+    $(event.target).next()
+      .toggle()
+      .find('input:first')
+        .focus();
   }
 });
 
 
-Template.eventItem.events({
+Template.eventListItem.events({
   'click .js-delete': function(event, template) {
-    Meteor.call('removeEvent', this._id);
+    if (window.confirm("Are you sure you want to delete this event?")) {
+      Meteor.call('removeEvent', this._id);  
+    }
   }
 });

@@ -2,7 +2,6 @@ Template.statistics.onCreated(function() {
   this.statistics = new ReactiveVar();
 
   Meteor.call('getStatistics', (err, res) => {
-    console.log(res);
     this.statistics.set(res);
   });
 });
