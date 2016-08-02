@@ -104,7 +104,7 @@ checkJobForAlarms = function(job) {
 
       if (alarmLevelRank >= worstStatusRank) {
         Email.send({
-          from    : 'noreply@heimdall.klarna.com',
+          from    : 'noreply@heimdall',
           to      : job.alarm.email,
           subject : `[heimdall] [${worstStatus}] ${job.name}`,
           html    : `Job <a href="${jobUrl}">${job.name}</a> triggered <b>${worstStatus}</b>, <a href="${alarmsUrl}">check it out</a>.`,

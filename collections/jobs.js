@@ -156,7 +156,7 @@ runJob = function(jobId) {
 
     if (job.email.enabled) {
       Email.send({
-        from    : 'noreply@heimdall.klarna.com',
+        from    : 'noreply@heimdall',
         to      : job.email.recipients,
         subject : job.email.subject,
         text    : job.email.content,
