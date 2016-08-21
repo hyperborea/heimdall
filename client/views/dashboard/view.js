@@ -13,6 +13,8 @@ Template.dashboardView.onRendered(function() {
   var grid = this.$('.gridster').gridster({
     widget_margins: [10, 10],
     widget_base_dimensions: [80, 60],
+    // tricking gridster to autogenerate css for columns generously
+    min_cols: 25,
     max_size_x: 20
   }).data('gridster').disable();
 
@@ -20,6 +22,10 @@ Template.dashboardView.onRendered(function() {
     if (this.subscriptionsReady()) {
       var dashboard = Dashboards.findOne(_id());
       var widgets = dashboard ? dashboard.widgets : [];
+
+      // Gridster tries to be clever and pushes widgets down if they don't fit in width.
+      // That's not what we want though, so we're manually overriding the columns with the maximum to expect.
+      grid.options.min_cols = _.max(_.map(widgets, (w) => w.col + w.size_x));
 
       grid.remove_all_widgets();
       _.each(widgets, (widget) => addWidget(grid, widget));  
