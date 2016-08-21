@@ -13,8 +13,7 @@ Template.dashboardView.onRendered(function() {
   var grid = this.$('.gridster').gridster({
     widget_margins: [10, 10],
     widget_base_dimensions: [80, 60],
-    min_cols: 10, // to prevent gridster from moving widgets down if they don't fit in width
-    max_size_x: 20 // to get gridster to generate stylesheets generously
+    max_size_x: 20
   }).data('gridster').disable();
 
   this.autorun(() => {

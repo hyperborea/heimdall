@@ -19,7 +19,6 @@ Template.dashboardForm.onRendered(function() {
   var grid = this.$('.gridster').gridster({
     widget_margins: [10, 10],
     widget_base_dimensions: [80, 60],
-    min_cols: 10,
     max_size_x: 20,
     resize: {
       enabled: true
