@@ -148,6 +148,9 @@ runJob = function(jobId) {
     // sanitize data, keys are not allowed to contain dots
     _.isObject(result.data) && _.each(result.data, (row) => {
       _.each(row, (value, key) => {
+        if (_.isObject(value))
+          row[key] = JSON.stringify(value);
+
         if (_.contains(key, '.')) {
           row[key.replace('.', '_')] = value;
           delete row[key];
