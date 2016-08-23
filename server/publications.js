@@ -1,7 +1,19 @@
-Meteor.publish('dashboards', function() {
-  return Dashboards.find(filterByAccess(this.userId), {
+Meteor.publish('dashboards', function(filter, limit) {
+  filter = { $and: [filter || {}, filterByAccess(this.userId)] };
+
+  return Dashboards.find(filter, {
     fields : { title: 1, owner: 1, ownerId: 1, tags: 1 },
-    sort   : { title: 1 }
+    sort   : { title: 1 },
+    limit  : limit,
+  });
+});
+
+Meteor.publish('favoriteDashboards', function() {
+  var favorites = getStarred('dashboard', this.userId);
+  var filter = { $and: [{ _id: { $in: favorites } }, filterByAccess(this.userId)] };
+
+  return Dashboards.find(filter, {
+    fields : { title: 1, owner: 1, ownerId: 1, tags: 1 },
   });
 });
 
@@ -39,13 +51,13 @@ Meteor.publishComposite('dashboardForm', function(_id) {
   };
 });
 
-Meteor.publish('jobs', function(filter, options={}) {
+Meteor.publish('jobs', function(filter, limit) {
   filter = { $and: [filter || {}, filterByAccess(this.userId)] };
 
   return Jobs.find(filter, {
     fields : { name: 1, owner: 1, ownerId: 1, createdAt: 1, schedule: 1, status: 1, alarmStatus: 1 },
     sort   : { createdAt: -1 },
-    limit  : options.limit,
+    limit  : limit,
   })
 });
 
