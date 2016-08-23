@@ -21,6 +21,7 @@ function dashboardFilter() {
 
 Template.dashboardList.onCreated(function() {
   this.limit = new ReactiveVar();
+  this.tags = new ReactiveVar([]);
 
   this.subscribe('favoriteDashboards');
 
@@ -32,6 +33,8 @@ Template.dashboardList.onCreated(function() {
   this.autorun(() => {
     this.subscribe('dashboards', dashboardFilter(), this.limit.get());
   });
+
+  Meteor.call('getDashboardTags', (err, res) => this.tags.set(res));
 });
 
 
@@ -56,14 +59,7 @@ Template.dashboardList.helpers({
     _id: { $in: getStarred('dashboard', Meteor.user()) }
   })),
 
-  tags: () => _.chain(Dashboards.find().fetch())
-    .pluck('tags')
-    .flatten()
-    .compact()
-    .uniq()
-    .sortBy((x) => x)
-    .value(),
-
+  tags: () => Template.instance().tags.get(),
   search: () => FlowRouter.getQueryParam('search'),
   filterOwn: () => FlowRouter.getQueryParam('filterOwn') === 'true',
 

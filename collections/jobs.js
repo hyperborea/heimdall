@@ -1,5 +1,10 @@
 Jobs = new Mongo.Collection('jobs');
 
+Meteor.startup(function() {
+  if (!Meteor.isServer) return;
+  Jobs._ensureIndex({ createdAt: -1 });
+});
+
 
 Jobs.helpers({
   visualizations: function() {

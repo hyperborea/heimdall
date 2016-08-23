@@ -1,5 +1,10 @@
 Dashboards = new Mongo.Collection('dashboards');
 
+Meteor.startup(function() {
+  if (!Meteor.isServer) return;
+  Dashboards._ensureIndex({ title: 1 });
+});
+
 
 Dashboards.before.insert(function(userId, doc) {
   var user = Meteor.users.findOne(userId);
@@ -19,5 +24,20 @@ Dashboards.allow({
   },
   remove: function(userId, doc) {
     return isOwner(userId, doc);
+  }
+});
+
+
+Meteor.methods({
+  getDashboardTags: function() {
+    var cursor = Dashboards.find(filterByAccess(this.userId), { fields: { tags: 1 } });
+
+    return _.chain(cursor.fetch())
+      .pluck('tags')
+      .flatten()
+      .compact()
+      .uniq()
+      .sortBy((x) => x)
+      .value();
   }
 });
