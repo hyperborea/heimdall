@@ -4,19 +4,19 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-meteor-base
+meteor-base@1.0.4
 # mobile-experience
-mongo
-blaze-html-templates
-session
-jquery
-tracker
-logging
-reload
-random
-ejson
-spacebars
-check
+mongo@1.1.12
+blaze-html-templates@1.0.4
+session@1.1.6
+jquery@1.11.9
+tracker@1.1.0
+logging@1.1.15
+reload@1.1.10
+random@1.0.10
+ejson@1.0.12
+spacebars@1.0.12
+check@1.2.3
 
 kadira:flow-router
 kadira:blaze-layout
@@ -25,9 +25,9 @@ msavin:mongol
 arillo:flow-router-helpers
 matb33:collection-hooks
 momentjs:moment
-reactive-var
-ecmascript
-email
+reactive-var@1.0.10
+ecmascript@0.5.8
+email@1.1.17
 percolate:synced-cron
 semantic:ui
 flemay:less-autoprefixer
@@ -43,7 +43,8 @@ reywood:publish-composite
 dburles:collection-helpers
 perak:markdown
 meteorhacks:kadira
-http
-standard-minifier-css
-standard-minifier-js
-reactive-dict
+http@1.2.9
+standard-minifier-css@1.2.0
+standard-minifier-js@1.2.0
+reactive-dict@1.1.8
+shell-server

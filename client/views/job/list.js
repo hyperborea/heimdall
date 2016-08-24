@@ -4,25 +4,30 @@ loadHandler(Template.jobList);
 function jobsFilter() {
   var selector = {};
 
-  if (Session.get('jobList.search'))
-    selector['name'] = { $regex: Session.get('jobList.search'), $options: 'i' };
-  if (Session.get('jobList.filterOwn'))
+  if (FlowRouter.getQueryParam('search'))
+    selector['$or'] = [
+      { name  : { $regex: FlowRouter.getQueryParam('search'), $options: 'i' } },
+      { owner : { $regex: FlowRouter.getQueryParam('search'), $options: 'i' } },
+    ];
+  if (FlowRouter.getQueryParam('filterOwn'))
     selector['ownerId'] = Meteor.userId();
-  if (Session.get('jobList.status'))
-    selector['status'] = Session.get('jobList.status');
+  if (FlowRouter.getQueryParam('status'))
+    selector['status'] = FlowRouter.getQueryParam('status');
 
   return selector;
 }
 
 
 Template.jobList.onCreated(function() {
+  this.limit = new ReactiveVar();
+
   this.autorun(() => {
     jobsFilter();
-    Session.set('jobList.limit', 20);
+    this.limit.set(20);
   });
 
   this.autorun(() => {
-    this.subscribe('jobs', jobsFilter(), { limit: Session.get('jobList.limit') });
+    this.subscribe('jobs', jobsFilter(), this.limit.get());
   });
 });
 
@@ -54,9 +59,9 @@ Template.jobList.helpers({
     { value: 'error', text: 'error', icon: 'red remove' },
   ],
 
-  search: () => Session.get('jobList.search'),
-  filterOwn: () => Session.get('jobList.filterOwn'),
-  status: () => Session.get('jobList.status'),
+  search: () => FlowRouter.getQueryParam('search'),
+  filterOwn: () => FlowRouter.getQueryParam('filterOwn') === 'true',
+  status: () => FlowRouter.getQueryParam('status'),
   icon: (job) => 
     (job.status === 'error') && 'red remove' ||
     (job.status === 'running') && 'refresh' ||
@@ -65,14 +70,14 @@ Template.jobList.helpers({
 
   hasMore: function(items) {
     return !Template.instance().subscriptionsReady() || 
-      items.count() >= Session.get('jobList.limit');
+      items.count() >= Template.instance().limit.get();
   },
 });
 
 
 Template.jobList.events({
-  'keyup input[name=search], change input[name=search]': (event) => Session.set('jobList.search', event.target.value),
-  'change input[name=filterOwn]': (event) => Session.set('jobList.filterOwn', event.target.checked),
-  'change input[name=status]': (event) => Session.set('jobList.status', event.target.value),
-  'click .js-load-more': () => Session.set('jobList.limit', Session.get('jobList.limit') + 10),
+  'keyup input[name=search], change input[name=search]': (event) => FlowRouter.setQueryParams({ search: event.target.value || null }),
+  'change input[name=filterOwn]': (event) => FlowRouter.setQueryParams({ filterOwn: event.target.checked }),
+  'change input[name=status]': (event) => FlowRouter.setQueryParams({ status: event.target.value || null }),
+  'click .js-load-more': (event, template) => template.limit.set(template.limit.get() + 10),
 });
