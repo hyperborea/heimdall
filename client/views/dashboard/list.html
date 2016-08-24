@@ -47,16 +47,11 @@
   {{/if}}
 
   <div class="ui horizontal divider"><i class="grid layout icon"></i> All Dashboards</div>
-  <div class="ui all cards">
+  <div class="ui cards">
     {{#each dashboard in dashboards}}
       {{> dashboardListItem dashboard=dashboard}}
     {{/each}}
   </div>
-
-  {{#if hasMore dashboards}}
-    <br>
-    <div class="ui fluid basic button js-load-more {{#unless Template.subscriptionsReady}}loading{{/unless}}">load more...</div>
-  {{/if}}
 </template>
 
 

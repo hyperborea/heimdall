@@ -1,10 +1,5 @@
 Jobs = new Mongo.Collection('jobs');
 
-Meteor.startup(function() {
-  if (!Meteor.isServer) return;
-  Jobs._ensureIndex({ createdAt: -1 });
-});
-
 
 Jobs.helpers({
   visualizations: function() {
@@ -148,9 +143,6 @@ runJob = function(jobId) {
     // sanitize data, keys are not allowed to contain dots
     _.isObject(result.data) && _.each(result.data, (row) => {
       _.each(row, (value, key) => {
-        // if (_.isObject(value) && !(value instanceof Date))
-        //   row[key] = JSON.stringify(value);
-
         if (_.contains(key, '.')) {
           row[key.replace('.', '_')] = value;
           delete row[key];
