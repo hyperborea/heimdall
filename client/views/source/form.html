@@ -40,6 +40,13 @@
     </div>
     {{/if}}
 
+    {{#if showField 'mssql'}}
+    <div class="field">
+      <label>Domain (SQL Server)</label>
+      <input type="text" name="domain" value={{doc.domain}} placeholder="domain">
+    </div>
+    {{/if}}
+
     {{#if showField 'credentials'}}
     <div class="field">
       <label>Credentials</label>

@@ -26,6 +26,8 @@ SOURCE_TYPES.mssql.query = function(source, sql, endCallback, startCallback) {
       }
     };
 
+    if (source.domain) connectionConfig.domain = source.domain;
+
     var connection = new mssql.Connection(connectionConfig, Meteor.bindEnvironment((err) => {
       if (err) return results('error', `${err} - could not connect with data source.`);
 

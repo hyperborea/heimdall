@@ -27,7 +27,7 @@ Template.dashboardList.onCreated(function() {
 
   this.autorun(() => {
     dashboardFilter();
-    this.limit.set(20);
+    this.limit.set(30);
   });
 
   this.autorun(() => {

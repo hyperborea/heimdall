@@ -23,7 +23,7 @@ Template.jobList.onCreated(function() {
 
   this.autorun(() => {
     jobsFilter();
-    this.limit.set(20);
+    this.limit.set(30);
   });
 
   this.autorun(() => {
