@@ -9,6 +9,7 @@ Meteor.publish('dashboards', function(filter, limit) {
 });
 
 Meteor.publish('favoriteDashboards', function() {
+  requireUser(this.userId);
   var favorites = getStarred('dashboard', this.userId);
   var filter = { $and: [{ _id: { $in: favorites } }, filterByAccess(this.userId)] };
 

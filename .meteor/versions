@@ -35,7 +35,7 @@ hot-code-push@1.0.4
 html-tools@1.0.10
 htmljs@1.0.10
 http@1.2.9
-hyperborea:accounts-ldap@1.0.0
+hyperborea:accounts-ldap@1.0.1
 hyperborea:accounts-ldap-ui@0.0.1
 hyperborea:ethergrid@0.0.3
 hyperborea:timeago@0.0.2
