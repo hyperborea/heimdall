@@ -1,27 +1,44 @@
 <template name="sourceList">
+  <div class="ui form">
+    <div class="fields">
+      <div class="three wide field">
+        <a href={{pathFor 'sourceNew'}} class="ui fluid basic labeled icon button">
+          <i class="plus icon"></i> Add Source
+        </a>
+      </div>
 
-  <div class="ui cards">
-
-    <a href={{pathFor 'sourceNew'}} class="green card">
-      <div class="content">
-        <div class="header">
-          <i class="plus squared icon"></i> Add Source
+      <div class="ten wide field">
+        <div class="ui fluid icon input">
+          <i class="search icon"></i>
+          <input type="text" name="search" placeholder="Search..." value={{search}}>
         </div>
       </div>
-    </a>
 
-    {{#each item in items}}
-      <a href={{pathFor 'sourceEdit' id=item._id}} class="card">
+      <div class="three wide field">
+        <div class="ui toggle checkbox">
+          <input type="checkbox" name="filterOwn" checked={{filterOwn}}>
+          <label>show only own</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui cards">
+    {{#each source in sources}}
+      <a href={{pathFor 'sourceEdit' id=source._id}} class="card">
         <div class="content">
-          <div class="header">{{item.name}}</div>
-          <div class="meta">{{item.username}}</div>
+          <div class="header">{{source.name}}</div>
+          <div class="meta">{{source.username}}</div>
         </div>
         <div class="extra content">
-          <i class="user icon"></i> {{item.owner}}
+          <i class="user icon"></i> {{source.owner}}
         </div>
       </a>
     {{/each}}
-
   </div>
 
+  {{#if hasMore sources}}
+    <br>
+    <div class="ui fluid basic button js-load-more {{#unless Template.subscriptionsReady}}loading{{/unless}}">load more...</div>
+  {{/if}}
 </template>

@@ -4,6 +4,8 @@ const PASSWORD_NOCHANGE = '_PASSWORD_NOCHANGE_';
 Template.sourceForm.onCreated(function() {
   this.unsavedChanges = new ReactiveVar(false);
   this.sourceTypeConfig = new ReactiveVar({});
+
+  this.autorun( () => this.subscribe('source', FlowRouter.getParam('id')) );
 });
 
 

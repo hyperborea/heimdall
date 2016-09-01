@@ -128,10 +128,18 @@ Meteor.publish('jobAlarmsForRun', function(jobId, runId) {
   ];
 })
 
-Meteor.publish('sources', function() {
-  return Sources.find(filterByAccess(this.userId), {
-    fields : { password: 0 }
+Meteor.publish('sources', function(filter, limit) {
+  filter = { $and: [filter || {}, filterByAccess(this.userId)] };
+
+  return Sources.find(filter, {
+    fields : { name: 1, owner: 1, ownerId: 1, username: 1 },
+    limit  : limit
   });
+});
+
+Meteor.publish('source', function(_id) {
+  requireAccess(this.userId, Sources.findOne(_id));
+  return Sources.find(_id, { fields : { password: 0 } });
 });
 
 Meteor.publish('groups', function(search='', limit=10) {

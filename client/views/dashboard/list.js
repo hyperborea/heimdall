@@ -41,6 +41,8 @@ Template.dashboardList.onCreated(function() {
 Template.dashboardList.onRendered(function() {
   var template = this;
 
+  template.$('.ui.checkbox').checkbox();
+
   template.$('.ui.all.cards').visibility({
     once: false,
     observeChanges: true,
@@ -73,21 +75,10 @@ Template.dashboardList.helpers({
 
 
 Template.dashboardList.events({
-  'keyup input[name=search], change input[name=search]': function(event) {
-    FlowRouter.setQueryParams({ search: event.target.value || null });
-  },
-
-  'change input[name=filterOwn]': function(event) {
-    FlowRouter.setQueryParams({ filterOwn: event.target.checked });
-  },
-
-  'click .js-select-tag': function(event, template) {
-    FlowRouter.setQueryParams({ tag: event.target.dataset.value || null });
-  },
-
-  'click .js-load-more': function(event, template) {
-    template.limit.set(template.limit.get() + 10);
-  }
+  'keyup input[name=search], change input[name=search]': (event) => FlowRouter.setQueryParams({ search: event.target.value || null }),
+  'change input[name=filterOwn]': (event) => FlowRouter.setQueryParams({ filterOwn: event.target.checked || null }),
+  'click .js-select-tag': (event, template) => FlowRouter.setQueryParams({ tag: event.target.dataset.value || null }),
+  'click .js-load-more': (event, template) => template.limit.set(template.limit.get() + 10),
 });
 
 

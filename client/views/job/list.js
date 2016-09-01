@@ -77,7 +77,7 @@ Template.jobList.helpers({
 
 Template.jobList.events({
   'keyup input[name=search], change input[name=search]': (event) => FlowRouter.setQueryParams({ search: event.target.value || null }),
-  'change input[name=filterOwn]': (event) => FlowRouter.setQueryParams({ filterOwn: event.target.checked }),
+  'change input[name=filterOwn]': (event) => FlowRouter.setQueryParams({ filterOwn: event.target.checked || null }),
   'change input[name=status]': (event) => FlowRouter.setQueryParams({ status: event.target.value || null }),
   'click .js-load-more': (event, template) => template.limit.set(template.limit.get() + 10),
 });

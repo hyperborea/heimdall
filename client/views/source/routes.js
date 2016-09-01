@@ -1,8 +1,5 @@
 var sourceRoutes = FlowRouter.group({
-  prefix: '/sources',
-  subscriptions: function() {
-    this.register('sources', Meteor.subscribe('sources'));
-  }
+  prefix: '/sources'
 });
 
 sourceRoutes.route('/', {
