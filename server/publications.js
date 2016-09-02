@@ -70,7 +70,7 @@ Meteor.publish('job', function(_id) {
   ];
 });
 
-Meteor.publish('visualizations', function(includeNonOwned=false, search='', limit=10) {
+Meteor.publish('visualizationsDropdown', function(includeNonOwned=false, search='', limit=10) {
   var accessFilter = includeNonOwned ? filterByAccess(this.userId) : filterByOwnership(this.userId);
   var searchFilter = {$or: [
     { title   : { $regex: search, $options: 'i' } },

@@ -3,7 +3,7 @@ Template.dashboardForm.onCreated(function() {
   this.visSearch = new ReactiveVar('');
 
   this.autorun(() => this.subHandle = this.subscribe('dashboardForm', FlowRouter.getParam('id')));
-  this.autorun(() => this.subscribe('visualizations', this.includeNonOwned.get(), this.visSearch.get()));
+  this.autorun(() => this.subscribe('visualizationsDropdown', this.includeNonOwned.get(), this.visSearch.get()));
 });
 
 
