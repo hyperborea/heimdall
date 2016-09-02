@@ -16,10 +16,7 @@ Template.dashboardFormVisualizationWidget.onRendered(function() {
   this.$('.ui.dropdown').dropdown({ fullTextSearch: true });
   this.$('.ui.checkbox').checkbox();
 
-  this.autorun(() => {
-    Jobs.find().fetch(); // rerun reactively
-    this.$('.ui.search.dropdown').dropdown('set selected', this.data.visId);  
-  });
+  Tracker.afterFlush(() => this.$('.ui.search.dropdown').dropdown('set selected', this.data.visId));
 });
 
 Template.dashboardFormVisualizationWidget.helpers({

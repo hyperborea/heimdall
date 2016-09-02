@@ -28,7 +28,7 @@
 
 <template name="dashboardFormVisualizationWidget">
   <div class="field">
-    <div class="ui search selection dropdown">
+    <div class="ui search selection visualization dropdown">
       <input type="hidden" name="visId" value={{visId}}>
       <i class="dropdown icon"></i>
       <div class="default text">select visualization</div>
@@ -36,8 +36,8 @@
         {{#each vis in visualizations}}
           <div class="item" data-value={{vis._id}}>
             {{vis.title}}
-            <div class="description">{{vis.job.owner}}</div>
-            <div class="meta">{{vis.job.name}}</div>
+            <div class="description">{{vis.owner}}</div>
+            <div class="meta">{{vis.jobName}}</div>
           </div>
         {{/each}}
       </div>

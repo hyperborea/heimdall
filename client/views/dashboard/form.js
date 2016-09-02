@@ -1,16 +1,15 @@
 Template.dashboardForm.onCreated(function() {
   this.includeNonOwned = new ReactiveVar(false);
+  this.visSearch = new ReactiveVar('');
 
-  this.autorun(() => this.subscribe('dashboardForm', FlowRouter.getParam('id')));
-  this.autorun(() => this.subscribe('visualizations', this.includeNonOwned.get()));
+  this.autorun(() => this.subHandle = this.subscribe('dashboardForm', FlowRouter.getParam('id')));
+  this.autorun(() => this.subscribe('visualizations', this.includeNonOwned.get(), this.visSearch.get()));
 });
 
 
 Template.dashboardForm.onRendered(function() {
   this.$('form').form({
-    fields: {
-      title: 'empty'
-    },
+    fields: { title: 'empty' },
     inline: true
   });
 
@@ -48,7 +47,7 @@ Template.dashboardForm.onRendered(function() {
   }).data('gridster');
 
   this.autorun(() => {
-    if (this.subscriptionsReady()) {
+    if (this.subHandle.ready()) {
       var dashboard = Dashboards.findOne(FlowRouter.getParam('id'));
       var widgets = dashboard ? dashboard.widgets : [];
 
@@ -78,13 +77,18 @@ Template.dashboardForm.events({
     var data = $(event.target).serializeJSON();
     data.widgets = getGrid(template).serialize();
 
-    _id ? Dashboards.update(_id, {$set: data}) : _id = Dashboards.insert(data);
-    FlowRouter.go('dashboardEdit', {id: _id});
+    Meteor.call('saveDashboard', data, function(err, _id) {
+      FlowRouter.go('dashboardEdit', {id: _id});
+    });
+  },
+
+  'keyup .visualization.dropdown input.search': function(event, template) {
+    template.visSearch.set(event.target.value);
   },
 
   'click .js-delete': function() {
     if (confirm('Sure you want to delete this dashboard?')) {
-      Dashboards.remove(FlowRouter.getParam('id'));
+      Meteor.call('removeDashboard', FlowRouter.getParam('id'));
       FlowRouter.go('dashboardList');
     }
   },

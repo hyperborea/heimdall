@@ -23,7 +23,6 @@ kadira:blaze-layout
 perak:codemirror
 msavin:mongol
 arillo:flow-router-helpers
-matb33:collection-hooks
 momentjs:moment
 reactive-var@1.0.10
 ecmascript@0.5.8
@@ -48,3 +47,4 @@ standard-minifier-css@1.2.0
 standard-minifier-js@1.2.0
 reactive-dict@1.1.8
 shell-server
+percolate:migrations

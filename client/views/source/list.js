@@ -21,7 +21,7 @@ Template.sourceList.onCreated(function() {
 
   this.autorun(() => {
     sourceFilter();
-    this.limit.set(3);
+    this.limit.set(30);
   });
 
   this.autorun( () => this.subscribe('sources', sourceFilter(), this.limit.get()) );

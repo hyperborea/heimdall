@@ -42,12 +42,9 @@ Meteor.publishComposite('dashboardForm', function(_id) {
     children: [{
       find: function(dashboard) {
         return Visualizations.find({ _id: { $in: _.pluck(dashboard.widgets, 'visId') } }, {
-          fields: { title: 1, jobId: 1 }
+          fields: { title: 1, jobName: 1, owner: 1 }
         });
-      },
-      children: [{
-        find: (vis) => Jobs.find(vis.jobId, { fields: { name: 1, owner: 1 } })
-      }]
+      }
     }]
   };
 });
@@ -67,24 +64,23 @@ Meteor.publish('job', function(_id) {
 
   return [
     Jobs.find(_id),
-    Visualizations.find({ jobId: _id })
+    Visualizations.find({ jobId: _id }, {
+      fields: { jobId: 1, title: 1 }
+    })
   ];
 });
 
-Meteor.publishComposite('visualizations', function(includeNonOwned=false) {
-  return {
-    find: () => {
-      // this.visCounter = 0;
-      var filter = includeNonOwned ? filterByAccess(this.userId) : filterByOwnership(this.userId);
-      return Jobs.find(filter, { fields: { name: 1, owner: 1 } });
-    },
-    children: [{
-      find: (job) => {
-        // if (++this.visCounter > limit) return;
-        return Visualizations.find({ jobId: job._id }, { fields: { title: 1, jobId: 1 } });
-      }
-    }]
-  };
+Meteor.publish('visualizations', function(includeNonOwned=false, search='', limit=10) {
+  var accessFilter = includeNonOwned ? filterByAccess(this.userId) : filterByOwnership(this.userId);
+  var searchFilter = {$or: [
+    { title   : { $regex: search, $options: 'i' } },
+    { jobName : { $regex: search, $options: 'i' } },
+  ]};
+
+  return Visualizations.find({ $and: [accessFilter, searchFilter] }, {
+    fields : { title: 1, jobName: 1, owner: 1 },
+    limit  : limit,
+  })
 });
 
 Meteor.publish('visualization', function(_id) {

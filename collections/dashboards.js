@@ -6,29 +6,37 @@ Meteor.startup(function() {
 });
 
 
-Dashboards.before.insert(function(userId, doc) {
-  var user = Meteor.users.findOne(userId);
-
-  doc.createdAt = new Date();
-  doc.ownerId = userId;
-  doc.owner = user.username;
-});
-
-
-Dashboards.allow({
-  insert: function(userId, doc) {
-    return isUser(userId);
-  },
-  update: function(userId, doc, fieldNames) {
-    return isOwner(userId, doc) && (!_.contains(['owner', 'ownerId', 'createdAt'], fieldNames));
-  },
-  remove: function(userId, doc) {
-    return isOwner(userId, doc);
-  }
-});
-
-
 Meteor.methods({
+  saveDashboard: function(data) {
+    const user = Meteor.users.findOne(this.userId);
+
+    var dashboardId = data._id;
+    var doc = _.omit(data, '_id', 'owner', 'ownerId', 'createdAt');
+
+    if (!dashboardId) {
+      requireUser(this.userId);
+      
+      doc.createdAt = new Date();
+      doc.ownerId = this.userId;
+      doc.owner = user.username;
+
+      dashboardId = Dashboards.insert(doc);
+    }
+    else {
+      requireOwnership(user, Dashboards.findOne(dashboardId));
+      Dashboards.update(dashboardId, {$set: doc});
+    }
+
+    return dashboardId;
+  },
+
+  removeDashboard: function(dashboardId) {
+    check(dashboardId, String);
+    requireOwnership(this.userId, Dashboards.findOne(dashboardId));
+
+    Dashboards.remove(dashboardId);
+  },
+
   getDashboardTags: function() {
     var cursor = Dashboards.find(filterByAccess(this.userId), { fields: { tags: 1 } });
 

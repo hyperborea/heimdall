@@ -20,10 +20,12 @@ Meteor.methods({
     requireOwnership(user, job);
 
     _id = Visualizations.insert({
-      title : job.name,
-      jobId : job._id,
-      type  : 'DataTable'
+      title   : job.name,
+      type    : 'DataTable',
+      jobId   : job._id,
     });
+
+    syncVisualization(_id, job);
 
     return _id;
   },
@@ -32,8 +34,7 @@ Meteor.methods({
     var vis = Visualizations.findOne(doc._id);
     requireOwnership(this.userId, vis.job());
 
-    doc.jobId = vis.jobId;
-    Visualizations.update(doc._id, doc);
+    Visualizations.update(doc._id, { $set: _.omit(doc, '_id') });
   },
 
   removeVisualization: function(_id) {
@@ -42,3 +43,19 @@ Meteor.methods({
     Visualizations.remove(_id);
   }
 });
+
+
+syncVisualization = function(_id, job) {
+  var jobData = {
+    jobName: job.name,
+    ownerGroups: job.ownerGroups,
+    accessGroups: job.accessGroups,
+  };
+
+  if (job.hasOwnProperty('owner'))
+    jobData.owner = job.owner;
+  if (job.hasOwnProperty('ownerId'))
+    jobData.ownerId = job.ownerId;
+
+  Visualizations.update(_id, { $set: jobData });
+};

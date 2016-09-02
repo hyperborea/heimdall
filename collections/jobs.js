@@ -45,7 +45,8 @@ Meteor.methods({
     else {
       oldDoc = Jobs.findOne(jobId);
       requireOwnership(user, oldDoc);
-      Jobs.update(jobId, {$set: doc});
+      Jobs.update(jobId, { $set: doc });
+      Visualizations.find({ jobId: jobId }).forEach((vis) => syncVisualization(vis._id, doc));
     }
 
     // Recreate cron if the schedule has changed.
