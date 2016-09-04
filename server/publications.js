@@ -128,7 +128,7 @@ Meteor.publish('sources', function(filter, limit) {
   filter = { $and: [filter || {}, filterByAccess(this.userId)] };
 
   return Sources.find(filter, {
-    fields : { name: 1, owner: 1, ownerId: 1, username: 1 },
+    fields : { name: 1, owner: 1, ownerId: 1, type: 1, 'test.status': 1 },
     limit  : limit
   });
 });

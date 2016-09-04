@@ -27,8 +27,11 @@
     {{#each source in sources}}
       <a href={{pathFor 'sourceEdit' id=source._id}} class="card">
         <div class="content">
+          <div class="right floated">
+            <i class="{{statusIcon source.test.status}} icon"></i>
+          </div>
           <div class="header">{{source.name}}</div>
-          <div class="meta">{{source.username}}</div>
+          <div class="meta">{{source.type}}</div>
         </div>
         <div class="extra content">
           <i class="user icon"></i> {{source.owner}}

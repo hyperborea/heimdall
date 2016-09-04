@@ -54,6 +54,14 @@ Template.sourceList.helpers({
     return !Template.instance().subscriptionsReady() || 
       items.count() >= Template.instance().limit.get();
   },
+
+  statusIcon: function(status) {
+    switch (status) {
+      case 'ok': return 'green checkmark';
+      case 'running': return 'loading spinner';
+      case 'error': return 'red remove';
+    }
+  }
 });
 
 

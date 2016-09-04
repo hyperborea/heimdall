@@ -46,8 +46,8 @@ Template.sourceForm.helpers({
     return Template.instance().unsavedChanges.get() ? 'positive' : 'disabled';
   },
 
-  resultIcon: function(result) {
-    switch (result.status) {
+  statusIcon: function(status) {
+    switch (status) {
       case 'ok': return 'green check circle';
       case 'running': return 'loading spinner';
       case 'error': return 'red remove circle';

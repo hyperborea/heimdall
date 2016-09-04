@@ -86,7 +86,7 @@
     <div class="field">
       <label>Connection</label>
       <div>
-        <i class="{{resultIcon doc.test}} large icon"></i>
+        <i class="{{statusIcon doc.test.status}} large icon"></i>
         <small>last checked {{timeAgo doc.test.updatedAt}}</small>
       </div>
       {{#if resultIsError doc.test}}
