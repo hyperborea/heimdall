@@ -150,7 +150,8 @@ runJob = function(jobId) {
     _.isObject(result.data) && _.each(result.data, (row) => {
       _.each(row, (value, key) => {
         if (_.isObject(value) && !(value instanceof Date)) {
-          row[key] = JSON.stringify(value);
+          var json = JSON.stringify(value);
+          row[key] = (json.length > 100) ? (json.substring(0, 100) + '...') : json;
         }
 
         if (_.contains(key, '.')) {
