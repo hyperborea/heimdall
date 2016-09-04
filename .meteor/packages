@@ -48,3 +48,4 @@ standard-minifier-js@1.2.0
 reactive-dict@1.1.8
 shell-server
 percolate:migrations
+meteorhacks:cluster
