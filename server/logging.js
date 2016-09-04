@@ -4,7 +4,8 @@ Meteor.methods({
   logRequest: function(req) {
     this.unblock();
 
-    requireUser(this.userId);
+    if (!this.userId) return;
+
     check(req, {
       path      : String,
       routeName : String,
