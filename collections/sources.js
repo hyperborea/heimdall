@@ -15,6 +15,10 @@ Sources.helpers({
         data: err.toString(),
       });
     }
+  },
+
+  status() {
+    return this.test && this.test.status;
   }
 });
 

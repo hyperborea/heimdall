@@ -46,22 +46,13 @@ Template.sourceList.onRendered(function() {
 
 
 Template.sourceList.helpers({
-  sources: function() {
-    return Sources.find();
-  },
+  sources: () => Sources.find(),
+  isError: (status, trueValue=true) => status === 'error' && trueValue,
 
   hasMore: function(items) {
     return !Template.instance().subscriptionsReady() || 
       items.count() >= Template.instance().limit.get();
   },
-
-  statusIcon: function(status) {
-    switch (status) {
-      case 'ok': return 'green checkmark';
-      case 'running': return 'loading spinner';
-      case 'error': return 'red remove';
-    }
-  }
 });
 
 

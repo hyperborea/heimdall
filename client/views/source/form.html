@@ -1,18 +1,18 @@
 <template name="sourceForm">
 
   <form class="ui form text container">
-    <input type="hidden" name="_id" value={{doc._id}}>
+    <input type="hidden" name="_id" value={{source._id}}>
 
     <h4 class="ui dividing header">Connection Details</h4>
 
     <div class="fields">
       <div class="twelve wide field">
         <label>Name</label>
-        <input type="text" name="name" value={{doc.name}}>  
+        <input type="text" name="name" value={{source.name}}>  
       </div>
       <div class="four wide field">
         <label>Type</label>
-        {{> dropdown name="type" value=doc.type items=sourceTypes}}
+        {{> dropdown name="type" value=source.type items=sourceTypes}}
       </div>
     </div>
 
@@ -20,13 +20,13 @@
       <label>Server</label>
       <div class="fields">
         <div class="eight wide field">
-          <input type="text" name="host" value={{doc.host}} placeholder="host address">
+          <input type="text" name="host" value={{source.host}} placeholder="host address">
         </div>
         <div class="four wide field">
-          <input type="number" name="port" value={{doc.port}} placeholder="port">
+          <input type="number" name="port" value={{source.port}} placeholder="port">
         </div>
         <div class="four wide field">
-          <input type="text" name="database" value={{doc.database}} placeholder="database">
+          <input type="text" name="database" value={{source.database}} placeholder="database">
         </div>
       </div>
     </div>
@@ -34,7 +34,7 @@
     {{#if showField 'ssl'}}
     <div class="field">
       <div class="ui checkbox">
-        <input type="checkbox" name="ssl:boolean" checked={{doc.ssl}}>
+        <input type="checkbox" name="ssl:boolean" checked={{source.ssl}}>
         <label>use SSL</label>
       </div>
     </div>
@@ -43,7 +43,7 @@
     {{#if showField 'mssql'}}
     <div class="field">
       <label>Domain (SQL Server)</label>
-      <input type="text" name="domain" value={{doc.domain}} placeholder="domain">
+      <input type="text" name="domain" value={{source.domain}} placeholder="domain">
     </div>
     {{/if}}
 
@@ -52,10 +52,10 @@
       <label>Credentials</label>
       <div class="two fields">
         <div class="field">
-          <input type="text" name="username" value={{doc.username}} placeholder="username">
+          <input type="text" name="username" value={{source.username}} placeholder="username">
         </div>
         <div class="field">
-          <input type="password" name="password" value={{doc.password}} placeholder="password" autocomplete="off">
+          <input type="password" name="password" value={{source.password}} placeholder="password" autocomplete="off">
         </div>
       </div>
     </div>
@@ -63,34 +63,34 @@
 
     <div class="field">
       <label>Access Groups</label>
-      {{> groupsInput name='accessGroups:list' value=doc.accessGroups}}
+      {{> groupsInput name='accessGroups:list' value=source.accessGroups}}
     </div>
 
     <div class="ui divider"></div>
 
-    <div class="action field {{ ownerOrNewVisibility doc }}">
+    <div class="action field {{ ownerOrNewVisibility source }}">
       <div class="ui buttons">
         <div class="ui submit button js-save-source {{saveBtnClass}}">save</div>
-        {{#if doc._id}}
+        {{#if source._id}}
           <div class="or" data-text="&amp;"></div>
           <div class="ui submit button js-test">test connection</div>
         {{/if}}  
       </div>
       
-      {{#if doc._id}}
+      {{#if source._id}}
         <div class="ui right floated negative button js-delete">delete</div>
       {{/if}}
     </div>
 
-    {{#if doc.test}}
+    {{#if source.test}}
     <div class="field">
       <label>Connection</label>
       <div>
-        <i class="{{statusIcon doc.test.status}} large icon"></i>
-        <small>last checked {{timeAgo doc.test.updatedAt}}</small>
+        <i class="{{statusIcon source.status}} large icon"></i>
+        <small>last checked {{timeAgo source.test.updatedAt}}</small>
       </div>
-      {{#if resultIsError doc.test}}
-        <div class="ui visible error message">{{doc.test.data}}</div>
+      {{#if resultIsError source.test}}
+        <div class="ui visible error message">{{source.test.data}}</div>
       {{/if}}
     </div>
     {{/if}}

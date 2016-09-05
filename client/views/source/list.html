@@ -25,11 +25,11 @@
 
   <div class="ui cards">
     {{#each source in sources}}
-      <a href={{pathFor 'sourceEdit' id=source._id}} class="card">
+      <a href={{pathFor 'sourceEdit' id=source._id}} class="{{isError source.status 'red'}} card">
         <div class="content">
-          <div class="right floated">
-            <i class="{{statusIcon source.test.status}} icon"></i>
-          </div>
+          {{#if isError source.status}}
+            <div class="right floated"><i class="red remove icon"></i></div>
+          {{/if}}
           <div class="header">{{source.name}}</div>
           <div class="meta">{{source.type}}</div>
         </div>

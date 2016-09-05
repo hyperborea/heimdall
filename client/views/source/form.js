@@ -25,7 +25,7 @@ Template.sourceForm.onRendered(function() {
 Template.sourceForm.helpers({
   sourceTypes: () => _.values(SOURCE_TYPES),
 
-  doc: function() {
+  source: function() {
     var source = Sources.findOne(FlowRouter.getParam('id')) || {};
 
     if (source.type) {
