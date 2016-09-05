@@ -33,9 +33,7 @@ Template.jobForm.onRendered(function() {
   });
 
   this.subscribe('sources', () => {
-    Tracker.afterFlush(() => {
-      this.$('.source.dropdown').dropdown();
-    });
+    Tracker.afterFlush(() => this.$('.source.dropdown').dropdown());
   });
 });
 

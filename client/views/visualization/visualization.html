@@ -16,10 +16,10 @@
                 <span class="timeAgo">{{timeAgo result.updatedAt}}</span>
                 &ensp;
                 <i class="download link icon js-download" title="download"></i>
-                <i class="refresh {{loading}} link icon js-run" title="refresh"></i>
-                <a href={{pathFor 'visualizationEdit' id=vis._id}} title="edit">
-                  <i class="edit link icon"></i>
-                </a>
+                {{#if isOwner vis}}
+                  <i class="refresh {{loading}} link icon js-run" title="refresh"></i>
+                  <a href={{pathFor 'visualizationEdit' id=vis._id}} title="edit"><i class="edit link icon"></i></a>
+                {{/if}}
               </div>
             </div>       
           </div>

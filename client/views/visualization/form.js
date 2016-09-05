@@ -4,7 +4,10 @@ Template.visualizationForm.onCreated(function() {
 
 
 Template.visualizationForm.onRendered(function() {
-  this.$('.ui.dropdown').dropdown();
+  this.autorun(() => {
+    if (this.subscriptionsReady()) this.$('.ui.dropdown').dropdown();
+  });
+  
   this.$('.ui.main.form').form({});
 });
 

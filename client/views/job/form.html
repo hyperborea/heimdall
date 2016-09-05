@@ -56,7 +56,7 @@
       <div class="content">{{> jobFormPermissions doc=doc}}</div>
     </div>
 
-    <div class="action field {{ ownerOrNewVisibility doc }}">
+    <div class="action field {{ownerOrNewVisibility doc}}">
       <div class="ui buttons">
         <div class="ui submit button {{saveBtnClass}}">save</div>
         {{#if doc._id}}
@@ -85,10 +85,12 @@
       {{/each}}
     </div>
 
-    <div class="ui tiny basic blue labeled icon button js-add-visualization">
-      <i class="plus icon"></i>
-      Add new visualization
-    </div>
+    {{#if isOwner doc}}
+      <div class="ui tiny basic blue labeled icon button js-add-visualization">
+        <i class="plus icon"></i>
+        Add new visualization
+      </div>
+    {{/if}}
   {{/if}}
 
   {{#if doc.result}}
