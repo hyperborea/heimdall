@@ -66,13 +66,11 @@
       {{#if hasStarred dashboard}}
         <i class="right floated yellow star icon"></i>
       {{/if}}
-      <div class="header">
-        {{dashboard.title}}
-      </div>
+      <div class="header">{{dashboard.title}}</div>
+      <div class="description">{{dashboard.description}}</div>
       {{#if dashboard.tags}}
         <div class="meta">
-          <i class="tags icon"></i>
-          {{list dashboard.tags}}
+          <i class="tags icon"></i> {{list dashboard.tags}}
         </div>
       {{/if}}
     </div>

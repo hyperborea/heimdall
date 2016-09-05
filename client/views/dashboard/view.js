@@ -35,17 +35,9 @@ Template.dashboardView.onRendered(function() {
 
 
 Template.dashboardView.helpers({
-  doc: function() {
-    return Dashboards.findOne(_id());
-  },
-
-  starredClass: function(doc) {
-    return hasStarred('dashboard', _id()) ? 'yellow' : 'empty';
-  },
-
-  fullscreenClass: function() {
-    return isFullscreen() ? 'minimize' : 'maximize';
-  }
+  dashboard: () => Dashboards.findOne(_id()),
+  starredClass: () => hasStarred('dashboard', _id()) ? 'yellow' : 'empty',
+  fullscreenClass: () => isFullscreen() ? 'minimize' : 'maximize',
 });
 
 

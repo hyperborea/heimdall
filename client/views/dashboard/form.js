@@ -1,4 +1,5 @@
 Template.dashboardForm.onCreated(function() {
+  this.unsavedChanges = new ReactiveVar(false);
   this.includeNonOwned = new ReactiveVar(false);
   this.visSearch = new ReactiveVar('');
 
@@ -22,7 +23,11 @@ Template.dashboardForm.onRendered(function() {
     min_cols: 25,
     max_size_x: 20,
     resize: {
-      enabled: true
+      enabled: true,
+      stop: () => this.unsavedChanges.set(true)
+    },
+    draggable: {
+      stop: () => this.unsavedChanges.set(true)
     },
     serialize_params: function($w, wgd) {
       var type = $w.find('[name=type]').val();
@@ -63,13 +68,17 @@ Template.dashboardForm.onRendered(function() {
 
 
 Template.dashboardForm.helpers({
-  doc: function() {
-    return Dashboards.findOne(FlowRouter.getParam('id'));
-  }
+  dashboard: () => Dashboards.findOne(FlowRouter.getParam('id')),
+  disabledIfNew: () => !FlowRouter.getParam('id') && 'disabled',
+  disabledIfSaved: () => !Template.instance().unsavedChanges.get() && 'disabled',
 });
 
 
 Template.dashboardForm.events({
+  'change input, keyup input, keyup textarea': function() {
+    Template.instance().unsavedChanges.set(true);
+  },
+
   'submit form': function(event, template) {
     event.preventDefault();
 
@@ -78,6 +87,7 @@ Template.dashboardForm.events({
     data.widgets = getGrid(template).serialize();
 
     Meteor.call('saveDashboard', data, function(err, _id) {
+      template.unsavedChanges.set(false);
       FlowRouter.go('dashboardEdit', {id: _id});
     });
   },
@@ -96,11 +106,13 @@ Template.dashboardForm.events({
   'click .js-add-vis-widget': function(event, template) {
     var grid = getGrid(template);
     addWidget(grid, { size_x: 10, size_y: 4, type: 'visualization' });
+    template.unsavedChanges.set(true);
   },
 
   'click .js-add-text-widget': function(event, template) {
     var grid = getGrid(template);
     addWidget(grid, { size_x: 10, size_y: 1, type: 'text' });
+    template.unsavedChanges.set(true);
   },
 
   'click .js-move-widget-top': function(event, template) {
@@ -110,6 +122,7 @@ Template.dashboardForm.events({
     grid.empty_cells(1, 1, widgetNode.data('sizex'), widgetNode.data('sizey'));
     grid.move_widget_to(widgetNode, 1, 1);
     grid.remove_empty_cells();
+    template.unsavedChanges.set(true);
   },
 
   'click .js-clone-widget': function(event, template) {
@@ -119,6 +132,7 @@ Template.dashboardForm.events({
     var options = grid.serialize(widgetNode)[0];
     options.row = options.row + options.size_y;
     addWidget(grid, options);
+    template.unsavedChanges.set(true);
   },
 
   'click .js-remove-widget': function(event, template) {
@@ -126,6 +140,7 @@ Template.dashboardForm.events({
     var widgetNode = $(event.target).closest('.dashboardFormWidget');
 
     grid.remove_widget(widgetNode);
+    template.unsavedChanges.set(true);
   },
 
   'change input[name="includeNonOwned:skip"]': function(event, template) {

@@ -4,12 +4,13 @@
     {{#unless isFullscreen}}
       <div class="ui grid">
         <div class="thirteen wide column">
-          {{doc.title}}
-          {{#if isOwner doc}}
-            <span class="sub header">
-              <a href={{pathFor 'dashboardEdit' id=doc._id}}>edit</a>
-            </span>
+          {{dashboard.title}}
+          {{#if isOwner dashboard}}
+            <small>
+              <a href={{pathFor 'dashboardEdit' id=dashboard._id}}>(edit)</a>
+            </small>
           {{/if}}
+          <span class="sub header">{{dashboard.description}}</span>
         </div>
         <div class="three wide right aligned column">
           <i class="play link icon js-present-mode" title="present"></i>
@@ -18,7 +19,7 @@
         </div>
       </div>
     {{else}}
-      {{doc.title}}
+      {{dashboard.title}}
     {{/unless}}
   </h1>
   {{/unless}}

@@ -2,7 +2,7 @@ Meteor.publish('dashboards', function(filter, limit) {
   filter = { $and: [filter || {}, filterByAccess(this.userId)] };
 
   return Dashboards.find(filter, {
-    fields : { title: 1, owner: 1, ownerId: 1, tags: 1 },
+    fields : { title: 1, owner: 1, ownerId: 1, tags: 1, description: 1 },
     sort   : { title: 1 },
     limit  : limit,
   });
