@@ -18,9 +18,9 @@ Template.jobForm.onRendered(function() {
   var textarea = this.find('textarea');
   this.editor = CodeMirror.fromTextArea(textarea, {
     lineNumbers: true,
+    lineWrapping: true,
     mode: 'text/x-sql',
     theme: 'monokai',
-    // extraKeys: {"Ctrl-Space": "autocomplete"},
     autoCloseBrackets: true,
     hint: CodeMirror.hint.sql,
   });
