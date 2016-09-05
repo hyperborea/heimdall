@@ -1,3 +1,12 @@
+import CodeMirror from 'codemirror';
+require('codemirror/mode/sql/sql');
+require('codemirror/addon/hint/show-hint');
+require('codemirror/addon/hint/sql-hint');
+require('codemirror/addon/edit/closebrackets');
+
+
+loadHandler(Template.jobForm);
+
 Template.jobForm.onCreated(function() {
   this.autorun( () => this.subscribe('job', FlowRouter.getParam('id')) );
 
@@ -7,12 +16,20 @@ Template.jobForm.onCreated(function() {
 
 Template.jobForm.onRendered(function() {
   var textarea = this.find('textarea');
-  var editor = CodeMirror.fromTextArea(textarea, {
+  this.editor = CodeMirror.fromTextArea(textarea, {
     lineNumbers: true,
-    mode: 'text/x-mysql',
-    theme: 'monokai'
+    mode: 'text/x-sql',
+    theme: 'monokai',
+    // extraKeys: {"Ctrl-Space": "autocomplete"},
+    autoCloseBrackets: true,
+    hint: CodeMirror.hint.sql,
   });
-  editor.on('change', (doc) => textarea.value = doc.getValue());
+  this.editor.on('change', (doc) => textarea.value = doc.getValue());
+
+  this.editor.on("keyup", function (cm, event) {
+    if (!cm.state.completionActive && event.keyCode != 13)
+        CodeMirror.commands.autocomplete(cm, null, {completeSingle: false});
+  });
 
   this.$('.ui.single.dropdown').dropdown();
   this.$('.ui.checkbox').checkbox();
@@ -29,11 +46,11 @@ Template.jobForm.onRendered(function() {
 
   this.autorun(() => {
     var job = Jobs.findOne(FlowRouter.getParam('id'));
-    if (job && job.query) editor.doc.setValue(job.query);
+    if (job && job.query) this.editor.doc.setValue(job.query);
   });
 
   this.subscribe('sources', () => {
-    Tracker.afterFlush(() => this.$('.source.dropdown').dropdown());
+    Tracker.afterFlush(() => this.$('.source.dropdown').dropdown().find('[name=sourceId]').trigger('change'));
   });
 });
 
@@ -58,6 +75,15 @@ Template.jobForm.helpers({
 Template.jobForm.events({
   'change input, keyup input, keyup textarea': function() {
     Template.instance().unsavedChanges.set(true);
+  },
+
+  'change input[name=sourceId]': function(event, template) {
+    var source = Sources.findOne(event.target.value);
+
+    if (source) {
+      var config = SOURCE_TYPES[source.type];
+      template.editor.setOption('mode', config.mime);
+    }
   },
 
   'submit form': function(event, template) {

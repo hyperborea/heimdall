@@ -1,3 +1,7 @@
+import CodeMirror from 'codemirror';
+require('codemirror/mode/markdown/markdown');
+
+
 Template.dashboardFormWidget.onRendered(function() {
   this.$('.ui.settings.dropdown').dropdown();
 });

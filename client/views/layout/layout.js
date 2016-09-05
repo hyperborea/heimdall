@@ -1,4 +1,8 @@
 import 'c3/c3.min.css';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/monokai.css';
+import 'codemirror/addon/hint/show-hint.css';
+
 
 Template.layout.onRendered(function() {
   this.$('.ui.disclaimer.modal').modal({

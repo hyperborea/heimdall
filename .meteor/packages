@@ -20,7 +20,6 @@ check@1.2.3
 
 kadira:flow-router
 kadira:blaze-layout
-perak:codemirror
 msavin:mongol
 arillo:flow-router-helpers
 momentjs:moment

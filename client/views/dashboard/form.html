@@ -4,7 +4,7 @@
     
     <div class="fields">
       <div class="eight wide field">
-        <div class="ui left action input">
+        <div class="ui {{#if doc._id}}left action{{/if}} input">
           {{#if doc._id}}
             <a href={{pathFor 'dashboardView' id=doc._id}} class="ui icon button">
               <i class="external icon"></i>
@@ -22,7 +22,7 @@
       </div>
 
       <div class="two wide field">
-        <div class="ui fluid red labeled icon button js-delete">
+        <div class="ui fluid red labeled icon button js-delete {{#unless doc._id}}disabled{{/unless}}">
           <i class="trash icon"></i> Delete
         </div>
       </div>
