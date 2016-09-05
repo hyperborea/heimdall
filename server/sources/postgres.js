@@ -44,6 +44,10 @@ SOURCE_TYPES.postgres.query = function(source, sql, endCallback, startCallback) 
         client.end();
       }));
     }));
+
+    pg.on('error', Meteor.bindEnvironment((err, client) => {
+      console.error(`pg client error for source "${source.name}"`, err.message);
+    }));
   }
   else throw new Meteor.Error("Can't query job, something is missing.");
 }
