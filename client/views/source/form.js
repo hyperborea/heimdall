@@ -82,10 +82,10 @@ Template.sourceForm.events({
   },
 
   'click .js-delete': function() {
-    if (confirm('Sure you want to delete this source?')) {
+    confirmModal('Sure you want to delete this source?', function() {
       Meteor.call('removeSource', FlowRouter.getParam('id'));
       FlowRouter.go('sourceList');
-    }
+    });
   },
 
   'click .js-test': function() {

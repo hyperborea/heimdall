@@ -126,8 +126,8 @@ Template.eventList.events({
 
 Template.eventListItem.events({
   'click .js-delete': function(event, template) {
-    if (window.confirm("Are you sure you want to delete this event?")) {
-      Meteor.call('removeEvent', this._id);  
-    }
+    confirmModal("Are you sure you want to delete this event?", () => {
+      Meteor.call('removeEvent', this._id); 
+    });
   }
 });

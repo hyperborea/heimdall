@@ -5,9 +5,9 @@ import 'codemirror/addon/hint/show-hint.css';
 
 
 Template.layout.onRendered(function() {
-  this.$('.ui.disclaimer.modal').modal({
-    blurring: true
-  });
+  // this.$('.ui.disclaimer.modal').modal({
+  //   blurring: true
+  // });
 
   var grid = [
     [1, 1, 1, 0, 1, 1, 1],
@@ -49,3 +49,14 @@ Template.layout.events({
     location.reload();
   }
 });
+
+
+confirmModal = function(text, options) {
+  if (_.isFunction(options))
+    options = { onApprove: options };
+
+  $('.confirm.modal')
+    .modal(options).modal('show')
+    .find('.content')
+      .html(text);
+}

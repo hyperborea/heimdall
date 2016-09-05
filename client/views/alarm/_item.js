@@ -27,9 +27,9 @@ Template.alarmItem.events({
   'click .js-delete-comment': function(event, template) {
     var data = Blaze.getData(event.target);
 
-    if (confirm("Sure you want to delete this comment?")) {
+    confirmModal("Sure you want to delete this comment?", function() {
       Meteor.call('deleteAlarmComment', data.alarmId, data.comment.insertedAt);
-    }
+    });
   },
 
   'click .js-ack-alarm': function(event, template) {

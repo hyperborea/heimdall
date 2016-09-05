@@ -107,10 +107,10 @@ Template.jobForm.events({
   },
 
   'click .js-delete': function() {
-    if (confirm('Sure you want to delete this job?')) {
+    confirmModal('Sure you want to delete this job?', function() {
       Meteor.call('removeJob', FlowRouter.getParam('id'));
       FlowRouter.go('jobList');
-    }
+    });
   },
 
   'click .js-add-visualization': function() {

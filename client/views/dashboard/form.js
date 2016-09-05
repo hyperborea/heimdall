@@ -97,10 +97,10 @@ Template.dashboardForm.events({
   },
 
   'click .js-delete': function() {
-    if (confirm('Sure you want to delete this dashboard?')) {
+    confirmModal('Sure you want to delete this dashboard?', function() {
       Meteor.call('removeDashboard', FlowRouter.getParam('id'));
       FlowRouter.go('dashboardList');
-    }
+    });
   },
 
   'click .js-add-vis-widget': function(event, template) {

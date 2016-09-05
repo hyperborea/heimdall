@@ -43,9 +43,9 @@ Template.visualizationForm.events({
   'click .js-delete': function(event, template) {
     var vis = Visualizations.findOne(FlowRouter.getParam('id'));
 
-    if (confirm('Sure you want to delete this visualization?')) {
+    confirmModal('Sure you want to delete this visualization?', function() {
       Meteor.call('removeVisualization', vis._id);
       FlowRouter.go('jobEdit', { id: vis.jobId });
-    }
+    });
   }
 });

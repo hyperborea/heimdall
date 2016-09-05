@@ -52,7 +52,15 @@
     </div>
   </div>
 
-  {{> layoutDisclaimer}}
+  <div class="ui small basic modal confirm">
+    <div class="ui icon header"><i class="warning sign icon"></i> <span class="content"></span></div>
+    <div class="actions">
+      <div class="ui inverted basic cancel button"><i class="remove icon"></i> Cancel</div>
+      <div class="ui green inverted approve button"><i class="checkmark icon"></i> OK</div>
+    </div>
+  </div>
+
+  <!-- {{> layoutDisclaimer}} -->
 </template>
 
 <template name="layoutDisclaimer">
