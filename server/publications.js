@@ -28,7 +28,9 @@ Meteor.publishComposite('dashboard', function(_id) {
         return Visualizations.find({ _id: { $in: _.pluck(dashboard.widgets, 'visId') } });
       },
       children: [{
-        find: (vis) => Jobs.find(vis.jobId)
+      //   find: (vis) => Jobs.find(vis.jobId)
+      // }, {
+        find: (vis) => JobResults.find({ jobId: vis.jobId })
       }]
     }]
   };
@@ -64,6 +66,7 @@ Meteor.publish('job', function(_id) {
 
   return [
     Jobs.find(_id),
+    JobResults.find({ jobId: _id }),
     Visualizations.find({ jobId: _id }, {
       fields: { jobId: 1, title: 1 }
     })
@@ -89,7 +92,8 @@ Meteor.publish('visualization', function(_id) {
 
   return [
     Visualizations.find(_id),
-    Jobs.find(vis.jobId)
+    Jobs.find(vis.jobId),
+    JobResults.find({ jobId: vis.jobId }),
   ];
 });
 

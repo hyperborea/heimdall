@@ -56,9 +56,8 @@ Template.visualization.events({
   },
 
   'click .js-download': function(event, template) {
-    const job = this.vis.job();
     const csv = Papa.unparse(this.result.data, { delimiter: ';' });
     const blob = new Blob([csv], {type: "application/csv"});
-    saveAs(blob, `${job.name}.csv`);
+    saveAs(blob, `${vis.jobName}.csv`);
   }
 });

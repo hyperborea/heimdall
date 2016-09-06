@@ -45,13 +45,13 @@ Meteor.methods({
 });
 
 
-checkJobForAlarms = function(job) {
+checkJobForAlarms = function(job, result) {
   var matches = [];
   var runId = Random.id();
-  if (!job.result || job.result.status !== 'ok') return matches;
+  if (result.status !== 'ok') return matches;
 
   _.each(job.rules || [], (rule) => {
-    _.each(job.result.data, (row) => {
+    _.each(result.data, (row) => {
       var isMatch = _.every(rule.conditions, (condition) => {
         var field = row[condition.field];
         var value = condition.value;
@@ -112,7 +112,7 @@ checkJobForAlarms = function(job) {
             {
               fileName    : 'results.csv',
               contentType : 'text/csv',
-              contents    : Papa.unparse(job.result.data, { delimiter: ';' })
+              contents    : Papa.unparse(result.data, { delimiter: ';' })
             }
           ]
         });

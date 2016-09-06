@@ -9,7 +9,11 @@ Meteor.startup(function() {
 Visualizations.helpers({
   job: function() {
     return Jobs.findOne(this.jobId);
-  }
+  },
+  
+  result: function() {
+    return JobResults.findOne({ jobId: this.jobId }) || {};
+  },
 });
 
 

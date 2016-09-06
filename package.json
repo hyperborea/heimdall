@@ -19,6 +19,7 @@
     "mysql": "^2.11.1",
     "node-impala": "^2.0.1",
     "pg": "^4.5.6",
-    "pg-native": "^1.10.0"
+    "pg-native": "^1.10.0",
+    "simpl-schema": "0.0.3"
   }
 }

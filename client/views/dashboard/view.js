@@ -67,10 +67,10 @@ function addWidget(grid, options) {
   if (options.type === 'visualization') {
     var vis = Visualizations.findOne(options.visId);
 
-    if (vis && vis.job()) {
+    if (vis && vis.result()) {
       var data = {
         vis      : vis,
-        result   : vis.job().result,
+        result   : vis.result(),
         visBasic : options.basic
       };
 

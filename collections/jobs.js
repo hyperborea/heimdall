@@ -7,6 +7,10 @@ Meteor.startup(function() {
 
 
 Jobs.helpers({
+  result: function() {
+    return JobResults.findOne({ jobId: this._id }) || {};
+  },
+
   visualizations: function() {
     return Visualizations.find({
       jobId: this._id
@@ -16,7 +20,7 @@ Jobs.helpers({
   },
 
   isRunning: function() {
-    return this.result && this.result.status === 'running'
+    return this.status === 'running'
   }
 });
 
@@ -87,8 +91,8 @@ Meteor.methods({
     var source = Sources.findOne(job.sourceId);
     requireOwnership(this.userId, job);
 
-    const pid = job.result.pid;
-    if (job.result.status === 'running' && pid) {
+    const pid = job.result().pid;
+    if (job.status === 'running' && pid) {
       source.query(`select pg_terminate_backend(${pid})`);
     }
   }
@@ -130,16 +134,12 @@ runJob = function(jobId) {
   requireAccess(job.ownerId, source);
 
   function updateJob(result) {
-    job.status = result.status;
-    job.result = _.extend(job.result || {}, result, {
-      jobId     : jobId,
-      updatedAt : new Date()
-    });
-
-    Jobs.update(jobId, {$set: {result: job.result, status: job.status}});
+    result.jobId = jobId;
+    JobResults.upsert({jobId: jobId}, {$set: result})
+    Jobs.update(jobId, {$set: {status: result.status}});
   }
 
-  updateJob({ status: 'running' });
+  updateJob({status: 'running'});
 
   source.query(job.query, function(result) {
     // enforce maximum rows setting (bson size is limited to ~ 16MB)
@@ -162,9 +162,10 @@ runJob = function(jobId) {
     });
 
     updateJob(result);
-    checkJobForAlarms(job);
+    checkJobForAlarms(job, result);
     logJobHistory(job, result, startedAt, new Date());
 
+    // TODO: send error email on failure
     if (job.email.enabled) {
       Email.send({
         from    : 'noreply@heimdall',
