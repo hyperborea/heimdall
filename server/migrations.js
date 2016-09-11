@@ -20,7 +20,7 @@ Migrations.add({
   up() {
     Jobs.find().forEach((job) => {
       if (job.result && job.result.status) {
-        var data = _.extend(job.result, {jobId: job._id});
+        var data = _.extend(job.result, {jobId: job._id, parameters: Object()});
         JobResults.upsert({jobId: job._id}, {$set: data});
         Jobs.update(job._id, {$unset: {result: ''}});
       }
