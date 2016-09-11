@@ -2,9 +2,7 @@ import mssql from 'mssql';
 
 
 SOURCE_TYPES.mssql.query = function(source, sql, parameters, endCallback, startCallback) {
-  function results(status, data, extras) {
-    extras = extras || {};
-
+  function done(status, data, extras={}) {
     var result = {
       status: status,
       data: data
@@ -29,7 +27,7 @@ SOURCE_TYPES.mssql.query = function(source, sql, parameters, endCallback, startC
     if (source.domain) connectionConfig.domain = source.domain;
 
     var connection = new mssql.Connection(connectionConfig, Meteor.bindEnvironment((err) => {
-      if (err) return results('error', `${err} - could not connect with data source.`);
+      if (err) return done('error', `${err} - could not connect with data source.`);
 
       var request = connection.request();
       getQueryParameters(sql).forEach((key) => {
@@ -39,11 +37,11 @@ SOURCE_TYPES.mssql.query = function(source, sql, parameters, endCallback, startC
 
       request.query(sql, Meteor.bindEnvironment((err, data) => {
         if (err) {
-          results('error', err.toString());
+          done('error', err.toString());
         }
         else {
           var fields = (data && data.length) ? _.keys(data[0]) : [];
-          results('ok', data, { fields: fields });
+          done('ok', data, { fields: fields });
         }
       }));
     }));

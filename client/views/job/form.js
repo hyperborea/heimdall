@@ -1,5 +1,6 @@
 import CodeMirror from 'codemirror';
 require('codemirror/mode/sql/sql');
+require('codemirror/mode/javascript/javascript');
 // require('codemirror/addon/hint/show-hint');
 // require('codemirror/addon/hint/sql-hint');
 require('codemirror/addon/edit/closebrackets');

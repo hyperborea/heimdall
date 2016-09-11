@@ -1,3 +1,6 @@
+import Papa from 'papaparse';
+
+
 Template.visualization.onCreated(function() {
   this.rendered = new ReactiveVar(false);
 
@@ -19,6 +22,7 @@ Template.visualization.onCreated(function() {
     }
   });
 });
+
 
 Template.visualization.onRendered(function() {
   this.rendered.set(true);
@@ -62,7 +66,7 @@ Template.visualization.helpers({
       var canvas = template.find('.visualizationCanvas');
 
       const canvasHeight = wrapper.offsetHeight - (topbar ? topbar.offsetHeight : 0) - 28;
-      if (canvasHeight) $(canvas).height(canvasHeight);
+      if (canvasHeight > 30) $(canvas).height(canvasHeight);
 
       settings.height = canvasHeight;
       settings.width = canvas.offsetWidth;

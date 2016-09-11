@@ -70,7 +70,13 @@ Meteor.methods({
       Sources.update(sourceId, {$set: {test: result}});
     }
 
-    updateTest({status: 'running'});
-    source.query('select 1 as test', {}, updateTest);
+    const config = SOURCE_TYPES[source.type];
+    if (config.bypassTest) {
+      updateTest({status: 'ok'});
+    }
+    else {
+      updateTest({status: 'running'});
+      source.query('select 1 as test', {}, updateTest);
+    }
   }
 });
