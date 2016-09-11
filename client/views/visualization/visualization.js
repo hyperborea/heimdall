@@ -61,7 +61,10 @@ Template.visualization.helpers({
       var topbar = template.find('.visualizationTopbar');
       var canvas = template.find('.visualizationCanvas');
 
-      settings.height = wrapper.offsetHeight - (topbar ? topbar.offsetHeight : 0) - 28;
+      const canvasHeight = wrapper.offsetHeight - (topbar ? topbar.offsetHeight : 0) - 28;
+      if (canvasHeight) $(canvas).height(canvasHeight);
+
+      settings.height = canvasHeight;
       settings.width = canvas.offsetWidth;
     }
 

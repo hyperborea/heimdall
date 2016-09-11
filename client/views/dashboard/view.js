@@ -83,7 +83,7 @@ function addWidget(grid, options, template) {
   let widgetNode = null;
   const dashboardId = _id();
 
-  if (options.type === 'visualization') {
+  if (options.type === 'visualization' && options.visId) {
     function reactiveContext() {
       return {
         id: options.visId,
