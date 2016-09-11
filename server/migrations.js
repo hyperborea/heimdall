@@ -9,6 +9,7 @@ Migrations.add({
   version: 3,
   name: 'Adds parameters to job results',
   up() {
+    Jobs.update({parameters: {$exists: false}}, {$set: {parameters: Object()}}, {multi: true, validate: false});
     JobResults.update({parameters: {$exists: false}}, {$set: {parameters: Object()}}, {multi: true, validate: false});
   },
   down() {}
