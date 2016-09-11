@@ -1,14 +1,57 @@
+import { mapValues } from 'lodash';
+
+
 Jobs = new Mongo.Collection('jobs');
 
-Meteor.startup(function() {
-  if (!Meteor.isServer) return;
-  Jobs._ensureIndex({ createdAt: -1 });
+Jobs.schema = new SimpleSchema({
+  name: String,
+  sourceId: { type: String, regEx: SimpleSchema.RegEx.Id },
+  query: String,
+  parameters: { type: Object, blackbox: true }, 
+  status: String,
+  createdAt: {
+    type: Date,
+    index: -1,
+    autoValue: function() {
+      if (this.isInsert) 
+        return new Date();
+      else 
+        this.unset();
+    }
+  },
+  schedule: { type: String, optional: true },
+  scheduleError: { type: String, optional: true },
+  email: { type: Object, optional: true },
+  'email.recipients': { type: String, optional: true },
+  'email.subject': { type: String, optional: true },
+  'email.content': { type: String, optional: true },
+  'email.enabled': Boolean,
+  rules: Array,
+  'rules.$': Object,
+  'rules.$.name': { type: String, label: 'Alarm name' },
+  'rules.$.severity': { type: String, label: 'Alarm severity' },
+  'rules.$.conditions': Array,
+  'rules.$.conditions.$': Object,
+  'rules.$.conditions.$.field': { type: String, label: 'Alarm field' },
+  'rules.$.conditions.$.op': { type: String, label: 'Alarm operator' },
+  'rules.$.conditions.$.value': { type: String, label: 'Alarm value' },
+  alarmStatus: { type: Object, optional: true },
+  alarm: { type: Object, optional: true },
+  'alarm.email': { type: String, optional: true },
+  'alarm.emailSeverity': { type: String, optional: true },
+  'alarm.slack': { type: Array, optional: true },
+  'alarm.slack.$': String,
+  'alarm.slackSeverity': { type: String, optional: true },
 });
+
+Jobs.schema.extend(permissionSchema);
+Jobs.attachSchema(Jobs.schema);
 
 
 Jobs.helpers({
-  result: function() {
-    return JobResults.findOne({ jobId: this._id }) || {};
+  result: function(parameters) {
+    parameters = cleanParameters(parameters, this.parameters);
+    return JobResults.findOne({ jobId: this._id, parameters: parameters });
   },
 
   visualizations: function() {
@@ -31,26 +74,35 @@ Meteor.methods({
 
     var jobId = job._id;
     var oldDoc = {};
-    var doc = _.omit(job, '_id', 'owner', 'ownerId', 'createdAt');
+    var doc = _.omit(job, '_id', 'owner', 'ownerId');
     _.defaults(doc, {
+      parameters: {},
       rules: [],
-      scheduleError: false
+      scheduleError: undefined,
     });
+
+    doc.parameters = _.chain(getQueryParameters(doc.query))
+      .map((key) => [key, doc.parameters[key] || ''])
+      .object().value();
 
     if (!jobId) {
       requireUser(this.userId);
-      
-      doc.createdAt = new Date();
       doc.ownerId = this.userId;
       doc.owner = user.username;
-
+      doc.status = 'new';
       jobId = Jobs.insert(doc);
     }
     else {
       oldDoc = Jobs.findOne(jobId);
       requireOwnership(user, oldDoc);
+
       Jobs.update(jobId, { $set: doc });
       Visualizations.find({ jobId: jobId }).forEach((vis) => syncVisualization(vis._id, doc));
+
+      // if the query has changed in any way invalidate aggressively all caches
+      if (doc.query !== oldDoc.query) {
+        JobResults.remove({ jobId: jobId });
+      }
     }
 
     // Recreate cron if the schedule has changed.
@@ -70,17 +122,18 @@ Meteor.methods({
     }
 
     Jobs.remove(jobId);
+    JobResults.remove({ jobId: jobId });
     Visualizations.remove({ jobId: jobId });
   },
 
 
-  runJob: function(jobId) {
+  runJob: function(jobId, parameters) {
     if (!Meteor.isServer) return;
 
     check(jobId, String);
     requireOwnership(this.userId, Jobs.findOne(jobId));
 
-    runJob(jobId);
+    runJob(jobId, parameters);
   },
 
 
@@ -126,22 +179,28 @@ scheduleJob = function(jobId, scheduleString) {
 };
 
 
-runJob = function(jobId) {
+runJob = function(jobId, parameters) {
   var startedAt = new Date();
   var job = Jobs.findOne(jobId);
   var source = Sources.findOne(job.sourceId);
 
+  parameters = parameters || {};
+  parameters = cleanParameters(parameters, job.parameters);
+
   requireAccess(job.ownerId, source);
 
   function updateJob(result) {
-    result.jobId = jobId;
-    JobResults.upsert({jobId: jobId}, {$set: result})
-    Jobs.update(jobId, {$set: {status: result.status}});
+    // only update job status if parameteres are the job defaults
+    if (_.isEqual(parameters, job.parameters)) {
+      Jobs.update(jobId, { $set: { status: result.status } });
+    }
+
+    JobResults.upsert({ jobId: jobId, parameters: parameters }, { $set: result })
   }
 
   updateJob({status: 'running'});
 
-  source.query(job.query, function(result) {
+  source.query(job.query, parameters, function(result) {
     // enforce maximum rows setting (bson size is limited to ~ 16MB)
     if (result.status === 'ok' && result.data && result.data.length > SOURCE_SETTINGS.maxRows)
       result = { status: 'error', data: `Exceeded limit of ${SOURCE_SETTINGS.maxRows} rows.` };
@@ -154,7 +213,7 @@ runJob = function(jobId) {
           row[key] = (json.length > 100) ? (json.substring(0, 100) + '...') : json;
         }
 
-        if (_.contains(key, '.')) {
+        if (key.indexOf('.') !== -1) {
           row[key.replace('.', '_')] = value;
           delete row[key];
         }
@@ -165,21 +224,30 @@ runJob = function(jobId) {
     checkJobForAlarms(job, result);
     logJobHistory(job, result, startedAt, new Date());
 
-    // TODO: send error email on failure
     if (job.email.enabled) {
-      Email.send({
-        from    : 'noreply@heimdall',
-        to      : job.email.recipients,
-        subject : job.email.subject,
-        text    : job.email.content,
-        attachments: [
-          {
-            fileName    : 'results.csv',
-            contentType : 'text/csv',
-            contents    : Papa.unparse(result.data, { delimiter: ',' })
-          }
-        ]
-      });
+      if (result.status === 'ok') {
+        Email.send({
+          from    : 'noreply@heimdall',
+          to      : job.email.recipients,
+          subject : job.email.subject,
+          text    : job.email.content,
+          attachments: [
+            {
+              fileName    : 'results.csv',
+              contentType : 'text/csv',
+              contents    : Papa.unparse(result.data, { delimiter: ',' })
+            }
+          ]
+        });
+      }
+      else if (result.status === 'error') {
+        Email.send({
+          from    : 'noreply@heimdall',
+          to      : job.email.recipients,
+          subject : `[heimdall] error in job "${job.name}"`,
+          text    : result.data,
+        });
+      }
     }
   }, function(pid) {
     updateJob({
@@ -187,4 +255,24 @@ runJob = function(jobId) {
       pid: pid
     });
   });
+};
+
+
+// Parses out parameteres (in double curly braces) from a string and returns a list of the parameter names.
+getQueryParameters = function(query) {
+  var matches = query.match(/{{\s*\w+\s*}}/g);
+  if (matches) {
+    return matches.map((s) => s.substring(2, s.length-2).trim());
+  }
+  else return [];
+};
+
+replaceQueryParameters = function(query, replacement) {
+  return query.replace(/{{\s*(\w+)\s*}}/g, replacement);
+};
+
+// Make sure only relevant parameters are used and that defaults are still filled in.
+cleanParameters = function(params, defaultParams) {
+  params = params || {};
+  return mapValues(defaultParams, (v, k) => params[k] || v);
 };

@@ -6,13 +6,13 @@ JobResults.schema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     index: true
   },
+  parameters: {
+    type: Object,
+    blackbox: true
+  },
   status: {
     type: String,
     allowedValues: ['ok', 'running', 'error']
-  },
-  updatedAt: {
-    type: Date,
-    autoValue: () => new Date()
   },
   data: SimpleSchema.oneOf({
     type: String,
@@ -29,6 +29,10 @@ JobResults.schema = new SimpleSchema({
     defaultValue: [],
   },
   'fields.$': String,
+  updatedAt: {
+    type: Date,
+    autoValue: () => new Date()
+  },
   pid: {
     type: Number,
     optional: true

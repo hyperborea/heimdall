@@ -34,15 +34,7 @@ Template.jobForm.onRendered(function() {
   this.$('.ui.single.dropdown').dropdown();
   this.$('.ui.checkbox').checkbox();
   this.$('.ui.accordion').accordion();
-
-  var form = this.$('form').form({
-    fields : {
-      name     : 'empty',
-      query    : 'empty',
-      sourceId : 'empty',
-    },
-    inline  : true,
-  });
+  this.$form = this.$('form').form({ fields : {}, inline : true });
 
   this.autorun(() => {
     var job = Jobs.findOne(FlowRouter.getParam('id'));
@@ -58,23 +50,20 @@ Template.jobForm.onRendered(function() {
 Template.jobForm.helpers({
   doc: () => Jobs.findOne(FlowRouter.getParam('id')),
   sources: () => Sources.find(),
-
-  saveBtnClass: function() {
-    return Template.instance().unsavedChanges.get() ? 'positive' : 'disabled';
-  },
-
+  saveBtnClass: () => Template.instance().unsavedChanges.get() ? 'positive' : 'disabled',
+  paramArray: (params) => params && _.map(params, (v, k) => Object({ name: k, value: v })),
   hasPermissions: function(doc) {
     return doc && (
       (doc.ownerGroups && doc.ownerGroups.length) ||
       (doc.accessGroups && doc.accessGroups.length)
     );
-  }
+  },
 });
 
 
 Template.jobForm.events({
-  'change input, keyup input, keyup textarea': function() {
-    Template.instance().unsavedChanges.set(true);
+  'change input, keyup input, keyup textarea': function(event, template) {
+    template.unsavedChanges.set(true);
   },
 
   'change input[name=sourceId]': function(event, template) {
@@ -89,12 +78,24 @@ Template.jobForm.events({
   'submit form': function(event, template) {
     event.preventDefault();
 
-    var template = Template.instance();
     var data = $(event.target).serializeJSON();
 
-    Meteor.call('saveJob', data, function(err, _id) {
-      template.unsavedChanges.set(false);
-      FlowRouter.go('jobEdit', {id: _id});
+    var validation = Jobs.simpleSchema().namedContext();
+    var identify = (error) => error.name.split('.').reduce((prev, cur, i) => prev + '[' + cur + ']');
+    validation.validationErrors().forEach((error) => template.$form.form('remove prompt', identify(error)));
+
+    Meteor.call('saveJob', data, function(err, jobId) {
+      if (err) {
+        template.$form.form('refresh').form('set error');
+        validation.validationErrors().forEach((error) => {
+          template.$form.form('add prompt', identify(error), validation.keyErrorMessage(error.name));
+        });
+      }
+      else {
+        template.$form.form('set success');
+        template.unsavedChanges.set(false);
+        FlowRouter.go('jobEdit', {id: jobId});
+      }
     });
   },
 
@@ -114,8 +115,8 @@ Template.jobForm.events({
   },
 
   'click .js-add-visualization': function() {
-    Meteor.call('addVisualization', FlowRouter.getParam('id'), function(err, _id) {
-      FlowRouter.go('visualizationEdit', {id: _id});
+    Meteor.call('addVisualization', FlowRouter.getParam('id'), function(err, visId) {
+      FlowRouter.go('visualizationEdit', {id: visId});
     });
   }
 });

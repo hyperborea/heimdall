@@ -1,7 +1,7 @@
 import mssql from 'mssql';
 
 
-SOURCE_TYPES.mssql.query = function(source, sql, endCallback, startCallback) {
+SOURCE_TYPES.mssql.query = function(source, sql, parameters, endCallback, startCallback) {
   function results(status, data, extras) {
     extras = extras || {};
 
@@ -31,7 +31,13 @@ SOURCE_TYPES.mssql.query = function(source, sql, endCallback, startCallback) {
     var connection = new mssql.Connection(connectionConfig, Meteor.bindEnvironment((err) => {
       if (err) return results('error', `${err} - could not connect with data source.`);
 
-      connection.request().query(sql, Meteor.bindEnvironment((err, data) => {
+      var request = connection.request();
+      getQueryParameters(sql).forEach((key) => {
+        request.input(key, parameters[key]);
+      });
+      sql = replaceQueryParameters(sql, (m, key) => '@' + key);
+
+      request.query(sql, Meteor.bindEnvironment((err, data) => {
         if (err) {
           results('error', err.toString());
         }

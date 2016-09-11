@@ -1,11 +1,11 @@
 import pg from 'pg';
 
 
-SOURCE_TYPES.postgres.query = function(source, sql, endCallback, startCallback) {
+SOURCE_TYPES.postgres.query = function(source, sql, parameters, endCallback, startCallback) {
   function results(status, data, extras) {
     extras = extras || {};
 
-    var result = {
+    let result = {
       status: status,
       data: data
     };
@@ -31,7 +31,13 @@ SOURCE_TYPES.postgres.query = function(source, sql, endCallback, startCallback) 
 
       client.query(`SET statement_timeout TO ${SOURCE_SETTINGS.timeoutMs}`);
 
-      client.query(sql, Meteor.bindEnvironment((err, result) => {
+      let index = 1;
+      query = {
+        text: replaceQueryParameters(sql, () => '$' + (index++)),
+        values: getQueryParameters(sql).map((key) => parameters[key])
+      };
+
+      client.query(query, Meteor.bindEnvironment((err, result) => {
         if (err) {
           results('error', err.toString());
         }
@@ -43,10 +49,11 @@ SOURCE_TYPES.postgres.query = function(source, sql, endCallback, startCallback) 
         done(true);
         client.end();
       }));
-    }));
 
-    pg.on('error', Meteor.bindEnvironment((err, client) => {
-      console.error(`pg client error for source "${source.name}"`, err.message);
+      client.on('error', Meteor.bindEnvironment((err, client) => {
+        return results('error', `pg client error: ${err.message}`);
+        client.end();
+      }));
     }));
   }
   else throw new Meteor.Error("Can't query job, something is missing.");

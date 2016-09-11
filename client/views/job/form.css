@@ -1,3 +1,7 @@
+.job.form {
+  margin-bottom: 3em;
+}
+
 .job.form .CodeMirror {
   height: auto;
   min-height: 200px;

@@ -2,12 +2,12 @@ Sources = new Mongo.Collection('sources');
 
 
 Sources.helpers({
-  query(sql, endCallback, startCallback) {
+  query(sql, parameters, endCallback, startCallback) {
     startCallback = startCallback || function(){};
     endCallback = endCallback || function(){};
 
     try {
-      SOURCE_TYPES[this.type].query(this, sql, endCallback, startCallback);
+      SOURCE_TYPES[this.type].query(this, sql, parameters, endCallback, startCallback);
     }
     catch(err) {
       endCallback({
@@ -71,6 +71,6 @@ Meteor.methods({
     }
 
     updateTest({status: 'running'});
-    source.query('select 1 as test', updateTest);
+    source.query('select 1 as test', {}, updateTest);
   }
 });

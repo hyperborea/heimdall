@@ -25,6 +25,10 @@
 
     <div class="field">
       <textarea name="query"></textarea>
+      <!-- <small>
+        <i class="info circle icon"></i>          
+        To make parameters dynamic wrap them in double curly braces, e.g. {{|some_name}}.
+      </small> -->
     </div>
 
     <div class="ui fluid styled accordion field">
@@ -56,6 +60,28 @@
       <div class="content">{{> jobFormPermissions doc=doc}}</div>
     </div>
 
+    {{#if (paramArray doc.parameters)}}
+    <h4 class="ui header">Parameter default values</h4>
+    <div class="fields">
+      {{#each param in (paramArray doc.parameters)}}
+        <div class="four wide field">
+          <div class="ui labeled input">
+            <div class="ui basic grey label">{{param.name}}</div>
+            <input type="text" name="parameters[{{param.name}}]" value={{param.value}}>
+          </div>  
+        </div>
+      {{/each}}
+    </div>
+    {{/if}}
+
+    <div class="ui icon error message">
+      <i class="warning icon"></i>
+      <div class="content">
+        <div class="header">Whoops!</div>
+        Something went wrong, please fix the errors above.
+      </div>
+    </div>
+
     <div class="action field {{ownerOrNewVisibility doc}}">
       <div class="ui buttons">
         <div class="ui submit button {{saveBtnClass}}">save</div>
@@ -72,9 +98,7 @@
   </form>
 
   {{#if doc.result}}
-    <h4 class="ui dividing header">
-      Visualizations
-    </h4>
+    <h4 class="ui dividing header">Visualizations</h4>
 
     <div class="ui list">
       {{#each vis in doc.visualizations}}
@@ -107,7 +131,7 @@
       <div class="ui red basic button js-cancel">cancel</div>
     {{/if}}
 
-    {{> visualization visType="DataTable" result=doc.result visBasic=true}}
+    {{> visualization type="DataTable" result=doc.result basic=true}}
   {{/if}}
 </template>
 

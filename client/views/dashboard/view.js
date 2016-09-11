@@ -3,6 +3,8 @@ var _id = () => Template.currentData().id;
 
 
 Template.dashboardView.onCreated(function() {
+  this.parameters = new ReactiveVar();
+
   this.autorun(() => {
     Template.currentData().embedded || this.subscribe('dashboard', _id());
   });
@@ -10,6 +12,8 @@ Template.dashboardView.onCreated(function() {
 
 
 Template.dashboardView.onRendered(function() {
+  const template = this;
+
   var grid = this.$('.gridster').gridster({
     widget_margins: [10, 10],
     widget_base_dimensions: [80, 60],
@@ -28,7 +32,7 @@ Template.dashboardView.onRendered(function() {
       grid.options.min_cols = _.max(_.map(widgets, (w) => w.col + w.size_x));
 
       grid.remove_all_widgets();
-      _.each(widgets, (widget) => addWidget(grid, widget));  
+      _.each(widgets, (widget) => addWidget(grid, widget, template));
     }
   });
 });
@@ -38,10 +42,24 @@ Template.dashboardView.helpers({
   dashboard: () => Dashboards.findOne(_id()),
   starredClass: () => hasStarred('dashboard', _id()) ? 'yellow' : 'empty',
   fullscreenClass: () => isFullscreen() ? 'minimize' : 'maximize',
+  paramArray: function() {
+    return _.chain(Jobs.find().fetch())
+      .pluck('parameters')
+      .reduce((memo, param) => _.extend(memo, param), {})
+      .map((v, k) => Object({ name: k, value: v }))
+      .value();
+  }
 });
 
 
 Template.dashboardView.events({
+  'submit form.parameters': function(event, template) {
+    event.preventDefault();
+
+    var data = $(event.target).serializeJSON();
+    template.parameters.set(data);
+  },
+
   'click .js-toggle-star': function() {
     toggleStar('dashboard', _id());
   },
@@ -60,23 +78,23 @@ Template.dashboardView.events({
 });
 
 
-function addWidget(grid, options) {
+function addWidget(grid, options, template) {
   options = options || {};
-  var widgetNode = null;
+  let widgetNode = null;
+  const dashboardId = _id();
 
   if (options.type === 'visualization') {
-    var vis = Visualizations.findOne(options.visId);
-
-    if (vis && vis.result()) {
-      var data = {
-        vis      : vis,
-        result   : vis.result(),
-        visBasic : options.basic
-      };
-
-      var widget = Blaze.renderWithData(Template.visualization, data, grid.$el.get(0));
-      widgetNode = widget.firstNode();
+    function reactiveContext() {
+      return {
+        id: options.visId,
+        basic: options.basic,
+        parameters: template.parameters.get(),
+        dashboardId: dashboardId
+      }
     }
+
+    var widget = Blaze.renderWithData(Template.visualization, reactiveContext, grid.$el.get(0));
+    widgetNode = widget.firstNode();
   }
 
   if (options.type === 'text') {

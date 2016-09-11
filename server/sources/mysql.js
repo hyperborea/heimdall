@@ -1,7 +1,7 @@
 import mysql from 'mysql';
 
 
-SOURCE_TYPES.mysql.query = function(source, sql, endCallback, startCallback) {
+SOURCE_TYPES.mysql.query = function(source, sql, parameters, endCallback, startCallback) {
   function results(status, data, extras) {
     extras = extras || {};
 
@@ -24,7 +24,13 @@ SOURCE_TYPES.mysql.query = function(source, sql, endCallback, startCallback) {
 
     connection.connect();
 
-    connection.query({sql: sql, timeout: SOURCE_SETTINGS.timeoutMs}, Meteor.bindEnvironment((err, rows, fields) => {
+    query = {
+      sql: replaceQueryParameters(sql, '?'),
+      values: getQueryParameters(sql).map((key) => parameters[key]),
+      timeout: SOURCE_SETTINGS.timeoutMs
+    };
+
+    connection.query(query, Meteor.bindEnvironment((err, rows, fields) => {
       if (err) {
         results('error', err.toString());
       }

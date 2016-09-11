@@ -18,22 +18,8 @@ Meteor.publish('favoriteDashboards', function() {
   });
 });
 
-Meteor.publishComposite('dashboard', function(_id) {
-  return {
-    find: function() {
-      return Dashboards.find({ $and: [filterByAccess(this.userId), { _id: _id }] });
-    },
-    children: [{
-      find: function(dashboard) {
-        return Visualizations.find({ _id: { $in: _.pluck(dashboard.widgets, 'visId') } });
-      },
-      children: [{
-      //   find: (vis) => Jobs.find(vis.jobId)
-      // }, {
-        find: (vis) => JobResults.find({ jobId: vis.jobId })
-      }]
-    }]
-  };
+Meteor.publish('dashboard', function(_id) {
+  return Dashboards.find({ $and: [filterByAccess(this.userId), { _id: _id }] });
 });
 
 Meteor.publishComposite('dashboardForm', function(_id) {
@@ -61,16 +47,17 @@ Meteor.publish('jobs', function(filter, limit) {
   })
 });
 
-Meteor.publish('job', function(_id) {
-  requireAccess(this.userId, Jobs.findOne(_id));
-
-  return [
-    Jobs.find(_id),
-    JobResults.find({ jobId: _id }),
-    Visualizations.find({ jobId: _id }, {
-      fields: { jobId: 1, title: 1 }
-    })
-  ];
+Meteor.publishComposite('job', function(_id) {
+  return {
+    find: function() {
+      return Jobs.find({ $and: [filterByAccess(this.userId), { _id: _id }] });
+    },
+    children: [{
+      find: (job) => JobResults.find({ jobId: job._id, parameters: job.parameters })
+    }, {
+      find: (job) => Visualizations.find({ jobId: job._id }, { fields: { jobId: 1, title: 1 } })
+    }]
+  }
 });
 
 Meteor.publish('visualizationsDropdown', function(includeNonOwned=false, search='', limit=10) {
@@ -86,14 +73,33 @@ Meteor.publish('visualizationsDropdown', function(includeNonOwned=false, search=
   })
 });
 
-Meteor.publish('visualization', function(_id) {
+Meteor.publish('visualization', function(_id, parameters, dashboardId=false) {
   const vis = Visualizations.findOne(_id);
-  requireAccess(this.userId, vis.job());
+
+  // visualizations may either be accessed through dashboards or directly
+  if (dashboardId) {
+    const dashboard = Dashboards.findOne(dashboardId);
+    if (!_.contains(_.pluck(dashboard.widgets, 'visId'), _id)) {
+      throw new Meteor.Error('access-denied', `Visualization ${_id} is not in dashboard ${dashboardId}`);
+    } else {
+      requireAccess(this.userId, dashboard);  
+    }
+  } else {
+    requireAccess(this.userId, vis);
+  }
+
+  parameters = cleanParameters(parameters, vis.job().parameters);
+  
+  // only run job if at time of subscription there are no results for these parameters
+  const results = JobResults.findOne({ jobId: vis.jobId, parameters: parameters });
+  if (!results) {
+    runJob(vis.jobId, parameters);  
+  }
 
   return [
     Visualizations.find(_id),
-    Jobs.find(vis.jobId),
-    JobResults.find({ jobId: vis.jobId }),
+    Jobs.find(vis.jobId, { fields: { name: 1, parameters: 1 } }),
+    JobResults.find({ jobId: vis.jobId, parameters: parameters }),
   ];
 });
 

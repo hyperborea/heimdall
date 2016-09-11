@@ -3,3 +3,7 @@
   padding-right: 1em;
   border-right: 1px solid gray;
 }
+
+.visualizationCanvas {
+  height: 90%;
+}

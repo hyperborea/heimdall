@@ -1,6 +1,6 @@
 Template.visDataTable.helpers({
   dataKeys: function() {
-    var data = Template.currentData().data
+    var data = Template.currentData().data;
     return (data && data.length) ? _.keys(data[0]) : [];
   },
   

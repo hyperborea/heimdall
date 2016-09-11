@@ -1,5 +1,23 @@
 Template.visualization.onCreated(function() {
   this.rendered = new ReactiveVar(false);
+
+  this.id = () => Template.currentData().id;
+  this.vis = () => _.extend(Visualizations.findOne(this.id()) || {}, Template.currentData());
+  this.result = () => _.result(this.vis(), 'result');
+
+  this.autorun(() =>  {
+    if (this.id()) {
+      const context = Template.currentData();
+      const job = Jobs.findOne(this.vis().jobId);
+      let parameters = context.parameters;
+      
+      if (job) {
+        parameters = cleanParameters(parameters, job.parameters);
+      }
+
+      this.subscribe('visualization', this.id(), parameters, context.dashboardId);  
+    }
+  });
 });
 
 Template.visualization.onRendered(function() {
@@ -8,31 +26,35 @@ Template.visualization.onRendered(function() {
 
 
 Template.visualization.helpers({
+  vis: () => Template.instance().vis(),
+  loading: () => !Template.instance().subscriptionsReady() && 'loading',
+
   templateName: function() {
     const template = Template.instance();
-    const context = Template.currentData();
-    const result = context.result;
+    
+    if (template.subscriptionsReady()) {
+      const vis = template.vis();
+      const result = template.result();
 
-    if (result && template.rendered.get()) {
-      switch (result.status) {
-        case false:
-          return undefined
-        case 'error':
+      if (result) {
+        if (result.status === 'error')
           return 'visualizationError';
-        default:
-          return _.isArray(result.data) && 'vis' + (context.visType || (context.vis && context.vis.type) || 'DataTable')
+        else if (_.isArray(result.data))
+          return 'vis' + (vis.type || 'DataTable');
+        else if (result.status === 'running')
+          return 'visualizationRunning'
       }
     }
   },
 
-  loading: function() {
-    var data = Template.currentData();
-    return (data && data.result && data.result.status === 'running') ? 'loading' : false;
+  running: function() {
+    const result = Template.instance().result();
+    return (result && result.status === 'running') && 'loading';
   },
 
-  visData: function() {
+  data: function() {
     var template = Template.instance();
-    var settings = _.clone(this.vis) || {};
+    var settings = _.clone(template.vis());
 
     if (template.rendered.get()) {
       var wrapper = template.find('.visualizationWrapper');
@@ -43,7 +65,7 @@ Template.visualization.helpers({
       settings.width = canvas.offsetWidth;
     }
 
-    return _.extend(_.clone(this.result) || {}, {
+    return _.extend(_.clone(template.result()) || {}, {
       settings: settings
     });
   }
@@ -52,12 +74,13 @@ Template.visualization.helpers({
 
 Template.visualization.events({
   'click .js-run': function(event, template) {
-    Meteor.call('runJob', this.vis.jobId);
+    const vis = template.vis();
+    Meteor.call('runJob', vis.jobId, vis.parameters);
   },
 
   'click .js-download': function(event, template) {
-    const csv = Papa.unparse(this.result.data, { delimiter: ';' });
+    const csv = Papa.unparse(template.result().data, { delimiter: ';' });
     const blob = new Blob([csv], {type: "application/csv"});
-    saveAs(blob, `${vis.jobName}.csv`);
+    saveAs(blob, `${template.vis().jobName}.csv`);
   }
 });

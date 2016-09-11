@@ -11,8 +11,11 @@ Visualizations.helpers({
     return Jobs.findOne(this.jobId);
   },
   
-  result: function() {
-    return JobResults.findOne({ jobId: this.jobId }) || {};
+  result: function(parameters) {
+    const job = this.job() || {};
+    parameters = parameters || this.parameters || {};
+    parameters = cleanParameters(parameters, job.parameters);
+    return JobResults.findOne({ jobId: this.jobId, parameters: parameters });
   },
 });
 

@@ -39,14 +39,14 @@
 
     {{> Template.dynamic template=(typeForm vis) data=(typeData vis)}}
 
-    <div class="action field {{ ownerVisibility job }}">
+    <div class="action field {{ ownerVisibility vis }}">
       <div class="ui submit button">Apply</div>
       <div class="ui right floated negative button js-delete">delete</div>
     </div>
   </form>
 
-  {{> visualization visType=vis.type visHeight='400px' result=job.result vis=vis}}  
+  {{> visualization id=vis._id height='400px'}}  
 
-  {{> visualization visType="DataTable" visBasic=true result=job.result}}
+  {{> visualization type="DataTable" basic=true result=vis.result}}
 {{/let}}
 </template>

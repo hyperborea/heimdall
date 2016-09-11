@@ -24,6 +24,22 @@
   </h1>
   {{/unless}}
 
+  {{#if paramArray.length}}
+  <form class="ui parameters form">
+    <div class="fields">
+      {{#each param in paramArray}}
+        <div class="four wide field">
+          <div class="ui labeled input">
+            <div class="ui basic grey label">{{param.name}}</div>
+            <input type="text" name="{{param.name}}" value={{param.value}}>
+          </div>  
+        </div>
+      {{/each}}
+      <button class="ui basic green submit button">Go</button>
+    </div>
+  </form>
+  {{/if}}
+
   <div class="gridster"></div>
 
   {{#unless Template.subscriptionsReady}}

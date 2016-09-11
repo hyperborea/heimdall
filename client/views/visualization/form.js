@@ -23,7 +23,7 @@ Template.visualizationForm.helpers({
     if (vis) {
       return {
         settings: vis,
-        fields: vis.job() && vis.job().result().fields
+        fields: _.result(vis.result(), 'fields')
       };  
     }
   }

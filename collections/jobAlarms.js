@@ -86,17 +86,16 @@ checkJobForAlarms = function(job, result) {
     });
   });
 
-  var worstStatus = _.chain(matches)
-    .map((alarm) => alarm.rule.severity)
-    .sortBy((level) => SEVERITIES[level].rank)
-    .first().value();
-
-  Jobs.update(job._id, { $set: { alarmStatus: worstStatus } });
-
   if (job.alarm && matches.length > 0) {
+    var worstStatus = _.chain(matches)
+      .map((alarm) => alarm.rule.severity)
+      .sortBy((level) => SEVERITIES[level].rank)
+      .first().value();
     var worstStatusRank = SEVERITIES[worstStatus].rank;
     var jobUrl = Meteor.absoluteUrl(`jobs/${job._id}/edit`);
     var alarmsUrl = Meteor.absoluteUrl(`alarms/${job._id}/${runId}`);
+
+    Jobs.update(job._id, { $set: { alarmStatus: worstStatus } });
 
     if (job.alarm.email) {
       var alarmLevel = job.alarm.emailSeverity || 'info';
