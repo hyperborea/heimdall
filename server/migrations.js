@@ -9,7 +9,7 @@ Migrations.add({
   version: 3,
   name: 'Adds parameters to job results',
   up() {
-    JobResults.update({parameters: {$exists: false}}, {$set: {parameters: Object()}}, {multi: true});
+    JobResults.update({parameters: {$exists: false}}, {$set: {parameters: Object()}}, {multi: true, validate: false});
   },
   down() {}
 });
@@ -20,15 +20,15 @@ Migrations.add({
   up() {
     Jobs.find().forEach((job) => {
       if (job.result && job.result.status) {
-        var data = _.extend(job.result, {jobId: job._id, parameters: Object()});
-        JobResults.upsert({jobId: job._id}, {$set: data});
-        Jobs.update(job._id, {$unset: {result: ''}});
+        var data = _.extend(job.result, {jobId: job._id});
+        JobResults.upsert({jobId: job._id}, {$set: data}, {validate: false});
+        Jobs.update(job._id, {$unset: {result: ''}}, {validate: false});
       }
     });
   },
   down() {
     JobResults.find().forEach((result) => {
-      Jobs.update(result.jobId, {$set: {result: result}});
+      Jobs.update(result.jobId, {$set: {result: result}}, {validate: false});
       JobResults.remove(result._id);
     });
   }
