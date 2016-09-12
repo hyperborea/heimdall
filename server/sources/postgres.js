@@ -2,7 +2,7 @@ import pg from 'pg';
 
 
 SOURCE_TYPES.postgres.query = function(source, sql, parameters, endCallback, startCallback) {
-  function done(status, data, extras={}) {
+  function sendResults(status, data, extras={}) {
     let result = {
       status: status,
       data: data
@@ -22,7 +22,7 @@ SOURCE_TYPES.postgres.query = function(source, sql, parameters, endCallback, sta
     };
   
     pg.connect(connectionConfig, Meteor.bindEnvironment((err, client, done) => {      
-      if (err) return done('error', `${err} - could not connect with data source.`);
+      if (err) return sendResults('error', `${err} - could not connect with data source.`);
 
       const pid = client.processID;
       startCallback(pid);
@@ -37,10 +37,10 @@ SOURCE_TYPES.postgres.query = function(source, sql, parameters, endCallback, sta
 
       client.query(query, Meteor.bindEnvironment((err, result) => {
         if (err) {
-          done('error', err.toString());
+          sendResults('error', err.toString());
         }
         else {
-          done('ok', result.rows, {
+          sendResults('ok', result.rows, {
             fields: _.pluck(result.fields, 'name')
           });
         }
@@ -49,7 +49,7 @@ SOURCE_TYPES.postgres.query = function(source, sql, parameters, endCallback, sta
       }));
 
       client.on('error', Meteor.bindEnvironment((err, client) => {
-        return done('error', `pg client error: ${err.message}`);
+        return sendResults('error', `pg client error: ${err.message}`);
         client.end();
       }));
     }));

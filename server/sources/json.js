@@ -1,5 +1,5 @@
 SOURCE_TYPES.json.query = function(source, query, parameters, endCallback, startCallback) {
-  function done(status, data, extras={}) {
+  function sendResults(status, data, extras={}) {
     let result = {
       status: status,
       data: data
@@ -20,9 +20,9 @@ SOURCE_TYPES.json.query = function(source, query, parameters, endCallback, start
       }
     }).validate({data: data});
 
-    done('ok', data);
+    sendResults('ok', data);
   }
   catch(err) {
-    done('error', err.toString());
+    sendResults('error', err.toString());
   }
 }

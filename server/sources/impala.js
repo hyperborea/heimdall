@@ -2,7 +2,7 @@ import { createClient } from 'node-impala';
 
 
 SOURCE_TYPES.impala.query = function(source, sql, parameters, endCallback, startCallback) {
-  function done(status, data, extras={}) {
+  function sendResults(status, data, extras={}) {
     var result = {
       status: status,
       data: data
@@ -27,10 +27,10 @@ SOURCE_TYPES.impala.query = function(source, sql, parameters, endCallback, start
 
   client.query(sql, Meteor.bindEnvironment((err, rows, foo) => {
     if (err) {
-      done('error', err.toString());
+      sendResults('error', err.toString());
     }
     else {
-      done('ok', rows, {
+      sendResults('ok', rows, {
         fields: _.keys(rows[0])
       });
     }

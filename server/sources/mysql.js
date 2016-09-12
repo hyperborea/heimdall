@@ -2,7 +2,7 @@ import mysql from 'mysql';
 
 
 SOURCE_TYPES.mysql.query = function(source, sql, parameters, endCallback, startCallback) {
-  function done(status, data, extras={}) {
+  function sendResults(status, data, extras={}) {
     var result = {
       status: status,
       data: data
@@ -30,10 +30,10 @@ SOURCE_TYPES.mysql.query = function(source, sql, parameters, endCallback, startC
 
     connection.query(query, Meteor.bindEnvironment((err, rows, fields) => {
       if (err) {
-        done('error', err.toString());
+        sendResults('error', err.toString());
       }
       else {
-        done('ok', rows, {
+        sendResults('ok', rows, {
           fields: _.pluck(fields, 'name')
         });
       }
