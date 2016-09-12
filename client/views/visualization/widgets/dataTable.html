@@ -1,0 +1,49 @@
+<template name="visDataTable">
+  <table class="ui sortable celled table">
+    <thead>
+      <tr>
+        {{#each col in columns}}
+          <th>{{col.name}}</th>
+        {{/each}}
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each row in data}}
+        <tr>
+          {{#each col in columns}}
+            <td>{{getField row col.key}}</td>
+          {{/each}}
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</template>
+
+
+<template name="visDataTableForm">
+  <table class="ui small form definition table">
+    <thead>
+      <tr>
+        <th class="three wide"></th>
+        <th class="three wide">Name</th>
+        <th class="four wide">Type</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each field in fields}}
+        <tr>
+          <td>{{field}}</td>
+          <td>
+            <input type="text" name={{namePath field "name"}} value={{fieldValue field "name"}} placeholder={{field}}>
+          </td>
+          <td>
+            {{> dropdown items=displayTypes name=(namePath field "type") value=(fieldValue field "type") defaultValue="text"}}
+          </td>
+          <td></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</template>

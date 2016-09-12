@@ -2,13 +2,8 @@ import mysql from 'mysql';
 
 
 SOURCE_TYPES.mysql.query = function(source, sql, parameters, endCallback, startCallback) {
-  function sendResults(status, data, extras={}) {
-    var result = {
-      status: status,
-      data: data
-    };
-
-    endCallback(_.extend(result, extras));
+  function sendResults(status, data, fields) {
+    endCallback({ status: status, data: data, fields: fields });
   }
 
   if (source && sql) {
@@ -33,9 +28,7 @@ SOURCE_TYPES.mysql.query = function(source, sql, parameters, endCallback, startC
         sendResults('error', err.toString());
       }
       else {
-        sendResults('ok', rows, {
-          fields: _.pluck(fields, 'name')
-        });
+        sendResults('ok', rows, _.pluck(fields, 'name'));
       }
     }));
   }

@@ -2,13 +2,8 @@ import pg from 'pg';
 
 
 SOURCE_TYPES.postgres.query = function(source, sql, parameters, endCallback, startCallback) {
-  function sendResults(status, data, extras={}) {
-    let result = {
-      status: status,
-      data: data
-    };
-
-    endCallback(_.extend(result, extras));
+  function sendResults(status, data, fields) {
+    endCallback({ status: status, data: data, fields: fields });
   }
 
   if (source && sql) {
@@ -40,9 +35,7 @@ SOURCE_TYPES.postgres.query = function(source, sql, parameters, endCallback, sta
           sendResults('error', err.toString());
         }
         else {
-          sendResults('ok', result.rows, {
-            fields: _.pluck(result.fields, 'name')
-          });
+          sendResults('ok', result.rows, _.pluck(result.fields, 'name'));
         }
         done(true);
         client.end();

@@ -1,9 +1,15 @@
 Visualizations = new Mongo.Collection('visualizations');
 
-Meteor.startup(function() {
-  if (!Meteor.isServer) return;
-  Visualizations._ensureIndex({ jobId: 1 });
+Visualizations.schema = new SimpleSchema({
+  title: String,
+  type: String,
+  jobId: { type: String, regEx: SimpleSchema.RegEx.Id, index: 1 },
+  jobName: String,
+  settings: { type: Object, blackbox: true, defaultValue: Object() }
 });
+
+Visualizations.schema.extend(permissionSchema); // synced from job
+Visualizations.attachSchema(Visualizations.schema);
 
 
 Visualizations.helpers({
@@ -16,7 +22,7 @@ Visualizations.helpers({
     parameters = parameters || this.parameters || {};
     parameters = cleanParameters(parameters, job.parameters);
     return JobResults.findOne({ jobId: this.jobId, parameters: parameters });
-  },
+  }
 });
 
 
@@ -27,21 +33,24 @@ Meteor.methods({
     requireOwnership(user, job);
 
     _id = Visualizations.insert({
-      title   : job.name,
-      type    : 'DataTable',
-      jobId   : job._id,
+      title        : job.name,
+      type         : 'DataTable',
+      jobId        : job._id,
+      jobName      : job.name,
+      ownerGroups  : job.ownerGroups,
+      accessGroups : job.accessGroups,
+      owner        : job.owner,
+      ownerId      : job.ownerId,
     });
-
-    syncVisualization(_id, job);
 
     return _id;
   },
 
   saveVisualization: function(doc) {
     var vis = Visualizations.findOne(doc._id);
-    requireOwnership(this.userId, vis.job());
+    requireOwnership(this.userId, vis);
 
-    Visualizations.update(doc._id, { $set: _.omit(doc, '_id') });
+    Visualizations.update(doc._id, { $set: doc });
   },
 
   removeVisualization: function(_id) {

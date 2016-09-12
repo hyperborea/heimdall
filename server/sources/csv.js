@@ -2,13 +2,8 @@ import Papa from 'papaparse';
 
 
 SOURCE_TYPES.csv.query = function(source, query, parameters, endCallback, startCallback) {
-  function sendResults(status, data, extras={}) {
-    let result = {
-      status: status,
-      data: data
-    };
-
-    endCallback(_.extend(result, extras));
+  function sendResults(status, data, fields) {
+    endCallback({ status: status, data: data, fields: fields });
   }
 
   try {
@@ -17,7 +12,7 @@ SOURCE_TYPES.csv.query = function(source, query, parameters, endCallback, startC
       dynamicTyping: true
     });
 
-    sendResults('ok', results.data);
+    sendResults('ok', results.data, results.meta.fields);
   }
   catch(err) {
     sendResults('error', err.toString());

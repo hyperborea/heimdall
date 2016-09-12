@@ -2,13 +2,8 @@ import { createClient } from 'node-impala';
 
 
 SOURCE_TYPES.impala.query = function(source, sql, parameters, endCallback, startCallback) {
-  function sendResults(status, data, extras={}) {
-    var result = {
-      status: status,
-      data: data
-    };
-
-    endCallback(_.extend(result, extras));
+  function sendResults(status, data, fields) {
+    endCallback({ status: status, data: data, fields: fields });
   }
 
   const client = createClient();
@@ -30,9 +25,7 @@ SOURCE_TYPES.impala.query = function(source, sql, parameters, endCallback, start
       sendResults('error', err.toString());
     }
     else {
-      sendResults('ok', rows, {
-        fields: _.keys(rows[0])
-      });
+      sendResults('ok', rows, _.keys(rows[0]));
     }
   }));
 }

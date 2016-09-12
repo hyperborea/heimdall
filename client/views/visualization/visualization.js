@@ -10,15 +10,16 @@ Template.visualization.onCreated(function() {
 
   this.autorun(() =>  {
     if (this.id()) {
-      const context = Template.currentData();
-      const job = Jobs.findOne(this.vis().jobId);
-      let parameters = context.parameters;
+      const vis = this.vis();
+      let parameters = vis.parameters;
       
+      // when this block is first run the job might not be available yet
+      const job = Jobs.findOne(this.vis().jobId);
       if (job) {
         parameters = cleanParameters(parameters, job.parameters);
       }
 
-      this.subscribe('visualization', this.id(), parameters, context.dashboardId);  
+      this.subscribe('visualization', this.id(), parameters, vis.dashboardId);  
     }
   });
 });
@@ -57,13 +58,16 @@ Template.visualization.helpers({
   },
 
   data: function() {
-    var template = Template.instance();
-    var settings = _.clone(template.vis());
+    const template = Template.instance();
+    const vis = template.vis();
+
+    let settings = vis.settings || {};
+    let results = template.result() || {};
 
     if (template.rendered.get()) {
-      var wrapper = template.find('.visualizationWrapper');
-      var topbar = template.find('.visualizationTopbar');
-      var canvas = template.find('.visualizationCanvas');
+      const wrapper = template.find('.visualizationWrapper');
+      const topbar = template.find('.visualizationTopbar');
+      const canvas = template.find('.visualizationCanvas');
 
       const canvasHeight = wrapper.offsetHeight - (topbar ? topbar.offsetHeight : 0) - 28;
       if (canvasHeight > 30) $(canvas).height(canvasHeight);
@@ -72,9 +76,11 @@ Template.visualization.helpers({
       settings.width = canvas.offsetWidth;
     }
 
-    return _.extend(_.clone(template.result()) || {}, {
-      settings: settings
-    });
+    return {
+      settings : settings,
+      data     : results.data,
+      fields   : results.fields
+    };
   }
 });
 

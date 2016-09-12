@@ -1,11 +1,6 @@
 SOURCE_TYPES.json.query = function(source, query, parameters, endCallback, startCallback) {
-  function sendResults(status, data, extras={}) {
-    let result = {
-      status: status,
-      data: data
-    };
-
-    endCallback(_.extend(result, extras));
+  function sendResults(status, data, fields) {
+    endCallback({ status: status, data: data, fields: fields });
   }
 
   try {    
@@ -20,7 +15,7 @@ SOURCE_TYPES.json.query = function(source, query, parameters, endCallback, start
       }
     }).validate({data: data});
 
-    sendResults('ok', data);
+    sendResults('ok', data, _.keys(data[0]));
   }
   catch(err) {
     sendResults('error', err.toString());

@@ -86,17 +86,6 @@ Template.visChart.onRendered(function() {
         config.data.keys.value.push(settings.timeField);
         config.axis.x.type = 'timeseries';
         config.axis.x.tick = { format: settings.timeFormat || '%Y-%m-%d' };
-
-        // xGrid = config.grid.x.lines;
-        // xGrid = xGrid || [];
-        
-        // this.subscribe('events');
-        // Events.find().forEach((event) => {
-        //   xGrid.push({
-        //     value: event.date,
-        //     text: event.title
-        //   });
-        // });
       }
 
       if (settings.categoryField) {

@@ -42,15 +42,7 @@
       {{> dropdown items=lineTypes name=(namePath '[lineType]') value=series.lineType}}
     </td>
     <td>
-      <div class="ui compact single search selection fluid dropdown">
-        <input type="hidden" name={{namePath '[yAxis]'}} value={{series.yAxis}}>
-        <i class="dropdown icon"></i>
-        <span class="text"></span>
-        <div class="menu">
-          <div class="item" data-value="y">Y axis</div>
-          <div class="item" data-value="y2">Y2 axis</div>
-        </div>
-      </div>
+      {{> dropdown items=yAxes name=(namePath '[yAxis]') value=series.yAxis}}
     </td>
     <td>
       <div class="ui basic red circular icon button js-remove-series">

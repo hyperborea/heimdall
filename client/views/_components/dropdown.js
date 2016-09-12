@@ -1,7 +1,8 @@
 // name: string
 // value: string
+// defaultValue: string
 // placeholder: string
-// items: list of strings or objects {value, text}
+// items: list of strings or objects {value, text, [icon]}
 // allowEmpty: bool
 // multiple: bool
 // allowAdditions: bool
@@ -18,6 +19,7 @@ Template.dropdown.onRendered(function() {
 });
 
 Template.dropdown.helpers({
+  coalesce: (v1, v2) => v1 || v2,
   defaultText: () => Template.currentData().placeholder || 'select',
   multiple: () => Template.currentData().multiple && 'multiple',
 

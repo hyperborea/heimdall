@@ -6,6 +6,33 @@ Meteor.startup(function() {
 
 
 Migrations.add({
+  version: 4,
+  name: 'Wrapping visualization settings for cleaner schema',
+  up() {
+    Visualizations.find().forEach((vis) => {
+      const coreFields = Visualizations.simpleSchema().objectKeys();
+      const settingsFields = _.without(Object.keys(vis), ...coreFields, '_id');
+      const settings = _.pick(vis, settingsFields);
+
+      Visualizations.update(vis._id, {
+        $set: {settings: settings},
+        $unset: _.object(settingsFields, _.range(settingsFields.length)),
+      }, {validate: false});
+    });
+  },
+  down() {
+    Visualizations.find().forEach((vis) => {
+      if (vis.settings) {
+        Visualizations.update(vis._id, {
+          $set: vis.settings,
+          $unset: {settings: 1},
+        }, {validate: false, filter: false});
+      }
+    });
+  }
+});
+
+Migrations.add({
   version: 3,
   name: 'Adds parameters to job results',
   up() {

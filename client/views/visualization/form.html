@@ -1,5 +1,4 @@
 <template name="visualizationForm">
-{{#let job=vis.job}}
   <form class="ui main form segment">
     <input type="hidden" name="_id" value={{vis._id}}>
 
@@ -7,7 +6,7 @@
       <div class="ui header">
         Visualization for job
         <div class="sub header">
-          <a href={{pathFor 'jobEdit' id=job._id}}>{{job.name}}</a>
+          <a href={{pathFor 'jobEdit' id=vis.jobId}}>{{vis.jobName}}</a>
         </div>
       </div>
     </div>
@@ -45,8 +44,7 @@
     </div>
   </form>
 
-  {{> visualization id=vis._id height='400px'}}  
+  {{> visualization id=vis._id height='400px'}}
 
   {{> visualization type="DataTable" basic=true result=vis.result}}
-{{/let}}
 </template>

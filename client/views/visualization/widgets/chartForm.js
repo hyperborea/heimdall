@@ -7,22 +7,15 @@ function newSeries() {
   };
 }
 
-
 Template.visChartForm.onRendered(function() {
   this.$('.ui.checkbox').checkbox();
-  this.$('.ui.single.dropdown').dropdown();
   this.$('.tabular.menu .item').tab();
 });
 
-
 Template.visChartFormSeries.onCreated(function() {
-  this.series = new ReactiveVar(this.data.settings.series || [newSeries()]);
-  this.groups = new ReactiveVar(this.data.settings.groups || []);
-});
-
-Template.visChartFormSeriesItem.onRendered(function() {
-  this.$('.ui.single.dropdown').dropdown();
-  this.$('.ui.multiple.dropdown').dropdown({allowAdditions: true});
+  const settings = Template.currentData().settings;
+  this.series = new ReactiveVar(settings.series || [newSeries()]);
+  this.groups = new ReactiveVar(settings.groups || []);
 });
 
 Template.visChartFormSeries.helpers({
@@ -37,6 +30,10 @@ Template.visChartFormSeriesItem.helpers({
     { value: 'spline', text: 'spline', icon: 'line chart' },
     { value: 'area', text: 'area', icon: 'area chart' },
     { value: 'bar', text: 'bar', icon: 'bar chart' },
+  ],
+  yAxes: [
+    { value: 'y', text: 'Y axis' },
+    { value: 'y2', text: 'Y2 axis' },
   ],
 
   namePath: (addendum) => {
@@ -86,7 +83,6 @@ Template.visChartFormSeries.events({
     template.groups.set(groups);
   },
 });
-
 
 Template.visChartFormGrid.onCreated(function() {
   this.gridLines = new ReactiveVar(this.data.settings.gridLines || []);

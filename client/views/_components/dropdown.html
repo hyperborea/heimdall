@@ -1,6 +1,6 @@
 <template name="dropdown">
   <div class="ui compact {{multiple}} search selection fluid dropdown">
-    <input type="hidden" name={{name}} value={{value}}>
+    <input type="hidden" name={{name}} value={{coalesce value defaultValue}}>
     <i class="dropdown icon"></i>
     <span class="default text">{{defaultText}}</span>
     <div class="menu">

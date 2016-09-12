@@ -22,7 +22,7 @@ Template.visualizationForm.helpers({
   typeData: function(vis) {
     if (vis) {
       return {
-        settings: vis,
+        settings: vis.settings || {},
         fields: _.result(vis.result(), 'fields')
       };  
     }
@@ -36,8 +36,13 @@ Template.visualizationForm.events({
   'submit .ui.form': function(event, template) {
     event.preventDefault();
 
-    var data = $(event.target).serializeJSON();
-    Meteor.call('saveVisualization', data);
+    const data = $(event.target).serializeJSON();
+    const coreFields = ['_id', 'title', 'type'];
+
+    let doc = _.pick(data, coreFields);
+    doc.settings = _.omit(data, coreFields);
+
+    Meteor.call('saveVisualization', doc);
   },
 
   'click .js-delete': function(event, template) {
