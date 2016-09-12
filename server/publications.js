@@ -75,6 +75,7 @@ Meteor.publish('visualizationsDropdown', function(includeNonOwned=false, search=
 
 Meteor.publish('visualization', function(_id, parameters, dashboardId=false) {
   const vis = Visualizations.findOne(_id);
+  if (!vis) return null;
 
   // visualizations may either be accessed through dashboards or directly
   if (dashboardId) {

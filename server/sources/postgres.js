@@ -22,7 +22,7 @@ SOURCE_TYPES.postgres.query = function(source, sql, parameters, endCallback, sta
     };
   
     pg.connect(connectionConfig, Meteor.bindEnvironment((err, client, done) => {      
-      if (err) return sendResults('error', `${err} - could not connect with data source.`);
+      if (err) return sendResults('error', `${err}`);
 
       const pid = client.processID;
       startCallback(pid);
