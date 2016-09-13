@@ -36,7 +36,7 @@ Jobs.schema = new SimpleSchema({
   'rules.$.conditions.$.field': { type: String, label: 'Alarm field' },
   'rules.$.conditions.$.op': { type: String, label: 'Alarm operator' },
   'rules.$.conditions.$.value': { type: String, label: 'Alarm value' },
-  alarmStatus: { type: Object, optional: true },
+  alarmStatus: { type: String, optional: true },
   alarm: { type: Object, optional: true },
   'alarm.email': { type: String, optional: true },
   'alarm.emailSeverity': { type: String, optional: true },
