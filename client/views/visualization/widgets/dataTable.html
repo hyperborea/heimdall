@@ -12,7 +12,7 @@
       {{#each row in data}}
         <tr>
           {{#each col in columns}}
-            <td>{{getField row col.key}}</td>
+            <td>{{getValue row col.key}}</td>
           {{/each}}
         </tr>
       {{/each}}
@@ -27,23 +27,51 @@
       <tr>
         <th class="three wide"></th>
         <th class="three wide">Name</th>
-        <th class="four wide">Type</th>
-        <th></th>
+        <th class="two wide">Type</th>
+        <th>Settings</th>
       </tr>
     </thead>
     <tbody>
       {{#each field in fields}}
-        <tr>
-          <td>{{field}}</td>
-          <td>
-            <input type="text" name={{namePath field "name"}} value={{fieldValue field "name"}} placeholder={{field}}>
-          </td>
-          <td>
-            {{> dropdown items=displayTypes name=(namePath field "type") value=(fieldValue field "type") defaultValue="text"}}
-          </td>
-          <td></td>
-        </tr>
+        {{> visDataTableFormItem field=field config=(fieldSettings field)}}
       {{/each}}
     </tbody>
   </table>
+</template>
+
+<template name="visDataTableFormItem">
+  <tr>
+    <td>{{field}}</td>
+    <td>
+      <input type="text" name={{namePath "name"}} value={{config.name}} placeholder={{field}}>
+    </td>
+    <td>
+      {{> dropdown items=displayTypes name=(namePath "type") value=config.type defaultValue="text"}}
+    </td>
+    <td>
+      <div class="fields" style="margin: 0em -0.5em">
+        {{#if isType 'number'}}
+          <div class="eight wide field">
+            {{> dropdown items=numberOptions name=(namePath "format") value=config.format defaultValue=","}}    
+          </div>
+          <div class="eight wide field">
+            <input type="text" name={{namePath "prefix"}} value={{config.prefix}} placeholder="prefix">
+          </div>
+        {{/if}}
+        {{#if isType 'date'}}
+          <div class="eight wide field">
+            {{> dropdown items=dateOptions name=(namePath "format") value=config.format defaultValue="YYYY-MM-DD HH:mm:ss"}}    
+          </div>
+        {{/if}}
+        {{#if isType 'link'}}
+          <input type="text" name={{namePath "url"}} value={{config.url}} placeholder="https://someurl.com/id/{{|field}}/{{|another}}">
+        {{/if}}
+        {{#if isType 'rating'}}
+          <div class="eight wide field">
+            {{> dropdown items=ratingIcons name=(namePath "icon") value=config.icon defaultValue="yellow star"}}    
+          </div>
+        {{/if}}        
+      </div>
+    </td>
+  </tr>
 </template>

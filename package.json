@@ -17,6 +17,7 @@
     "lodash": "^4.15.0",
     "meteor-node-stubs": "~0.2.0",
     "mssql": "^3.3.0",
+    "mustache": "^2.2.1",
     "mysql": "^2.11.1",
     "node-impala": "^2.0.1",
     "papaparse": "^4.1.2",

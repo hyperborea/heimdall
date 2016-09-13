@@ -1,19 +1,28 @@
 Template.visualizationForm.onCreated(function() {
-  this.subscribe('visualization', FlowRouter.getParam('id'));
+  this.autorun(() => {
+    this.subscribe('visualization', FlowRouter.getParam('id'));
+  });
+
+  this.getVisualization = () => Visualizations.findOne(FlowRouter.getParam('id'));
 });
 
 
 Template.visualizationForm.onRendered(function() {
-  this.autorun(() => {
-    if (this.subscriptionsReady()) this.$('.ui.dropdown').dropdown();
-  });
-  
   this.$('.ui.main.form').form({});
 });
 
 
 Template.visualizationForm.helpers({
-  vis: () => Visualizations.findOne(FlowRouter.getParam('id')),
+  vis: () => Template.instance().getVisualization(),
+
+  visTypes: [
+    { value: 'Chart', text: 'Line Chart', icon: 'line chart' },
+    { value: 'PieChart', text: 'Pie Chart', icon: 'pie chart' },
+    { value: 'BigNumber', text: 'Big Number', icon: 'bullseye' },
+    { value: 'WorldMap', text: 'World Map', icon: 'world' },
+    // { value: 'HeatMap', text: 'Heat Map', icon: 'fire' },
+    { value: 'DataTable', text: 'Data Table', icon: 'table' },
+  ],
 
   typeForm: function(vis) {
     return (vis && vis.type) ? `vis${vis.type}Form` : null;
@@ -31,7 +40,7 @@ Template.visualizationForm.helpers({
 
 
 Template.visualizationForm.events({
-  'change .autosubmit': (event, template) => template.$('form').submit(),
+  'change input': (event, template) => template.$('form').submit(),
 
   'submit .ui.form': function(event, template) {
     event.preventDefault();
@@ -46,7 +55,7 @@ Template.visualizationForm.events({
   },
 
   'click .js-delete': function(event, template) {
-    var vis = Visualizations.findOne(FlowRouter.getParam('id'));
+    const vis = template.getVisualization();
 
     confirmModal('Sure you want to delete this visualization?', function() {
       Meteor.call('removeVisualization', vis._id);

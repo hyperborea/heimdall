@@ -6,7 +6,7 @@ Heimdall is a data visualization and business monitoring system.
 > curl https://install.meteor.com/ | sh
 
 2. Install Heimdall dependencies (in directory)
-> meteor npm install
+> meteor npm install --production
 
 3. Run server (in directory)
 > meteor --settings settings-default.json
