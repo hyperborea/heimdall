@@ -6,3 +6,7 @@
   height: auto;
   min-height: 200px;
 }
+
+.job.form .CodeMirror-scroll {
+  max-height: 600px;
+}
