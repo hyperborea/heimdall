@@ -25,15 +25,15 @@
 
     <div class="field">
       <textarea name="query"></textarea>
-      <!-- <small>
+      <small>
         <i class="info circle icon"></i>          
         To make parameters dynamic wrap them in double curly braces, e.g. {{|some_name}}.
-      </small> -->
+      </small>
     </div>
 
     <div class="ui fluid styled accordion field">
       <div class="title">
-        <i class="dropdown icon"></i> Schedule
+        <i class="dropdown icon"></i> Refresh rate
         {{#if doc.schedule}}<i class="lightning icon"></i>{{/if}}
         {{#if doc.scheduleError}}<i class="warning sign icon"></i>{{/if}}
       </div>
@@ -138,12 +138,23 @@
 
 <template name="jobFormSchedule">
   <div class="ui small form">
-    <div class="field">
-      How often should the job be executed? For more info on syntax have a look at the
-      <a href="http://bunkat.github.io/later/parsers.html#text" target="_blank">Text Parser documentation</a>.  
-    </div>
-    <div class="field">
-      <input type="text" name="schedule" value={{doc.schedule}} placeholder="e.g. every 1 day">
+    <div class="two fields">
+      <div class="field">
+        <label>Cache Duration</label>
+        {{> dropdown items=durationOptions name="cacheDuration" value=doc.cacheDuration defaultValue=2628000}}
+        <small>
+          How long job results are reused before being automatically refreshed when visiting your dashboard.
+        </small>
+      </div>
+      <div class="field">
+        <label>Scheduled Execution</label>
+        <input type="text" name="schedule" value={{doc.schedule}} placeholder="e.g. every 1 day">
+        <small>
+          Queried in the background regardless of usage, parameterized jobs are using the default values. <br>
+          For more info on syntax have a look at the
+          <a href="http://bunkat.github.io/later/parsers.html#text" target="_blank">Text Parser documentation</a>.
+        </small>
+      </div>
     </div>
 
     {{#if doc.scheduleError}}

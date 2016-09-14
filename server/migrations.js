@@ -6,6 +6,20 @@ Meteor.startup(function() {
 
 
 Migrations.add({
+  version: 5,
+  name: 'Adding cache expiration to jobs and job results',
+  up() {
+    const defaultDuration = 2628000;
+    Jobs.update({cacheDuration: {$exists: false}}, {$set: {cacheDuration: defaultDuration}}, {multi: true, validate: false});
+    JobResults.find({expiresAt: {$exists: false}}).forEach((res) => {
+      var expiresAt = moment(res.updatedAt).add(defaultDuration, 'seconds').toDate();
+      JobResults.update(res._id, {$set: {expiresAt: expiresAt}}, {validate: false});
+    });
+  },
+  down() {}
+});
+
+Migrations.add({
   version: 4,
   name: 'Wrapping visualization settings for cleaner schema',
   up() {

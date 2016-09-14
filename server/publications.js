@@ -91,9 +91,9 @@ Meteor.publish('visualization', function(_id, parameters, dashboardId=false) {
 
   parameters = cleanParameters(parameters, vis.job().parameters);
   
-  // only run job if at time of subscription there are no results for these parameters
+  // run job if at time of subscription there are no results for these parameters or the cache has expired
   const results = JobResults.findOne({ jobId: vis.jobId, parameters: parameters });
-  if (!results) {
+  if (!results || (results.expiresAt < new Date() && results.status !== 'running')) {
     runJob(vis.jobId, parameters);  
   }
 

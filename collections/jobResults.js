@@ -33,6 +33,9 @@ JobResults.schema = new SimpleSchema({
     type: Date,
     autoValue: () => new Date()
   },
+  expiresAt: {
+    type: Date
+  },
   pid: {
     type: Number,
     optional: true

@@ -64,7 +64,9 @@ Template.jobForm.helpers({
 
 Template.jobForm.events({
   'change input, keyup input, keyup textarea': function(event, template) {
-    template.unsavedChanges.set(true);
+    if (!event.isTrigger) {
+      template.unsavedChanges.set(true);  
+    }
   },
 
   'change input[name=sourceId]': function(event, template) {
@@ -120,4 +122,16 @@ Template.jobForm.events({
       FlowRouter.go('visualizationEdit', {id: visId});
     });
   }
+});
+
+
+Template.jobFormSchedule.helpers({
+  durationOptions: [
+    { value: 2628000, text: '1 month' },
+    { value: 604800, text: '1 week' },
+    { value: 86400, text: '1 day' },
+    { value: 3600, text: '1 hour' },
+    { value: 60, text: '1 minute' },
+    { value: 0, text: 'no cache' },
+  ]
 });

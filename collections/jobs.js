@@ -14,12 +14,11 @@ Jobs.schema = new SimpleSchema({
     type: Date,
     index: -1,
     autoValue: function() {
-      if (this.isInsert) 
-        return new Date();
-      else 
-        this.unset();
+      if (this.isInsert) return new Date();
+      else this.unset();
     }
   },
+  cacheDuration: { type: SimpleSchema.Integer },
   schedule: { type: String, optional: true },
   scheduleError: { type: String, optional: true },
   email: { type: Object, optional: true },
@@ -103,6 +102,14 @@ Meteor.methods({
       // if the query has changed in any way invalidate aggressively all caches
       if (doc.query !== oldDoc.query) {
         JobResults.remove({ jobId: jobId });
+      }
+
+      // update job result expiration dates if the cache duration has changed
+      if (doc.cacheDuration !== oldDoc.cacheDuration) {
+        JobResults.find({ jobId: jobId }).forEach((res) => {
+          var expiresAt = moment(res.updatedAt).add(doc.cacheDuration, 'seconds').toDate();
+          JobResults.update(res._id, {$set: {expiresAt: expiresAt}});
+        });
       }
     }
 
@@ -196,6 +203,7 @@ runJob = function(jobId, parameters) {
       Jobs.update(jobId, { $set: { status: result.status } });
     }
 
+    result.expiresAt = moment().add(job.cacheDuration, 'seconds').toDate();
     JobResults.upsert({ jobId: jobId, parameters: parameters }, { $set: result })
   }
 

@@ -19,7 +19,7 @@ Template.dropdown.onRendered(function() {
 });
 
 Template.dropdown.helpers({
-  coalesce: (v1, v2) => v1 || v2,
+  coalesce: (v1, v2) => _.isUndefined(v1) ? v2 : v1,
   defaultText: () => Template.currentData().placeholder || 'select',
   multiple: () => Template.currentData().multiple && 'multiple',
 
