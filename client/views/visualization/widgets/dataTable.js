@@ -65,7 +65,7 @@ Template.visDataTable.helpers({
       default:
         if (value instanceof Date)
           return moment(value).format('YYYY-MM-DD HH:mm:ss');
-        else if (value)
+        else if (!_.isNull(value))
           return value.toString();
     }
   },
