@@ -28,6 +28,7 @@
       <small>
         <i class="info circle icon"></i>          
         To make parameters dynamic wrap them in double curly braces, e.g. {{|some_name}}.
+        Dashboards generate input fields for these attributes and cache validity can be configured below.
       </small>
     </div>
 
@@ -140,7 +141,7 @@
   <div class="ui small form">
     <div class="two fields">
       <div class="field">
-        <label>Cache Duration</label>
+        <label>Cache Validity</label>
         {{> dropdown items=durationOptions name="cacheDuration" value=doc.cacheDuration defaultValue=2628000}}
         <small>
           How long job results are reused before being automatically refreshed when visiting your dashboard.
