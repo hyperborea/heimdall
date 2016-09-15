@@ -25,55 +25,45 @@
 
     <div class="field">
       <textarea name="query"></textarea>
-      <small>
-        <i class="info circle icon"></i>          
-        To make parameters dynamic wrap them in double curly braces, e.g. {{|some_name}}.
-        Dashboards auto-generate input fields for these attributes and cache validity can be configured below.
-      </small>
     </div>
 
-    <div class="ui fluid styled accordion field">
-      <div class="title">
-        <i class="dropdown icon"></i> Refresh rate
-        {{#if doc.schedule}}<i class="lightning icon"></i>{{/if}}
-        {{#if doc.scheduleError}}<i class="warning sign icon"></i>{{/if}}
-      </div>
-      <div class="content">{{> jobFormSchedule doc=doc}}</div>
-
-      {{#if doc.result.fields}}
-        <div class="title">
-          <i class="dropdown icon"></i> Alarms
-          {{#if doc.rules}}<i class="lightning icon"></i>{{/if}}
-        </div>
-        <div class="content">{{> jobFormRules doc=doc}}</div>
-      {{/if}}
-
-      <div class="title">
-        <i class="dropdown icon"></i> Email
-        {{#if doc.email.enabled}}<i class="lightning icon"></i>{{/if}}
-      </div>
-      <div class="content">{{> jobFormEmail doc=doc}}</div>
-
-      <div class="title">
-        <i class="dropdown icon"></i> Permissions
-        {{#if hasPermissions doc}}<i class="lightning icon"></i>{{/if}}
-      </div>
-      <div class="content">{{> jobFormPermissions doc=doc}}</div>
+    <div class="ui top attached tabular menu field">
+      <a class="active item" data-tab="parameters">
+        <i class="options icon"></i> Parameters
+      </a>
+      <a class="item" data-tab="schedule">
+        <i class="refresh icon"></i> Refresh rate
+        {{#if doc.schedule}}<i class="yellow lightning icon"></i>{{/if}}
+        {{#if doc.scheduleError}}<i class="red warning sign icon"></i>{{/if}}
+      </a>
+      <a class="item" data-tab="alarms">
+        <i class="alarm outline icon"></i> Alarms
+        {{#if doc.rules}}<i class="yellow lightning icon"></i>{{/if}}
+      </a>
+      <a class="item" data-tab="email">
+        <i class="at icon"></i> Email
+        {{#if doc.email.enabled}}<i class="yellow lightning icon"></i>{{/if}}
+      </a>
+      <a class="item" data-tab="permissions">
+        <i class="protect icon"></i> Permissions
+        {{#if hasPermissions doc}}<i class="yellow lightning icon"></i>{{/if}}
+      </a>
     </div>
-
-    {{#if (paramArray doc.parameters)}}
-    <h4 class="ui header">Parameter default values</h4>
-    <div class="fields">
-      {{#each param in (paramArray doc.parameters)}}
-        <div class="four wide field">
-          <div class="ui labeled input">
-            <div class="ui basic grey label">{{param.name}}</div>
-            <input type="text" name="parameters[{{param.name}}]" value={{param.value}}>
-          </div>  
-        </div>
-      {{/each}}
+    <div class="ui active tab bottom attached segment" data-tab="parameters">
+      {{> jobFormParameteres doc=doc}}
     </div>
-    {{/if}}
+    <div class="ui tab bottom attached segment" data-tab="schedule">
+      {{> jobFormSchedule doc=doc}}
+    </div>
+    <div class="ui tab bottom attached segment" data-tab="alarms">
+      {{> jobFormRules doc=doc}}
+    </div>
+    <div class="ui tab bottom attached segment" data-tab="email">
+      {{> jobFormEmail doc=doc}}
+    </div>
+    <div class="ui tab bottom attached segment" data-tab="permissions">
+      {{> jobFormPermissions doc=doc}}
+    </div>
 
     <div class="ui icon error message">
       <i class="warning icon"></i>
@@ -137,6 +127,30 @@
 </template>
 
 
+<template name="jobFormParameteres">
+  <div class="ui small form">
+    {{#if (paramArray doc.parameters)}}
+      <div class="fields">
+        {{#each param in (paramArray doc.parameters)}}
+          <div class="four wide field">
+            <div class="ui labeled input">
+              <div class="ui basic grey label">{{param.name}}</div>
+              <input type="text" name="parameters[{{param.name}}]" value={{param.value}} placeholder="default value">
+            </div>  
+          </div>
+        {{/each}}
+      </div>
+    {{/if}}
+    
+    <small>
+      <i class="info circle icon"></i>          
+      To make parameters dynamic wrap them in double curly braces, e.g. {{|some_name}}.
+      Dashboards auto-generate input fields for these attributes.
+    </small>
+  </div>
+</template>
+
+
 <template name="jobFormSchedule">
   <div class="ui small form">
     <div class="two fields">
@@ -155,12 +169,11 @@
           For more info on syntax have a look at the
           <a href="http://bunkat.github.io/later/parsers.html#text" target="_blank">Text Parser documentation</a>.
         </small>
+        {{#if doc.scheduleError}}
+          <div class="ui small negative message">{{doc.scheduleError}}</div>
+        {{/if}}
       </div>
     </div>
-
-    {{#if doc.scheduleError}}
-      <div class="ui small negative message">{{doc.scheduleError}}</div>
-    {{/if}}
   </div>
 </template>
 

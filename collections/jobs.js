@@ -78,7 +78,7 @@ Meteor.methods({
     _.defaults(doc, {
       parameters: {},
       rules: [],
-      scheduleError: undefined,
+      scheduleError: null,
     });
 
     doc.parameters = _.chain(getQueryParameters(doc.query))

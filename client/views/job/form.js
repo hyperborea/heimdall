@@ -34,7 +34,7 @@ Template.jobForm.onRendered(function() {
 
   this.$('.ui.single.dropdown').dropdown();
   this.$('.ui.checkbox').checkbox();
-  this.$('.ui.accordion').accordion();
+  this.$('.tabular.menu .item').tab();
   this.$form = this.$('form').form({ fields : {}, inline : true });
 
   this.autorun(() => {
@@ -52,7 +52,6 @@ Template.jobForm.helpers({
   doc: () => Jobs.findOne(FlowRouter.getParam('id')),
   sources: () => Sources.find(),
   saveBtnClass: () => Template.instance().unsavedChanges.get() ? 'positive' : 'disabled',
-  paramArray: (params) => params && _.map(params, (v, k) => Object({ name: k, value: v })),
   hasPermissions: function(doc) {
     return doc && (
       (doc.ownerGroups && doc.ownerGroups.length) ||
@@ -122,6 +121,11 @@ Template.jobForm.events({
       FlowRouter.go('visualizationEdit', {id: visId});
     });
   }
+});
+
+
+Template.jobFormParameteres.helpers({
+  paramArray: (params) => params && _.map(params, (v, k) => Object({ name: k, value: v }))
 });
 
 
