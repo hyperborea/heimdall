@@ -1,5 +1,6 @@
 import Papa from 'papaparse';
 import { mapValues } from 'lodash';
+import { requiredIf } from './_commonSchema';
 
 
 Jobs = new Mongo.Collection('jobs');
@@ -22,10 +23,10 @@ Jobs.schema = new SimpleSchema({
   schedule: { type: String, optional: true },
   scheduleError: { type: String, optional: true },
   email: { type: Object, optional: true },
-  'email.recipients': { type: String, optional: true },
-  'email.subject': { type: String, optional: true },
-  'email.content': { type: String, optional: true },
   'email.enabled': Boolean,
+  'email.recipients': { type: String, optional: true, custom: requiredIf('email.enabled', true) },
+  'email.subject': { type: String, optional: true, custom: requiredIf('email.enabled', true) },
+  'email.content': { type: String, optional: true, custom: requiredIf('email.enabled', true) },
   rules: Array,
   'rules.$': Object,
   'rules.$.name': { type: String, label: 'Alarm name' },
@@ -42,6 +43,11 @@ Jobs.schema = new SimpleSchema({
   'alarm.slack': { type: Array, optional: true },
   'alarm.slack.$': String,
   'alarm.slackSeverity': { type: String, optional: true },
+  'transpose': { type: Object, optional: true },
+  'transpose.enabled': Boolean,
+  'transpose.keyField': { type: String, optional: true, custom: requiredIf('transpose.enabled', true), label: 'Key field' },
+  'transpose.catField': { type: String, optional: true, custom: requiredIf('transpose.enabled', true), label: 'Category field' },
+  'transpose.valField': { type: String, optional: true, custom: requiredIf('transpose.enabled', true), label: 'Value field' },
 });
 
 Jobs.schema.extend(permissionSchema);
@@ -210,9 +216,38 @@ runJob = function(jobId, parameters) {
   updateJob({status: 'running'});
 
   source.query(job.query, parameters, function(result) {
-    // enforce maximum rows setting (bson size is limited to ~ 16MB)
-    if (result.status === 'ok' && result.data && result.data.length > SOURCE_SETTINGS.maxRows)
-      result = { status: 'error', data: `Exceeded limit of ${SOURCE_SETTINGS.maxRows} rows.` };
+    if (result.status === 'ok' && result.data) {
+      // enforce maximum rows setting (bson size is limited to ~ 16MB)
+      if (result.data.length > SOURCE_SETTINGS.maxRows) {
+        result = { status: 'error', data: `Exceeded limit of ${SOURCE_SETTINGS.maxRows} rows.` };  
+      }
+
+      // transpose data if configured to do so
+      else if (job.transpose.enabled) {
+        var store = {},
+            fields = new Set([job.transpose.keyField]);
+
+        result.data.forEach((row) => {
+          var key = row[job.transpose.keyField],
+              cat = row[job.transpose.catField],
+              val = row[job.transpose.valField],
+              obj = {};
+
+          if (store.hasOwnProperty(key)) {
+            obj = store[key];
+          } else {
+            store[key] = obj;
+            obj[job.transpose.keyField] = key;
+          }
+
+          obj[cat] = val;
+          fields.add(cat);
+        });
+
+        result.data = _.values(store);
+        result.fields = Array.from(fields);
+      }
+    }
 
     // sanitize data, keys are not allowed to contain dots
     _.isObject(result.data) && _.each(result.data, (row) => {
@@ -228,6 +263,7 @@ runJob = function(jobId, parameters) {
         }
       });
     });
+
 
     updateJob(result);
     checkJobForAlarms(job, result);

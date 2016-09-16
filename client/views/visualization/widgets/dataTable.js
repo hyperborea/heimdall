@@ -82,7 +82,7 @@ Template.visDataTableFormItem.helpers({
     { value: 'hidden', text: 'hidden', icon: 'hide' },
     { value: 'number', text: 'number', icon: 'calculator' },
     { value: 'date', text: 'date', icon: 'calendar' },
-    { value: 'link', text: 'link', icon: 'at' },
+    { value: 'link', text: 'link', icon: 'linkify' },
     { value: 'rating', text: 'rating', icon: 'empty star' },
   ],
   numberOptions: [

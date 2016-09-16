@@ -48,6 +48,10 @@
         <i class="protect icon"></i> Permissions
         {{#if hasPermissions doc}}<i class="yellow lightning icon"></i>{{/if}}
       </a>
+      <a class="item" data-tab="transformations">
+        <i class="wizard icon"></i> Transformations
+        {{#if doc.transpose.enabled}}<i class="yellow lightning icon"></i>{{/if}}
+      </a>
     </div>
     <div class="ui active tab bottom attached segment" data-tab="parameters">
       {{> jobFormParameteres doc=doc}}
@@ -56,13 +60,23 @@
       {{> jobFormSchedule doc=doc}}
     </div>
     <div class="ui tab bottom attached segment" data-tab="alarms">
-      {{> jobFormRules doc=doc}}
+      {{#if doc.result.fields}}
+        {{> jobFormRules doc=doc}}
+      {{else}}
+        <div class="ui small icon info message">
+          <i class="info icon"></i>
+          To setup alarms please run the job first so Heimdall can extract the fields schema.
+        </div>
+      {{/if}}
     </div>
     <div class="ui tab bottom attached segment" data-tab="email">
       {{> jobFormEmail doc=doc}}
     </div>
     <div class="ui tab bottom attached segment" data-tab="permissions">
       {{> jobFormPermissions doc=doc}}
+    </div>
+    <div class="ui tab bottom attached segment" data-tab="transformations">
+      {{> jobFormTransformations doc=doc fields=doc.result.fields}}
     </div>
 
     <div class="ui icon error message">
@@ -180,22 +194,30 @@
 
 <template name="jobFormEmail">
   <div class="ui small form">
-    <div class="field">
-      <div class="ui checkbox">
-        <input type="checkbox" name="email[enabled]:boolean" checked={{doc.email.enabled}}>
-        <label>enable email notification</label>
+    <div class="ui grid">
+      <div class="eight wide column">
+        <div class="field">
+          <div class="ui checkbox">
+            <input type="checkbox" name="email[enabled]:boolean" checked={{doc.email.enabled}}>
+            <label>enable email notification</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Recipients</label>
+          <input type="text" name="email[recipients]" value={{doc.email.recipients}} placeholder="Recipients">
+        </div>
+        <div class="field">
+          <label>Subject</label>
+          <input type="text" name="email[subject]" value={{doc.email.subject}} placeholder="Subject">
+        </div>
       </div>
-    </div>
-    <div class="field">
-      <label>Recipients</label>
-      <input type="text" name="email[recipients]" value={{doc.email.recipients}} placeholder="Recipients">
-    </div>
-    <div class="field">
-      <label>Message</label>
-      <input type="text" name="email[subject]" value={{doc.email.subject}} placeholder="Subject">
-    </div>
-    <div class="field">
-      <textarea name="email[content]">{{doc.email.content}}</textarea>
+
+      <div class="eight wide column">
+        <div class="field">
+          <label>Message</label>
+          <textarea name="email[content]">{{doc.email.content}}</textarea>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -211,6 +233,33 @@
     <div class="field">
       <label>Owner Groups</label>
       {{> groupsInput name='ownerGroups:list' value=doc.ownerGroups}}
+    </div>
+  </div>
+</template>
+
+
+<template name="jobFormTransformations">
+  <div class="ui small form">
+    <div class="ui dividing header">
+      <div class="ui checkbox">
+        <input type="checkbox" name="transpose[enabled]:boolean" checked={{doc.transpose.enabled}}>
+        <label>Transpose</label>  
+      </div>
+    </div>
+
+    <div class="three fields">
+      <div class="field">
+        <label>key field</label>
+        {{> dropdown items=fields name="transpose[keyField]" value=doc.transpose.keyField allowAdditions=true}}
+      </div>
+      <div class="field">
+        <label>category field</label>
+        {{> dropdown items=fields name="transpose[catField]" value=doc.transpose.catField allowAdditions=true}}
+      </div>
+      <div class="field">
+        <label>value field</label>
+        {{> dropdown items=fields name="transpose[valField]" value=doc.transpose.valField allowAdditions=true}}
+      </div>
     </div>
   </div>
 </template>
