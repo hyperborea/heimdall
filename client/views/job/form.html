@@ -172,8 +172,9 @@
         <label>Cache Validity</label>
         {{> dropdown items=durationOptions name="cacheDuration" value=doc.cacheDuration defaultValue=2628000}}
         <small>
-          How long job results are reused before automatically rerunning the job when someone visits your dashbaord. <br>
-          Both scheduled exection and manual runs overwrite the cache.
+          Period of time after which the data set expires and the job is automatically rerun when someone visits your dashboard. <br>
+          <!-- How long job results are reused before automatically rerunning the job when someone visits your dashboard. <br> -->
+          Both scheduled exection and manual runs refresh the cache.
         </small>
       </div>
       <div class="field">
