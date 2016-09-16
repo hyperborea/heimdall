@@ -6,11 +6,26 @@ Meteor.startup(function() {
 
 
 Migrations.add({
+  version: 6,
+  name: 'Adding transpose default configuration to jobs',
+  up() {
+    Jobs.update(
+      {transpose: {$exists: false}},
+      {$set: {transpose: {enabled: false}}},
+      {multi: true, validate: false, getAutoValues: false})
+  },
+  down() {}
+})
+
+Migrations.add({
   version: 5,
   name: 'Adding cache expiration to jobs and job results',
   up() {
     const defaultDuration = 2628000;
-    Jobs.update({cacheDuration: {$exists: false}}, {$set: {cacheDuration: defaultDuration}}, {multi: true, validate: false});
+    Jobs.update(
+      {cacheDuration: {$exists: false}},
+      {$set: {cacheDuration: defaultDuration}},
+      {multi: true, validate: false, getAutoValues: false});
     JobResults.find({expiresAt: {$exists: false}}).forEach((res) => {
       var expiresAt = moment(res.updatedAt).add(defaultDuration, 'seconds').toDate();
       JobResults.update(res._id, {$set: {expiresAt: expiresAt}}, {validate: false});
