@@ -33,7 +33,6 @@ hyperborea:timeago
 matteodem:gridster
 hyperborea:ethergrid
 hyperborea:accounts-ldap
-hyperborea:accounts-ldap-ui
 meteorhacks:aggregate
 pfafman:filesaver
 reywood:publish-composite
