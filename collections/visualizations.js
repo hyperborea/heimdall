@@ -54,7 +54,7 @@ Meteor.methods({
   },
 
   removeVisualization: function(_id) {
-    requireOwnership(this.userId, Visualizations.findOne(_id).job());
+    requireOwnership(this.userId, Visualizations.findOne(_id));
 
     Visualizations.remove(_id);
   }

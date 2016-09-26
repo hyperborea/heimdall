@@ -32,8 +32,13 @@
     <a href={{pathFor 'statistics'}} class="{{isActiveRoute regex='^statistics'}} item">
       <i class="line chart icon"></i> Statistics
     </a>
-    <a href={{pathFor 'userOverview'}} class="{{isActiveRoute regex='^user'}} item">
-      <i class={{userIcon currentUser}}></i>
+    {{#if isAdmin}}
+      <a href={{pathFor 'userList'}} class="{{isActiveRoute regex='^user'}} item">
+        <i class="users icon"></i> Users
+      </a>
+    {{/if}}
+    <a href={{pathFor 'userView' id=currentUser._id}} class="{{isActivePath (pathFor 'userView' id=currentUser._id)}} item">
+      <i class="{{currentUser.userIcon}} icon"></i>
       {{currentUser.displayName}}
     </a>
     <div class="menu">

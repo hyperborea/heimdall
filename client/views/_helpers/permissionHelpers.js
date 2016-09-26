@@ -1,3 +1,7 @@
+Template.registerHelper('isAdmin', function(trueValue=true, falseValue) {
+  return isAdmin(Meteor.user()) ? trueValue : falseValue;
+});
+
 Template.registerHelper('isOwner', function(doc) {
   return isOwner(Meteor.user(), doc);
 });

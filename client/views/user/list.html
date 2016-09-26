@@ -1,0 +1,35 @@
+<template name="userList">
+  <form class="ui form vertical segment">
+    <div class="fields">
+      <div class="twelve wide field">
+        <input type="text" name="username" placeholder="username">
+      </div>
+      <div class="four wide field">
+        <button class="ui basic fluid green button" type="submit">Create User</button>
+      </div>
+    </div>
+    <div class="ui small success message">{{state 'createSuccessMessage'}}</div>
+    <div class="ui small error message">{{state 'createErrorMessage'}}</div>
+  </form>
+
+  <table class="ui table">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each user in users}}
+        <tr>
+          <td>
+            <a href={{pathFor 'userView' id=user._id}}>
+              <i class="{{user.userIcon}} icon"></i> {{user.username}}
+            </a>
+          </td>
+          <td>{{timeAgo user.createdAt}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</template>

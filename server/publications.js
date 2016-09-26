@@ -165,3 +165,19 @@ Meteor.publish('tags', function(type) {
   requireUser(this.userId);
   return Tags.find({ type: type });
 });
+
+Meteor.publish('users', function() {
+  requireAdmin(this.userId);
+  return Meteor.users.find({}, {
+    fields: { username: 1, displayName: 1, createdAt: 1, profile: 1 }
+  });
+});
+
+Meteor.publish('user', function(userId) {
+  if (this.userId === userId)
+    return null;
+  else {
+    requireAdmin(this.userId);
+    return Meteor.users.find(userId);
+  }
+})

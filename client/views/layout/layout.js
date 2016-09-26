@@ -37,7 +37,6 @@ Template.layout.helpers({
 
   isLoading: () => Session.get('isLoading'),
   mayAdmin: () => mayAdmin(Meteor.user()),
-  isAdmin: (trueValue, falseValue) => isAdmin(Meteor.user()) ? trueValue || true : falseValue,
 });
 
 

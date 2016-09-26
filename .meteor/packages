@@ -48,3 +48,8 @@ percolate:migrations
 meteorhacks:cluster
 aldeed:collection2@2.10.0
 aldeed:simple-schema@2.0.0-rc.1
+service-configuration
+accounts-password
+accounts-google
+accounts-facebook
+accounts-github

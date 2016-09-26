@@ -1,0 +1,85 @@
+<template name="userView">
+  <h1 class="ui dividing header">
+    <i class="{{user.userIcon}} icon"></i>
+    <div class="content">
+      {{user.displayName}}
+    </div>
+  </h1>
+
+  <form class="ui form js-profile-form">
+    <div class="fields">
+      <div class="twelve wide field">
+        <label>
+          User Icon
+          <a href="http://semantic-ui.com/elements/icon.html" target="_blank">
+            <i class="external link icon"></i>
+          </a>
+        </label>
+        <input type="text" name="icon" value={{user.profile.icon}} placeholder="icon">
+      </div>
+      <div class="four wide field">
+        <label>&nbsp;</label>
+        <button class="ui fluid basic green button" type="submit">Save Profile</button>        
+      </div>
+    </div>
+  </form>
+
+  {{#if isCurrentUser}}
+  <form class="ui form js-password-form">
+    <div class="fields">
+      <div class="six wide field">
+        <label>Old Password</label>
+        <input type="password" name="oldPassword">
+      </div>
+      <div class="six wide field">
+        <label>New Password</label>
+        <input type="password" name="newPassword">
+      </div>
+      <div class="four wide field">
+        <label>&nbsp;</label>
+        <button class="ui fluid basic primary button" type="submit">Change Password</button>
+      </div>
+    </div>
+    <div class="ui small success message">{{state 'passwordSuccessMessage'}}</div>
+    <div class="ui small error message">{{state 'passwordErrorMessage'}}</div>
+  </form>
+  {{/if}}
+
+  {{#if isAdmin}}
+    <h3 class="ui dividing header">Admin Panel</h3>
+    {{#unless isCurrentUser}}
+      <div class="ui basic blue button js-reset-password">Reset Password</div>
+      <div class="ui basic red button js-delete">Delete User</div>
+      {{#if (state 'adminMessage')}}
+        <div class="ui {{state 'adminMessageClass'}} small message">{{state 'adminMessage'}}</div>
+      {{/if}}
+    {{else}}
+      <div class="ui info message">Admin actions disabled for yourself to avoid unhappy mistakes.</div>
+    {{/unless}}
+  {{/if}}
+
+  <div class="ui horizontal divider"></div>
+
+  <h3 class="ui dividing header">Groups</h3>
+  {{#if isAdmin}}
+  <form class="ui form js-groups-form">
+    <div class="fields">
+      <div class="twelve wide field">
+        {{> groupsInput name='groups:list' value=user.groups}}
+      </div>
+      <div class="four wide field">
+        <button class="ui fluid basic green button">Update Groups</button>
+      </div>
+    </div>
+  </form>
+  {{/if}}
+  <div class="ui four cards">
+    {{#each group in (sorted user.groups)}}
+      <div class="card">
+        <div class="content">
+          {{group}}  
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</template>

@@ -1,4 +1,9 @@
 accounts-base@1.2.11
+accounts-facebook@1.0.10
+accounts-github@1.0.10
+accounts-google@1.0.10
+accounts-oauth@1.1.13
+accounts-password@1.3.0
 alanning:roles@1.2.15
 aldeed:collection2@2.10.0
 aldeed:collection2-core@1.2.0
@@ -33,8 +38,11 @@ ecmascript@0.5.8
 ecmascript-runtime@0.3.14
 ejson@1.0.12
 email@1.1.17
+facebook@1.2.8
 flemay:less-autoprefixer@1.2.0
 geojson-utils@1.0.9
+github@1.1.8
+google@1.1.13
 hot-code-push@1.0.4
 html-tools@1.0.10
 htmljs@1.0.10
@@ -69,7 +77,10 @@ mongo@1.1.12
 mongo-id@1.0.5
 mongo-livedata@1.0.12
 msavin:mongol@2.0.1
+npm-bcrypt@0.9.1
 npm-mongo@1.5.48
+oauth@1.1.11
+oauth2@1.1.10
 observe-sequence@1.0.12
 ordered-dict@1.0.8
 perak:markdown@1.0.5
@@ -90,9 +101,11 @@ semantic:ui@2.2.1
 semantic:ui-data@2.2.1
 service-configuration@1.0.10
 session@1.1.6
+sha@1.0.8
 shell-server@0.2.1
 spacebars@1.0.12
 spacebars-compiler@1.0.12
+srp@1.0.9
 standard-minifier-css@1.2.0
 standard-minifier-js@1.2.0
 templating@1.1.14

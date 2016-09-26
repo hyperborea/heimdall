@@ -8,6 +8,7 @@
   },
   "author": "Sven Perkmann",
   "dependencies": {
+    "bcrypt": "^0.8.7",
     "c3": "^0.4.11",
     "codemirror": "^5.18.2",
     "crypto-js": "^3.1.6",

@@ -8,15 +8,10 @@
       "heimdall.debug"
     ],
     
-    "roleMapping": {},
-
-    "guestUser": {
-      "username": "guest",
-      "password": "guest",
-      "displayName": "Guest User",
-      "groups": ["heimdall.debug"]
-    }
+    "roleMapping": {}
   },
+
+  "services": [],
 
   "salt": null,
   "slackHookURL": null
