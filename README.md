@@ -32,4 +32,4 @@ Quick Start
 > meteor npm install --production
 3. Run server (in directory)
 > meteor --settings settings-default.json
-4. Login at http://localhost:3000 with the default user "admin" / "admin"
+4. Login at <http://localhost:3000> with the default user "admin" / "admin"
