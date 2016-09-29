@@ -1,6 +1,6 @@
 Heimdall
 =============
-Heimdall is a data visualization and business monitoring system.
+Heimdall is a free and open source data visualization and business monitoring interface.
 
 1. Install Meteor
 > curl https://install.meteor.com/ | sh
