@@ -23,6 +23,7 @@ Features
 * alarms and easy rule system supporting notification through email and Slack
 * authentication support for passwords, LDAP, Google, Github and Facebook
 * authorization using groups for sources, jobs and dashbaords
+* all changes are pushed and reflected in realtime to all users
 
 Quick Start
 -------------
