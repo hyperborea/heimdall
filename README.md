@@ -14,16 +14,16 @@ Features
 * a variety of visualization widgets including
   * line, bar and area charts that can be stacked and combined
   * pie and donut charts
-  * sortable tables with optionally configured column types
+  * sortable tables with configurable column types
   * "big number" widgets
   * world and US maps
 * interactive dashboards through query parameterization
 * supports PostgreSQL, MySQL, Microsoft SQL Server, Impala, CSV and JSON
 * queries can be scheduled to run periodically or are executed automatically after the cache validity expires
 * alarms and easy rule system supporting notification through email and Slack
-* authentication support for passwords, LDAP, Google, Github and Facebook
-* authorization using groups for sources, jobs and dashbaords
-* all changes to configuration and data (job results) are pushed and reflected in realtime to all users
+* authentication through passwords, LDAP, Google, Github and / or Facebook
+* permission management through groups for sources, jobs and dashbaords (everything is shareable)
+* realtime updates of configuration and dashboards
 
 Quick Start
 -------------
