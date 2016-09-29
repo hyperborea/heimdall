@@ -166,6 +166,14 @@ Meteor.publish('tags', function(type) {
   return Tags.find({ type: type });
 });
 
+Meteor.publish(null, function() {
+  let fields = {};
+  LDAP_SETTINGS.fields.forEach((k) => fields[k] = 1);
+  return Meteor.users.find(this.userId, {
+    fields: { displayName: 1, groups: 1 }
+  });
+});
+
 Meteor.publish('users', function() {
   requireAdmin(this.userId);
   return Meteor.users.find({}, {

@@ -1,14 +1,7 @@
 {
   "public": {
+    "ldapEnabled": false,
     "slackEnabled": false
-  },
-
-  "ldap": {
-    "allowedGroups": [
-      "heimdall.debug"
-    ],
-    
-    "roleMapping": {}
   },
 
   "services": [],

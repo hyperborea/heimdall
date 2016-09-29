@@ -1,11 +1,12 @@
 import { startCase } from 'lodash';
 
-
 _.defaults(Meteor.settings, {
-  services: []
+  auth: {},
+  services: [],
 });
 
 _.extend(LDAP_SETTINGS, Meteor.settings.ldap);
+
 
 ServiceConfiguration.configurations.remove({});
 Meteor.settings.services.forEach((config) => {
@@ -14,8 +15,8 @@ Meteor.settings.services.forEach((config) => {
 
 Accounts.config({
   forbidClientAccountCreation: true,
-  // restrictCreationByEmailDomain: 'klarna.com'
 });
+
 
 // Ensure there's an admin account
 Meteor.startup(function() {
@@ -29,28 +30,6 @@ Meteor.startup(function() {
   }
   
   Roles.addUsersToRoles(adminUser, 'admin');
-});
-
-
-// Start uo scheduling, TODO: split out of auth related code
-Meteor.startup(function() {
-  // only run cronjobs on master node if using multicore clustering
-  if (!process.env.CLUSTER_WORKER_ID) {
-    SyncedCron.start();
-
-    // mark previously running jobs as zombies
-    Jobs.update({status: 'running'}, {$set: {status: 'zombie'}}, {multi: true});
-
-    // reschedule jobs
-    Jobs.find({schedule: {$ne: ''}}).forEach((job) => {
-      scheduleJob(job._id, job.schedule);
-    });
-
-    Jobs.find({status: 'zombie'}).forEach((job) => {
-      console.warn(`Rerunning zombie job "${job._id}"`);
-      runJob(job._id);
-    });
-  }
 });
 
 

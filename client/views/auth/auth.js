@@ -21,9 +21,14 @@ Template.login.events({
 
     Meteor.loginWithPassword(username, password, function(err) {
       if (err) {
-        Meteor.loginWithLDAP(username, password, function(err) {
-          if (err) template.error.set(err.reason);
-        });  
+        if (Meteor.settings.public.ldapEnabled) {
+          Meteor.loginWithLDAP(username, password, function(err) {
+            if (err) template.error.set(err.reason);
+          });  
+        }
+        else {
+          template.error.set(err.reason);
+        }
       }
     });
   },
