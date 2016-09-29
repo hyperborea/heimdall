@@ -28,9 +28,8 @@ Quick Start
 -------------
 1. Install Meteor
 > curl https://install.meteor.com/ | sh
-
 2. Install dependencies (in directory)
 > meteor npm install --production
-
 3. Run server (in directory)
 > meteor --settings settings-default.json
+4. Login at http://localhost:3000 with the default user "admin" / "admin"
