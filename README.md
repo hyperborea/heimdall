@@ -1,6 +1,6 @@
 Heimdall
 =============
-Heimdall is a free and open-source data visualization and business monitoring system. It's meant to run on-premise within your company network and leverages your existing databases.
+Heimdall is a free and open-source data visualization and business monitoring system. It's meant to run on-premise within your company network and leverages your existing databases. Collaboration is at its core, so everything you do can be shared and co-owned.
 
 Core concepts
 -------------
@@ -22,7 +22,7 @@ Features
 * queries can be scheduled to run periodically or are executed automatically after the cache validity expires
 * alarms and easy rule system supporting notification through email and Slack
 * authentication through passwords, LDAP, Google, Github and / or Facebook
-* permission management through groups for sources, jobs and dashbaords (everything is shareable)
+* permission management through groups for sources, jobs and dashboards
 * realtime updates of configuration and dashboards
 
 Quick Start
