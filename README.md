@@ -25,6 +25,8 @@ Features
 * permission management through groups for sources, jobs and dashboards
 * realtime updates of configuration and dashboards
 
+Screenshots
+--------------
 ![](https://raw.githubusercontent.com/hyperborea/heimdall/media/Heimdall_1.png "Dashboard")
 
 ![](https://raw.githubusercontent.com/hyperborea/heimdall/media/Heimdall_2.png "Job")
