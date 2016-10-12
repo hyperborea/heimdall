@@ -7,7 +7,7 @@
 
 
 <template name="visBigNumberForm">
-  <div class="two fields">
+  <div class="three fields">
     <div class="field">
       <label>Value Field</label>
       {{> dropdown name="valueField" value=settings.valueField items=fields}}
@@ -16,6 +16,16 @@
     <div class="field">
       <label>Aggregation Method</label>
       {{> dropdown name="valueAggregation" value=settings.valueAggregation items=aggregationMethods}}
+    </div>
+
+    <div class="field">
+      <label>
+        Value Format
+        <a href="https://github.com/d3/d3-3.x-api-reference/blob/master/Formatting.md" target="_blank">
+          <i class="external link icon"></i>
+        </a>
+      </label>
+      <input type="text" name="valueFormat" value={{settings.valueFormat}} placeholder=",">
     </div>
   </div>
 
