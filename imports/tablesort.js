@@ -1,3 +1,6 @@
+// Copyright (c) Tristen Brown
+// modified version by Sven Perkmann, see https://github.com/tristen/tablesort/pull/111
+
 ;(function() {
   function Tablesort(el, options) {
     if (!(this instanceof Tablesort)) return new Tablesort(el, options);
