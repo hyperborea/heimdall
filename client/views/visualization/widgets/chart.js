@@ -78,6 +78,9 @@ Template.visChart.onRendered(function() {
         },
         point: {
           show: !settings.hidePoints
+        },
+        subchart: {
+          show: settings.subchart
         }
       };
 
