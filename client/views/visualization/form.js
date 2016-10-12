@@ -3,7 +3,8 @@ Template.visualizationForm.onCreated(function() {
     this.subscribe('visualization', FlowRouter.getParam('id'));
   });
 
-  this.getVisualization = () => Visualizations.findOne(FlowRouter.getParam('id'));
+  this.getId = () => FlowRouter.getParam('id');
+  this.getVisualization = () => Visualizations.findOne(this.getId());
 });
 
 
@@ -60,6 +61,12 @@ Template.visualizationForm.events({
     confirmModal('Sure you want to delete this visualization?', function() {
       Meteor.call('removeVisualization', vis._id);
       FlowRouter.go('jobEdit', { id: vis.jobId });
+    });
+  },
+
+  'click .js-clone': function(event, template) {
+    Meteor.call('cloneVisualization', template.getId(), (err, visId) => {
+      FlowRouter.go('visualizationEdit', { id: visId });
     });
   }
 });

@@ -97,7 +97,12 @@
       </div>
 
       {{#if doc._id}}
-        <div class="ui right floated negative button js-delete">delete</div>
+        <div class="ui right floated labeled icon basic red button js-delete">
+          <i class="trash icon"></i> delete
+        </div>
+        <div class="ui right floated labeled icon basic button js-clone">
+          <i class="clone icon"></i> clone
+        </div>
       {{/if}}
     </div>
   </form>

@@ -127,6 +127,15 @@ Meteor.methods({
     return jobId;
   },
 
+  cloneJob: function(jobId) {
+    var job = Jobs.findOne(jobId);
+    requireOwnership(this.userId, job);
+
+    delete job._id;
+    job.name = job.name + ' - CLONE';
+    return Jobs.insert(job);
+  },
+
   removeJob: function(jobId) {
     check(jobId, String);
     requireOwnership(this.userId, Jobs.findOne(jobId));

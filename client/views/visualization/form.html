@@ -27,8 +27,16 @@
     {{> Template.dynamic template=(typeForm vis) data=(typeData vis)}}
 
     <div class="action field {{ ownerVisibility vis }}">
-      <div class="ui basic submit button">Apply</div>
-      <div class="ui right floated negative button js-delete">delete</div>
+      <div class="ui labeled icon basic green submit button">
+        <i class="checkmark icon"></i> Apply
+      </div>
+      
+      <div class="ui right floated labeled icon basic red button js-delete">
+        <i class="trash icon"></i> delete
+      </div>
+      <div class="ui right floated labeled icon basic button js-clone">
+        <i class="clone icon"></i> clone
+      </div>
     </div>
   </form>
 

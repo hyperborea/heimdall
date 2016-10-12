@@ -53,6 +53,15 @@ Meteor.methods({
     Visualizations.update(doc._id, { $set: doc });
   },
 
+  cloneVisualization: function(visId) {
+    var vis = Visualizations.findOne(visId);
+    requireOwnership(this.userId, vis);
+
+    delete vis._id;
+    vis.title = vis.title + ' - CLONE';
+    return Visualizations.insert(vis);
+  },
+
   removeVisualization: function(_id) {
     requireOwnership(this.userId, Visualizations.findOne(_id));
 

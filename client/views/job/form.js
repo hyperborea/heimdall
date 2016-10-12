@@ -116,6 +116,12 @@ Template.jobForm.events({
     });
   },
 
+  'click .js-clone': function() {
+    Meteor.call('cloneJob', FlowRouter.getParam('id'), (err, jobId) => {
+      FlowRouter.go('jobEdit', {id: jobId});
+    });
+  },
+
   'click .js-add-visualization': function() {
     Meteor.call('addVisualization', FlowRouter.getParam('id'), function(err, visId) {
       FlowRouter.go('visualizationEdit', {id: visId});
