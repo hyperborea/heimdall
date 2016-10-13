@@ -19,6 +19,10 @@ SOURCE_TYPES.postgres.query = function(source, sql, parameters, endCallback, sta
     pg.connect(connectionConfig, Meteor.bindEnvironment((err, client, done) => {      
       if (err) return sendResults('error', `${err}`);
 
+      pg.on('error', Meteor.bindEnvironment((err, client) => {
+        return sendResults('error', `pg error: ${err.message}`);
+      }));
+
       const pid = client.processID;
       startCallback(pid);
 
@@ -38,11 +42,6 @@ SOURCE_TYPES.postgres.query = function(source, sql, parameters, endCallback, sta
           sendResults('ok', result.rows, _.pluck(result.fields, 'name'));
         }
         done(true);
-        client.end();
-      }));
-
-      client.on('error', Meteor.bindEnvironment((err, client) => {
-        return sendResults('error', `pg client error: ${err.message}`);
         client.end();
       }));
     }));
