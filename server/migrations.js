@@ -6,16 +6,28 @@ Meteor.startup(function() {
 
 
 Migrations.add({
+  version: 7,
+  name: 'Adding profile to all users',
+  up() {
+    Meteor.users.update(
+      {profile: {$exists: false}},
+      {$set: {profile: {}}},
+      {multi: true, validate: false});
+  },
+  down() {}
+});
+
+Migrations.add({
   version: 6,
   name: 'Adding transpose default configuration to jobs',
   up() {
     Jobs.update(
       {transpose: {$exists: false}},
       {$set: {transpose: {enabled: false}}},
-      {multi: true, validate: false, getAutoValues: false})
+      {multi: true, validate: false, getAutoValues: false});
   },
   down() {}
-})
+});
 
 Migrations.add({
   version: 5,

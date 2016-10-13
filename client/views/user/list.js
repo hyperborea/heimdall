@@ -6,7 +6,7 @@ Template.userList.onCreated(function() {
 });
 
 Template.userList.helpers({
-  users: () => Meteor.users.find(),
+  users: () => Meteor.users.find({}, { sort: { username: 1 } }),
   state: (key) => Template.instance().state.get(key),
 });
 
