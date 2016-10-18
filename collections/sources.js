@@ -17,6 +17,12 @@ Sources.helpers({
     }
   },
 
+  cancel(pid) {
+    if (SOURCE_TYPES[this.type].cancel && pid) {
+      SOURCE_TYPES[this.type].cancel(this, pid);
+    }
+  },
+
   status() {
     return this.test && this.test.status;
   }

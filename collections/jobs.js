@@ -1,4 +1,5 @@
 import Papa from 'papaparse';
+import Mustache from 'mustache';
 import { mapValues } from 'lodash';
 import { requiredIf } from './_commonSchema';
 
@@ -167,10 +168,7 @@ Meteor.methods({
     var source = Sources.findOne(job.sourceId);
     requireOwnership(this.userId, job);
 
-    const pid = job.result().pid;
-    if (job.status === 'running' && pid) {
-      source.query(`select pg_terminate_backend(${pid})`);
-    }
+    source.cancel(job.result().pid);
   }
 });
 
@@ -211,6 +209,11 @@ runJob = function(jobId, parameters) {
   parameters = cleanParameters(parameters, job.parameters);
 
   requireAccess(job.ownerId, source);
+
+  // make sure there are no rogue queries hanging in the background
+  if (['running', 'zombie'].indexOf(job.status) !== -1) {
+    source.cancel(job.result().pid);
+  }
 
   function updateJob(result) {
     // only update job status if parameteres are the job defaults
@@ -280,11 +283,32 @@ runJob = function(jobId, parameters) {
 
     if (job.email.enabled) {
       if (result.status === 'ok') {
+        let html = job.email.content.replace(/(?:\r\n|\r|\n)/g, '<br />');
+        // const template = `
+        //   <table style="width: 100%">
+        //     <thead>
+        //       <tr>
+        //         <th>country</th>
+        //         <th>value</th>
+        //       </tr>
+        //     </thead>
+        //     <tbody>
+        //     {{#data}}
+        //       <tr>
+        //         <td>{{country}}</td>
+        //         <td>{{value}}</td>
+        //       </tr>
+        //     {{/data}}  
+        //     </tbody>
+        //   </table>
+        // `;
+        // html = Mustache.render(template, { data: result.data });
+
         Email.send({
           from    : 'noreply@heimdall',
           to      : job.email.recipients,
           subject : job.email.subject,
-          text    : job.email.content,
+          html    : html,
           attachments: [
             {
               fileName    : 'results.csv',

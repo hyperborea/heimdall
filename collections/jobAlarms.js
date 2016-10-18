@@ -114,7 +114,7 @@ checkJobForAlarms = function(job, result) {
             {
               fileName    : 'results.csv',
               contentType : 'text/csv',
-              contents    : Papa.unparse(result.data, { delimiter: ';' })
+              contents    : Papa.unparse(result.data, { delimiter: ',' })
             }
           ]
         });

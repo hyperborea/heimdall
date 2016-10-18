@@ -17,4 +17,8 @@
       Wohoo, no alarms to show! Or haven't you set up any job monitoring yet?  
     </div>
   {{/unless}}
+
+  {{#if hasMore alarms}}
+    <div class="ui fluid basic button js-load-more {{#unless Template.subscriptionsReady}}loading{{/unless}}">load more...</div>
+  {{/if}}
 </template>

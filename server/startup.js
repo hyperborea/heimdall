@@ -1,4 +1,4 @@
-// Start uo scheduling
+// Start up scheduling
 Meteor.startup(function() {
   // only run cronjobs on master node if using multicore clustering
   if (!process.env.CLUSTER_WORKER_ID) {

@@ -48,3 +48,8 @@ SOURCE_TYPES.postgres.query = function(source, sql, parameters, endCallback, sta
   }
   else throw new Meteor.Error("Can't query job, something is missing.");
 }
+
+
+SOURCE_TYPES.postgres.cancel = function(source, pid) {
+  source.query(`select pg_terminate_backend(${pid})`);
+}

@@ -104,26 +104,25 @@ Meteor.publish('visualization', function(_id, parameters, dashboardId=false) {
   ];
 });
 
-Meteor.publishComposite('jobAlarms', function(options={}) {
+Meteor.publish('jobAlarms', function(options={}) {
   _.defaults(options, {
     showAck: false,
+    limit: 10
   });
 
-  return {
-    find: function() {
-      return Jobs.find(filterByAccess(this.userId), { fields: { name: 1 } });
-    },
-    children: [{
-      find: function(job) {
-        return JobAlarms.find({
-          jobId: job._id,
-          status: options.showAck ? { $in: ['open', 'ack'] } : 'open'
-        }, {
-          limit: 100
-        });
-      }
-    }]
-  };
+  var jobsCursor = Jobs.find(filterByAccess(this.userId), { fields: { name: 1 } });
+  var accessibleJobs = jobsCursor.fetch();
+
+  return [
+    jobsCursor,
+    JobAlarms.find({
+      jobId: { $in: _.pluck(accessibleJobs, '_id') },
+      status: options.showAck ? { $in: ['open', 'ack'] } : 'open'
+    }, {
+      sort: { insertedAt: -1 },
+      limit: options.limit
+    })
+  ];
 });
 
 Meteor.publish('jobAlarmsForRun', function(jobId, runId) {
