@@ -211,8 +211,9 @@ runJob = function(jobId, parameters) {
   requireAccess(job.ownerId, source);
 
   // make sure there are no rogue queries hanging in the background
-  if (['running', 'zombie'].indexOf(job.status) !== -1) {
-    source.cancel(job.result().pid);
+  var result = job.result(parameters);
+  if (result && ['running', 'zombie'].indexOf(result.status) !== -1) {
+    source.cancel(result.pid);
   }
 
   function updateJob(result) {
@@ -313,7 +314,7 @@ runJob = function(jobId, parameters) {
             {
               fileName    : 'results.csv',
               contentType : 'text/csv',
-              contents    : Papa.unparse(result.data, { delimiter: ',' })
+              contents    : Papa.unparse({ fields: result.fields, data: result.data }, { delimiter: ',' })
             }
           ]
         });
