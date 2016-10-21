@@ -209,7 +209,13 @@ runJob = function(jobId, parameters) {
   parameters = parameters || {};
   parameters = cleanParameters(parameters, job.parameters);
   
-  requireAccess(job.ownerId, source);
+  if (source) {
+    requireAccess(job.ownerId, source);  
+  }
+  else {
+    console.warn(`Job ${jobId} does no longer have a valid source`);
+    return;
+  }
 
   // make sure there are no rogue queries hanging in the background
   var result = job.result(parameters);
