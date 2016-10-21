@@ -48,9 +48,8 @@ Meteor.methods({
 });
 
 
-checkJobForAlarms = function(job, result) {
+checkJobForAlarms = function(job, result, runId) {
   var matches = [];
-  var runId = Random.id();
   if (result.status !== 'ok') return matches;
 
   _.each(job.rules || [], (rule) => {

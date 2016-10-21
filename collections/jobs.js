@@ -204,29 +204,37 @@ runJob = function(jobId, parameters) {
   var startedAt = new Date();
   var job = Jobs.findOne(jobId);
   var source = Sources.findOne(job.sourceId);
+  var runId = Random.id();
 
   parameters = parameters || {};
   parameters = cleanParameters(parameters, job.parameters);
-
+  
   requireAccess(job.ownerId, source);
 
   // make sure there are no rogue queries hanging in the background
   var result = job.result(parameters);
-  if (result && ['running', 'zombie'].indexOf(result.status) !== -1) {
+  if (result && result.pid && ['running', 'zombie'].indexOf(result.status) !== -1) {
     source.cancel(result.pid);
   }
 
-  function updateJob(result) {
+  function updateJob(result, firstUpdate=false) {
+    // the job might have been rerun in a different thread by now, don't update in that case
+    if (!firstUpdate && job.result(parameters).runId !== runId) {
+      console.warn(`Run ${runId} for job ${jobId} has been disconnected, not updating results`);
+      return;
+    }
+
     // only update job status if parameteres are the job defaults
     if (_.isEqual(parameters, job.parameters)) {
       Jobs.update(jobId, { $set: { status: result.status } });
     }
 
+    result.runId = runId;
     result.expiresAt = moment().add(job.cacheDuration, 'seconds').toDate();
-    JobResults.upsert({ jobId: jobId, parameters: parameters }, { $set: result })
+    JobResults.upsert({ jobId: jobId, parameters: parameters }, { $set: result });
   }
 
-  updateJob({status: 'running'});
+  updateJob({ status: 'running'}, true);
 
   source.query(job.query, parameters, function(result) {
     if (result.status === 'ok' && result.data) {
@@ -279,7 +287,7 @@ runJob = function(jobId, parameters) {
 
 
     updateJob(result);
-    checkJobForAlarms(job, result);
+    checkJobForAlarms(job, result, runId);
     logJobHistory(job, result, startedAt, new Date());
 
     if (job.email.enabled) {

@@ -10,6 +10,10 @@ JobResults.schema = new SimpleSchema({
     type: Object,
     blackbox: true
   },
+  runId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id
+  },
   status: {
     type: String,
     allowedValues: ['ok', 'running', 'error']
@@ -39,7 +43,7 @@ JobResults.schema = new SimpleSchema({
   pid: {
     type: Number,
     optional: true
-  },
+  }
 });
 
 JobResults.attachSchema(JobResults.schema);
