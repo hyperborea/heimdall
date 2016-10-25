@@ -35,7 +35,13 @@ JobResults.schema = new SimpleSchema({
   'fields.$': String,
   updatedAt: {
     type: Date,
-    autoValue: () => new Date()
+    autoValue: function() {
+      const status = this.field('status').value;
+      if (['ok', 'error'].indexOf(status) !== -1 || this.isInsert)
+        return new Date();
+      else if (this.isUpsert)
+        return { $setOnInsert: new Date() };
+    }
   },
   expiresAt: {
     type: Date
