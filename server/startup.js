@@ -2,6 +2,7 @@
 Meteor.startup(function() {
   // only run cronjobs on master node if using multicore clustering
   if (!process.env.CLUSTER_WORKER_ID) {
+    SyncedCron.stop();
     SyncedCron.start();
 
     // mark previously running jobs as zombies

@@ -217,12 +217,6 @@ runJob = function(jobId, parameters) {
     return;
   }
 
-  // make sure there are no rogue queries hanging in the background
-  var result = job.result(parameters);
-  if (result && result.pid && ['running', 'zombie'].indexOf(result.status) !== -1) {
-    source.cancel(result.pid);
-  }
-
   function updateJob(result, firstUpdate=false) {
     // the job might have been rerun in a different thread by now, don't update in that case
     if (!firstUpdate && job.result(parameters).runId !== runId) {
@@ -241,6 +235,13 @@ runJob = function(jobId, parameters) {
   }
 
   updateJob({ status: 'running'}, true);
+
+  // make sure there are no rogue queries hanging in the background
+  var result = job.result(parameters);
+  if (result && result.pid && ['running', 'zombie'].indexOf(result.status) !== -1) {
+    console.log(`cancel ${result.pid}`);
+    source.cancel(result.pid);
+  }
 
   source.query(job.query, parameters, function(result) {
     if (result.status === 'ok' && result.data) {
@@ -292,6 +293,7 @@ runJob = function(jobId, parameters) {
     });
 
 
+    result.pid = 0;
     updateJob(result);
     checkJobForAlarms(job, result, runId);
     logJobHistory(job, result, startedAt, new Date());
