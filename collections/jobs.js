@@ -219,9 +219,11 @@ runJob = function(jobId, parameters) {
 
   function updateJob(result, firstUpdate=false) {
     // the job might have been rerun in a different thread by now, don't update in that case
-    if (!firstUpdate && job.result(parameters).runId !== runId) {
-      console.warn(`Run ${runId} for job ${jobId} has been disconnected, not updating results`);
-      return;
+    var jobRunId = job.result(parameters).runId;
+    if (!firstUpdate && jobRunId !== runId) {
+      console.log(`Job ${jobId} disconnected? ${jobRunId} != ${runId}`);
+      // console.warn(`Run ${runId} for job ${jobId} has been disconnected, not updating results`);
+      // return;
     }
 
     // only update job status if parameteres are the job defaults
