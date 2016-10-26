@@ -236,12 +236,12 @@ runJob = function(jobId, parameters) {
 
   updateJob({ status: 'running'}, true);
 
-  // make sure there are no rogue queries hanging in the background
-  var result = job.result(parameters);
-  if (result && result.pid && ['running', 'zombie'].indexOf(result.status) !== -1) {
-    console.log(`cancel ${result.pid}`);
-    source.cancel(result.pid);
-  }
+  // // make sure there are no rogue queries hanging in the background
+  // var result = job.result(parameters);
+  // if (result && result.pid && ['running', 'zombie'].indexOf(result.status) !== -1) {
+  //   console.log(`cancel ${result.pid}`);
+  //   source.cancel(result.pid);
+  // }
 
   source.query(job.query, parameters, function(result) {
     if (result.status === 'ok' && result.data) {
