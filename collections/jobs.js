@@ -201,10 +201,10 @@ scheduleJob = function(jobId, scheduleString) {
 
 
 runJob = function(jobId, parameters) {
-  var startedAt = new Date();
-  var job = Jobs.findOne(jobId);
-  var source = Sources.findOne(job.sourceId);
-  var runId = Random.id();
+  const startedAt = new Date();
+  const runId = Random.id();
+  const job = Jobs.findOne(jobId);
+  const source = Sources.findOne(job.sourceId);
 
   parameters = parameters || {};
   parameters = cleanParameters(parameters, job.parameters);
@@ -220,9 +220,8 @@ runJob = function(jobId, parameters) {
   function updateJob(result, firstUpdate=false) {
     // the job might have been rerun in a different thread by now, don't update in that case
     if (!firstUpdate && job.result(parameters).runId !== runId) {
-      console.log(`Job ${jobId} disconnected? ${job.result(parameters)} != ${runId}`);
-      // console.warn(`Run ${runId} for job ${jobId} has been disconnected, not updating results`);
-      // return;
+      console.log(`Job ${jobId}: disconnected, ${job.result(parameters).runId} != ${runId}`);
+      return;
     }
 
     // only update job status if parameteres are the job defaults
@@ -237,12 +236,12 @@ runJob = function(jobId, parameters) {
 
   updateJob({ status: 'running'}, true);
 
-  // // make sure there are no rogue queries hanging in the background
-  // var result = job.result(parameters);
-  // if (result && result.pid && ['running', 'zombie'].indexOf(result.status) !== -1) {
-  //   console.log(`cancel ${result.pid}`);
-  //   source.cancel(result.pid);
-  // }
+  // make sure there are no rogue queries hanging in the background
+  var result = job.result(parameters);
+  if (result && result.pid && ['running', 'zombie'].indexOf(result.status) !== -1) {
+    console.log(`Job ${jobId}: cancel pid ${result.pid}`);
+    source.cancel(result.pid);
+  }
 
   source.query(job.query, parameters, function(result) {
     if (result.status === 'ok' && result.data) {

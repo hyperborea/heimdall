@@ -19,9 +19,9 @@ SOURCE_TYPES.postgres.query = function(source, sql, parameters, endCallback, sta
     pg.connect(connectionConfig, Meteor.bindEnvironment((err, client, done) => {      
       if (err) return sendResults('error', `${err}`);
 
-      pg.on('error', Meteor.bindEnvironment((err, client) => {
-        return sendResults('error', `pg error: ${err.message}`);
-      }));
+      // pg.on('error', Meteor.bindEnvironment((err, client) => {
+      //   return sendResults('error', `pg error: ${err.message}`);
+      // }));
 
       const pid = client.processID;
       startCallback(pid);
@@ -51,5 +51,5 @@ SOURCE_TYPES.postgres.query = function(source, sql, parameters, endCallback, sta
 
 
 SOURCE_TYPES.postgres.cancel = function(source, pid) {
-  source.query(`select pg_terminate_backend(${pid})`);
+  source.query(`select pg_cancel_backend(${pid})`);
 }
