@@ -70,7 +70,12 @@
           <div class="eight wide field">
             {{> dropdown items=ratingIcons name=(namePath "icon") value=config.icon defaultValue="yellow star"}}    
           </div>
-        {{/if}}        
+        {{/if}}
+        {{#if isType 'flag'}}
+          <div>
+            A flag can use the two digit country code or the full name, see <a href="http://semantic-ui.com/elements/flag.html" target="_blank">here</a>.
+          </div>
+        {{/if}}
       </div>
     </td>
   </tr>

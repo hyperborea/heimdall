@@ -57,6 +57,11 @@ Template.visDataTable.helpers({
           return Spacebars.SafeString(html);  
         }
         else return '[invalid]';
+      case 'flag':
+        if (_.isString(value)) {
+          const country = Blaze._escape(value.toLowerCase());
+          return Spacebars.SafeString(`<i class="${country} flag"></i>`);
+        }
       default:
         if (value instanceof Date)
           return moment(value).format('YYYY-MM-DD HH:mm:ss');
@@ -79,6 +84,7 @@ Template.visDataTableFormItem.helpers({
     { value: 'date', text: 'date', icon: 'calendar' },
     { value: 'link', text: 'link', icon: 'linkify' },
     { value: 'rating', text: 'rating', icon: 'empty star' },
+    { value: 'flag', text: 'flag', icon: 'flag outline' }
   ],
   numberOptions: [
     { value: ',', text: 'default' },
