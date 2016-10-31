@@ -1,7 +1,8 @@
 {
   "public": {
     "ldapEnabled": false,
-    "slackEnabled": false
+    "slackEnabled": false,
+    "loginMessage": null
   },
 
   "services": [],

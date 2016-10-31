@@ -55,8 +55,16 @@
             <i class="warning sign icon"></i>
             <div class="content">{{errorMessage}}</div>
           </div>
-        {{/if}}        
+        {{/if}}
       </div>
     </div>
+
+    {{#if loginMessage}}
+    <div class="row">
+      <div class="ui message">
+        {{{loginMessage}}}
+      </div>
+    </div>
+    {{/if}}
   </div>
 </template>

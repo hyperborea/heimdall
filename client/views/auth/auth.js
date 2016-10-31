@@ -9,6 +9,7 @@ Template.login.helpers({
   errorMessage: () => Template.instance().error.get(),
   configuredServices: () => _.pluck(Accounts.loginServiceConfiguration.find().fetch(), "service"),
   isEnabled: (service) => Accounts.loginServiceConfiguration.findOne({ service: service }),
+  loginMessage: () => Meteor.settings.public.loginMessage,
 });
 
 
