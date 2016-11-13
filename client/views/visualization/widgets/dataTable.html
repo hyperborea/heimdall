@@ -1,5 +1,5 @@
 <template name="visDataTable">
-  <table class="ui sortable celled table">
+  <table class="ui sortable celled {{settings.tableSize}} {{settings.tableStyle}} table">
     <thead>
       <tr>
         {{#each col in columns}}
@@ -10,7 +10,7 @@
 
     <tbody>
       {{#each row in data}}
-        <tr>
+        <tr class={{getStatus row}}>
           {{#each col in columns}}
             <td>{{getValue row col.key}}</td>
           {{/each}}
@@ -22,6 +22,23 @@
 
 
 <template name="visDataTableForm">
+  <div class="three fields">
+    <div class="field">
+      <label>Table Size</label>
+      {{> dropdown name="tableSize" value=settings.tableSize items=tableSizes defaultValue="medium"}}
+    </div>
+
+    <div class="field">
+      <label>Table Style</label>
+      {{> dropdown name="tableStyle" value=settings.tableStyle items=tableStyles defaultValue="standard"}}
+    </div>
+
+    <div class="field">
+      <label>Color Field</label>
+      {{> dropdown name="colorField" value=settings.colorField items=fields allowEmpty=true placeholder="- none -"}} 
+    </div>  
+  </div>
+
   <table class="ui small form definition table">
     <thead>
       <tr>

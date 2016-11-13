@@ -28,7 +28,13 @@ Template.visDataTable.helpers({
 
     return _.compact(fields);
   },
-  
+
+  getStatus: function(row) {
+    if (this.settings.colorField) {
+      return row[this.settings.colorField];
+    }
+  },
+
   getValue: function(row, key) {
     const config = get(this.settings, `fields.${key}`, {});
     let value = row[key];
@@ -74,6 +80,8 @@ Template.visDataTable.helpers({
 
 Template.visDataTableForm.helpers({
   fieldSettings: (field) => get(Template.currentData(), `settings.fields.${field}`, {}),
+  tableSizes: ['small', 'medium', 'large'],
+  tableStyles: ['standard', 'compact', 'padded', 'collapsing'],
 });
 
 Template.visDataTableFormItem.helpers({
