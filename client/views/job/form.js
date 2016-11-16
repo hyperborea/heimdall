@@ -1,9 +1,8 @@
+import Mustache from 'mustache';
 import CodeMirror from 'codemirror';
-require('codemirror/mode/sql/sql');
-require('codemirror/mode/javascript/javascript');
-// require('codemirror/addon/hint/show-hint');
-// require('codemirror/addon/hint/sql-hint');
-require('codemirror/addon/edit/closebrackets');
+import 'codemirror/mode/sql/sql';
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/addon/edit/closebrackets';
 
 
 loadHandler(Template.jobForm);
@@ -23,14 +22,8 @@ Template.jobForm.onRendered(function() {
     mode: 'text/x-sql',
     theme: 'monokai',
     autoCloseBrackets: true,
-    // hint: CodeMirror.hint.sql,
   });
   this.editor.on('change', (doc) => textarea.value = doc.getValue());
-
-  // this.editor.on("keyup", function (cm, event) {
-  //   if (!cm.state.completionActive && event.keyCode != 13)
-  //       CodeMirror.commands.autocomplete(cm, null, {completeSingle: false});
-  // });
 
   this.$('.ui.single.dropdown').dropdown();
   this.$('.ui.checkbox').checkbox();
@@ -144,4 +137,13 @@ Template.jobFormSchedule.helpers({
     { value: 60, text: '1 minute' },
     { value: 0, text: 'no cache' },
   ]
+});
+
+
+Template.jobFormEmail.helpers({
+  renderedEmail: function() {
+    if (this.doc) {
+      return Mustache.render(this.doc.email.content, this.doc);
+    }
+  }
 });

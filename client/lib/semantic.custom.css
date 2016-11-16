@@ -1,5 +1,5 @@
-.hidden { display: none; }
-.invisible { opacity: 0; }
+.hidden { display: none }
+.invisible { opacity: 0 }
 
 a .link.icon {
   color: black;

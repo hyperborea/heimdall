@@ -13,13 +13,14 @@
                 <strong>{{vis.title}}</strong>  
               </div>
               <div class="right aligned column">
+                <span class="actions">
+                  <i class="download link icon js-download" title="download"></i>
+                  {{#if isOwner vis}}
+                    <i class="refresh {{running}} link icon js-run" title="refresh"></i>
+                    <a href={{pathFor 'visualizationEdit' id=vis._id}} title="edit"><i class="edit link icon"></i></a>
+                  {{/if}}
+                </span>
                 <span class="timeAgo">{{timeAgo vis.result.updatedAt}}</span>
-                &ensp;
-                <i class="download link icon js-download" title="download"></i>
-                {{#if isOwner vis}}
-                  <i class="refresh {{running}} link icon js-run" title="refresh"></i>
-                  <a href={{pathFor 'visualizationEdit' id=vis._id}} title="edit"><i class="edit link icon"></i></a>
-                {{/if}}
               </div>
             </div>       
           </div>
