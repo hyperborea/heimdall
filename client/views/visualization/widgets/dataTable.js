@@ -29,9 +29,16 @@ Template.visDataTable.helpers({
     return _.compact(fields);
   },
 
-  getStatus: function(row) {
+  rowClass: function(row) {
     if (this.settings.colorField) {
       return row[this.settings.colorField];
+    }
+  },
+
+  cellClass: function(row, key) {
+    const config = get(this.settings, `fields.${key}`, {});
+    if (config.colorField) {
+      return row[config.colorField];
     }
   },
 
@@ -115,5 +122,5 @@ Template.visDataTableFormItem.helpers({
     { value: 'black bomb', text: 'bomb', icon: 'black bomb' },
   ],
   namePath(key) { return `fields[${this.field}][${key}]` },
-  isType(type) { return this.config.type === type },
+  isType(type) { return (this.config.type || 'text') === type },
 })

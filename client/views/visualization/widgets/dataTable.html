@@ -10,9 +10,9 @@
 
     <tbody>
       {{#each row in data}}
-        <tr class={{getStatus row}}>
+        <tr class={{rowClass row}}>
           {{#each col in columns}}
-            <td>{{getValue row col.key}}</td>
+            <td class={{cellClass row col.key}}>{{getValue row col.key}}</td>
           {{/each}}
         </tr>
       {{/each}}
@@ -34,8 +34,8 @@
     </div>
 
     <div class="field">
-      <label>Color Field</label>
-      {{> dropdown name="colorField" value=settings.colorField items=fields allowEmpty=true placeholder="- none -"}} 
+      <label>Row Color Field</label>
+      {{> dropdown name="colorField" value=settings.colorField items=fields allowEmpty=true placeholder="none"}}
     </div>  
   </div>
 
@@ -46,6 +46,7 @@
         <th class="three wide">Name</th>
         <th class="two wide">Type</th>
         <th>Settings</th>
+        <th class="two wide">Color Field</th>
       </tr>
     </thead>
     <tbody>
@@ -94,6 +95,11 @@
           </div>
         {{/if}}
       </div>
+    </td>
+    <td>
+      {{#unless isType 'hidden'}}
+        {{> dropdown items=../fields name=(namePath "colorField") value=config.colorField allowEmpty=true}}
+      {{/unless}}
     </td>
   </tr>
 </template>
