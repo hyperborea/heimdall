@@ -1,0 +1,32 @@
+<template name="visWordCloud">
+  <div class="container"></div>
+</template>
+
+
+<template name="visWordCloudForm">
+  <div class="two fields">
+    <div class="field">
+      <label>Text Field</label>
+      {{> dropdown name="textField" value=settings.textField items=fields}}  
+    </div>
+    <div class="field">
+      <label>Value Field</label>
+      {{> dropdown name="valueField" value=settings.valueField items=fields}}  
+    </div>
+  </div>
+
+  <div class="three fields">
+    <div class="field">
+      <label>Min font size</label>
+      <input type="number" name="minSize" value={{settings.minSize}}>
+    </div>
+    <div class="field">
+      <label>Max font size</label>
+      <input type="number" name="maxSize" value={{settings.maxSize}}>
+    </div>
+    <div class="field">
+      <label>Exponent</label>
+      <input type="number" name="exponent" value={{settings.exponent}}>
+    </div>
+  </div>
+</template>

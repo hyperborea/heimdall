@@ -23,6 +23,7 @@ Template.visualizationForm.helpers({
     { value: 'WorldMap', text: 'World Map', icon: 'world' },
     // { value: 'HeatMap', text: 'Heat Map', icon: 'fire' },
     { value: 'DataTable', text: 'Data Table', icon: 'table' },
+    { value: 'WordCloud', text: 'Word Cloud', icon: 'cloud' },
   ],
 
   typeForm: function(vis) {

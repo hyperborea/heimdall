@@ -13,6 +13,7 @@
     "codemirror": "^5.18.2",
     "crypto-js": "^3.1.6",
     "d3": "^3.5.17",
+    "d3.layout.cloud": "^1.2.0",
     "datamaps": "^0.5.7",
     "lodash": "^4.15.0",
     "meteor-node-stubs": "~0.2.0",
@@ -30,7 +31,11 @@
   },
   "postcss": {
     "plugins": {
-      "autoprefixer": {"browsers": ["last 2 versions"]}
+      "autoprefixer": {
+        "browsers": [
+          "last 2 versions"
+        ]
+      }
     }
   }
 }
