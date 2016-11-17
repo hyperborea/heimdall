@@ -4,6 +4,9 @@ import Mustache from 'mustache';
 import { get } from 'lodash';
 import { format as d3Format } from 'd3';
 
+const IMGURL_REGEX = /https?:\/\/(?:[a-z0-9\-]+\.)+[a-z]{2,6}(?:\/[^/#?]+)+\.(?:jpe?g|gif|png)/gi;
+const ICON_REGEX = /\[([\w\s]+)\]/g;
+
 
 Template.visDataTable.onRendered(function() {
   var sorter = tablesort(this.find('table'), {
@@ -23,7 +26,18 @@ Template.visDataTable.helpers({
   columns: function() {
     const fields = this.fields.map((key) => {
       const config = get(this.settings, `fields.${key}`, {});
-      if (config.type !== 'hidden') return { key: key, name: config.name || key }
+      if (config.type !== 'hidden') {
+        let name = key;
+        
+        if (config.name) {
+          name = Blaze._escape(config.name);
+          name = name.replace(IMGURL_REGEX, '<img src="$&" />');
+          name = name.replace(ICON_REGEX, '<i class="$1" />');
+          name = Spacebars.SafeString(name);
+        }
+        
+        return { key, name };
+      }
     });
 
     return _.compact(fields);
