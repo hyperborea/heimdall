@@ -58,7 +58,9 @@ Template.visDataTable.helpers({
 
   getValue: function(row, key) {
     const config = get(this.settings, `fields.${key}`, {});
+    
     let value = row[key];
+    if (_.isNull(value) || _.isUndefined(value)) return;
 
     switch (config.type) {
       case 'number':
@@ -92,7 +94,7 @@ Template.visDataTable.helpers({
       default:
         if (value instanceof Date)
           return moment(value).format('YYYY-MM-DD HH:mm:ss');
-        else if (!_.isNull(value) && !_.isUndefined(value))
+        else
           return value.toString();
     }
   },
