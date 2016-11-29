@@ -31,7 +31,7 @@ semantic:ui
 hyperborea:timeago
 matteodem:gridster
 hyperborea:ethergrid
-hyperborea:accounts-ldap@3.0.0
+hyperborea:accounts-ldap@3.0.1
 meteorhacks:aggregate
 pfafman:filesaver
 reywood:publish-composite
