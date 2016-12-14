@@ -15,7 +15,8 @@ SOURCE_TYPES.mssql.query = function(source, sql, parameters, endCallback, startC
       database : source.database,
       requestTimeout: SOURCE_SETTINGS.timeoutMs,
       options: {
-        tdsVersion: '7_1'
+        tdsVersion : '7_1',
+        encrypt    : source.ssl
       }
     };
 
