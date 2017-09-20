@@ -8,13 +8,20 @@
     <div class="fields">
       <div class="twelve wide field">
         <label>Name</label>
-        <input type="text" name="name" value={{source.name}}>  
+        <input type="text" name="name" value={{source.name}}>
       </div>
       <div class="four wide field">
         <label>Type</label>
         {{> dropdown name="type" value=source.type items=sourceTypes}}
       </div>
     </div>
+
+    {{#if showField 'path'}}
+    <div class="field">
+      <label>Path</label>
+      <input type="text" name="path" value={{source.path}} placeholder="path">
+    </div>
+    {{/if}}
 
     {{#if showField 'server'}}
     <div class="field">
@@ -76,9 +83,9 @@
         {{#if source._id}}
           <div class="or" data-text="&amp;"></div>
           <div class="ui submit button js-test">test connection</div>
-        {{/if}}  
+        {{/if}}
       </div>
-      
+
       {{#if source._id}}
         <div class="ui right floated negative button js-delete">delete</div>
       {{/if}}

@@ -18,7 +18,7 @@ Features
   * "big number" widgets
   * world and US maps
 * interactive dashboards through query parameterization
-* supports PostgreSQL, MySQL, Microsoft SQL Server, Impala, CSV and JSON
+* supports PostgreSQL, MySQL, Microsoft SQL Server, Impala, SQLite, CSV and JSON
 * queries can be scheduled to run periodically or are executed automatically after the cache validity expires
 * alarms and easy rule system supporting notification through email and Slack
 * authentication through passwords, LDAP, Google, Github and / or Facebook
