@@ -8,6 +8,7 @@
   },
   "author": "Sven Perkmann",
   "dependencies": {
+    "babel-runtime": "^6.26.0",
     "bcrypt": "^0.8.7",
     "c3": "^0.4.11",
     "codemirror": "^5.18.2",

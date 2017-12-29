@@ -8,5 +8,6 @@
   "services": [],
 
   "salt": null,
+  "defaultGroups": [],
   "slackHookURL": null
 }

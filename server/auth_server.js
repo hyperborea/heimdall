@@ -1,49 +1,45 @@
-import { startCase } from 'lodash';
+import { startCase } from "lodash";
 
-_.defaults(Meteor.settings, {
-  auth: {},
-  services: [],
-});
-
+_.defaults(Meteor.settings, { services: [] });
 _.extend(LDAP_SETTINGS, Meteor.settings.ldap);
 
-
 ServiceConfiguration.configurations.remove({});
-Meteor.settings.services.forEach((config) => {
+Meteor.settings.services.forEach(config => {
   ServiceConfiguration.configurations.insert(config);
 });
 
 Accounts.config({
   forbidClientAccountCreation: true,
+  restrictCreationByEmailDomain: Meteor.settings.restrictEmailDomain
 });
-
 
 // Ensure there's an admin account
 Meteor.startup(function() {
-  let adminUser = Accounts.findUserByUsername('admin');
+  let adminUser = Accounts.findUserByUsername("admin");
 
   if (!adminUser) {
     adminUser = Accounts.createUser({
-      username: 'admin',
-      password: 'admin'
+      username: "admin",
+      password: "admin"
     });
   }
-  
-  Roles.addUsersToRoles(adminUser, 'admin');
-});
 
+  Roles.addUsersToRoles(adminUser, "admin");
+});
 
 // Keep track of all LDAP groups
 Accounts.onLogin(function() {
   var user = Meteor.user();
   var existingGroups = Groups.find().fetch();
 
-  var newGroupNames = _.difference(user.groups, _.pluck(existingGroups, 'name'));
+  var newGroupNames = _.difference(
+    user.groups,
+    _.pluck(existingGroups, "name")
+  );
   _.each(newGroupNames, function(groupName) {
     Groups.insert({ name: groupName });
   });
 });
-
 
 Accounts.onCreateUser(function(options, user) {
   if (user.services.google) {
@@ -60,7 +56,7 @@ Accounts.onCreateUser(function(options, user) {
 
   return _.defaults(user, {
     profile: {},
-    groups: [],
-    displayName: startCase(user.username),
+    groups: Meteor.settings.defaultGroups || [],
+    displayName: startCase(user.username)
   });
 });

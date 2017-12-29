@@ -4,17 +4,17 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-meteor-base@1.1.0
+meteor-base@1.2.0
 # mobile-experience
-mongo@1.2.0
+mongo@1.3.1
 blaze-html-templates@1.0.4
 session@1.1.7
 jquery@1.11.10
 tracker@1.1.3
-logging@1.1.17
+logging@1.1.19
 reload@1.1.11
 random@1.0.10
-ejson@1.0.14
+ejson@1.1.0
 spacebars@1.0.12
 check@1.2.5
 
@@ -24,7 +24,7 @@ msavin:mongol
 arillo:flow-router-helpers
 momentjs:moment
 reactive-var@1.0.11
-ecmascript@0.8.2
+ecmascript@0.9.0
 email@1.2.3
 percolate:synced-cron
 semantic:ui
@@ -38,22 +38,22 @@ reywood:publish-composite
 dburles:collection-helpers
 perak:markdown
 meteorhacks:kadira
-http@1.2.12
-standard-minifier-js@2.1.1
-reactive-dict@1.1.9
-shell-server@0.2.4
+http@1.3.0
+standard-minifier-js@2.2.0
+reactive-dict@1.2.0
+shell-server@0.3.0
 percolate:migrations
 meteorhacks:cluster
 aldeed:collection2@2.10.0
 aldeed:simple-schema@2.0.0-rc.1
 service-configuration@1.0.11
-accounts-password@1.4.0
-accounts-google@1.2.0
-accounts-facebook@1.2.1
-accounts-github@1.3.0
-less@2.7.9
+accounts-password@1.5.0
+accounts-google@1.3.0
+accounts-facebook@1.3.0
+accounts-github@1.4.0
+less@2.7.11
 juliancwirko:postcss
-facebook-config-ui
-github-config-ui
-google-config-ui
-dynamic-import
+facebook-config-ui@1.0.0
+github-config-ui@1.0.0
+google-config-ui@1.0.0
+dynamic-import@0.2.0
