@@ -175,7 +175,7 @@
     <div class="two fields">
       <div class="field">
         <label>Cache Validity</label>
-        {{> dropdown items=durationOptions name="cacheDuration" value=doc.cacheDuration defaultValue=2628000}}
+        {{> dropdown items=durationOptions name="cacheDuration" value=doc.cacheDuration defaultValue=86400}}
         <small>
           Period of time after which the data set expires and the job is automatically rerun when someone visits your dashboard. <br>
           <!-- How long job results are reused before automatically rerunning the job when someone visits your dashboard. <br> -->
