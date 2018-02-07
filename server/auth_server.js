@@ -57,6 +57,6 @@ Accounts.onCreateUser(function(options, user) {
   return _.defaults(user, {
     profile: {},
     groups: Meteor.settings.defaultGroups || [],
-    displayName: startCase(user.username)
+    displayName: user.username
   });
 });
