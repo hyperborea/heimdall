@@ -1,9 +1,9 @@
-import d3 from 'd3';
-import c3 from 'c3';
+import d3 from "d3";
+import c3 from "c3";
 
 Template.visChart.onRendered(function() {
   var template = this;
-  var container = template.find('.chart');
+  var container = template.find(".chart");
 
   this.autorun(() => {
     const context = Template.currentData();
@@ -11,21 +11,21 @@ Template.visChart.onRendered(function() {
     let series = settings.series || [];
 
     if (context.data) {
-      var fields = _.pluck(series, 'field');
-      series.forEach(s => s.name = s.name || s.field);
+      var fields = _.pluck(series, "field");
+      series.forEach(s => (s.name = s.name || s.field));
 
       var config = {
         bindto: container,
         data: {
-          json    : context.data,
-          keys    : { value: fields },
-          groups  : settings.groups,
-          types   : _.object(fields, _.pluck(series, 'type')),
-          axes    : _.object(fields, _.pluck(series, 'yAxis')),
-          colors  : _.object(fields, _.pluck(series, 'color')),
-          classes : _.object(fields, _.pluck(series, 'lineType')),
-          names   : _.object(fields, _.pluck(series, 'name')),
-          order   : null,
+          json: context.data,
+          keys: { value: fields },
+          groups: settings.groups,
+          types: _.object(fields, _.pluck(series, "type")),
+          axes: _.object(fields, _.pluck(series, "yAxis")),
+          colors: _.object(fields, _.pluck(series, "color")),
+          classes: _.object(fields, _.pluck(series, "lineType")),
+          names: _.object(fields, _.pluck(series, "name")),
+          order: null
         },
         size: {
           height: settings.height
@@ -34,7 +34,7 @@ Template.visChart.onRendered(function() {
           x: {
             label: {
               text: settings.labelX,
-              position: settings.labelX && 'outer-right'
+              position: settings.labelX && "outer-right"
             },
             tick: {
               format: settings.formatX ? d3.format(settings.formatX) : undefined
@@ -45,7 +45,7 @@ Template.visChart.onRendered(function() {
           y: {
             label: {
               text: settings.labelY,
-              position: settings.labelY && 'outer-top'
+              position: settings.labelY && "outer-top"
             },
             tick: {
               format: settings.formatY ? d3.format(settings.formatY) : undefined
@@ -54,13 +54,15 @@ Template.visChart.onRendered(function() {
             max: settings.maxY
           },
           y2: {
-            show: _.where(series, {yAxis: 'y2'}).length > 0,
+            show: _.where(series, { yAxis: "y2" }).length > 0,
             label: {
               text: settings.labelY2,
-              position: settings.labelY2 && 'outer-top'
+              position: settings.labelY2 && "outer-top"
             },
             tick: {
-              format: settings.formatY2 ? d3.format(settings.formatY2) : undefined
+              format: settings.formatY2
+                ? d3.format(settings.formatY2)
+                : undefined
             },
             min: settings.minY2,
             max: settings.maxY2
@@ -69,11 +71,11 @@ Template.visChart.onRendered(function() {
         grid: {
           x: {
             show: settings.gridX,
-            lines: _.where(settings.gridLines, {axis: 'x'})
+            lines: _.where(settings.gridLines, { axis: "x" })
           },
           y: {
             show: settings.gridY,
-            lines: _.where(settings.gridLines, {axis: 'y'})
+            lines: _.where(settings.gridLines, { axis: "y" })
           }
         },
         point: {
@@ -81,20 +83,36 @@ Template.visChart.onRendered(function() {
         },
         subchart: {
           show: settings.subchart
+        },
+        tooltip: {
+          contents: function(d, defaultTitleFormat, defaultValueFormat, color) {
+            var format = defaultTitleFormat;
+            if (d.length > 1) {
+              defaultTitleFormat = function(title) {
+                var sum = d.reduce((tot, item) => tot + item.value, 0);
+                return format(title) + " - " + sum;
+              };
+            }
+
+            return c3.chart.internal.fn.getTooltipContent.apply(
+              this,
+              arguments
+            );
+          }
         }
       };
 
       if (settings.timeField) {
         config.data.x = settings.timeField;
         config.data.keys.value.push(settings.timeField);
-        config.axis.x.type = 'timeseries';
-        config.axis.x.tick = { format: settings.timeFormat || '%Y-%m-%d' };
+        config.axis.x.type = "timeseries";
+        config.axis.x.tick = { format: settings.timeFormat || "%Y-%m-%d" };
       }
 
       if (settings.categoryField) {
         config.data.x = settings.categoryField;
         config.data.keys.value.push(settings.categoryField);
-        config.axis.x.type = 'category';
+        config.axis.x.type = "category";
       }
 
       c3.generate(config);
