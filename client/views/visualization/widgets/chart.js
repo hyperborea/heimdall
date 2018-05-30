@@ -86,11 +86,15 @@ Template.visChart.onRendered(function() {
         },
         tooltip: {
           contents: function(d, defaultTitleFormat, defaultValueFormat, color) {
-            var format = defaultTitleFormat;
+            var formatTitle = defaultTitleFormat;
+            var formatValue = settings.formatY
+              ? d3.format(settings.formatY)
+              : x => x;
+
             if (d.length > 1) {
               defaultTitleFormat = function(title) {
                 var sum = d.reduce((tot, item) => tot + item.value, 0);
-                return format(title) + " - " + sum;
+                return formatTitle(title) + " - " + formatValue(sum);
               };
             }
 
