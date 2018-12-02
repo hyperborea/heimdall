@@ -45,3 +45,26 @@ Quick Start
 > meteor --settings settings-default.json
 
 4. Login at <http://localhost:3000> with the default user "admin" / "admin"
+
+
+Quick Start with Docker image
+-------------  
+Links for more info<br />
+- <https://guide.meteor.com/deployment.html#docker>
+- <https://github.com/jshimko/meteor-launchpad>
+   
+Quick Build (setup mongo db inside image)      
+```
+docker build \
+--build-arg INSTALL_MONGO=true \
+-t heimdall:latest .
+```
+
+Run  
+```
+docker run \
+-e ROOT_URL=http://example.com \
+-e METEOR_SETTINGS="$(cat settings.json)" \
+-p 3000:3000 \
+heimdall:latest
+``` 
