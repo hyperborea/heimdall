@@ -33,10 +33,13 @@ Template.dashboardView.onRendered(function() {
       var dashboard = Dashboards.findOne(_id());
       var widgets = dashboard ? dashboard.widgets : [];
 
+      // Prefill params with default values set on dashboard level.
       const prevParams = template.parameters.get();
       const newParams = { ...qs.parse(dashboard.params), ...prevParams };
       if (!isEqual(prevParams, newParams)) {
         template.parameters.set(newParams);
+        // Don't continue to rebuild widgets if we don't have the right params yet.
+        return;
       }
 
       // Gridster tries to be clever and pushes widgets down if they don't fit in width.
