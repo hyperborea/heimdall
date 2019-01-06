@@ -1,36 +1,36 @@
 <template name="visualization">
   <div class="visualizationWrapper" style="height: {{height}}">
     {{#if basic}}
-      <div class="ui basic {{loading}} segment visualizationCanvas">
-        {{> Template.dynamic template=templateName data=data}}   
-      </div>
+    <div class="ui basic {{loading}} segment visualizationCanvas">
+      {{> Template.dynamic template=templateName data=data}}
+    </div>
     {{else}}
-      <div class="ui top attached segment visualizationTopbar">
-        {{#unless isFullscreen}}
-          <div class="ui grid">
-            <div class="two column row">
-              <div class="column">
-                <strong>{{vis.title}}</strong>  
-              </div>
-              <div class="right aligned column">
-                <span class="actions">
-                  <i class="download link icon js-download" title="download"></i>
-                  {{#if isOwner vis}}
-                    <i class="refresh {{running}} link icon js-run" title="refresh"></i>
-                    <a href={{pathFor 'visualizationEdit' id=vis._id}} title="edit"><i class="edit link icon"></i></a>
-                  {{/if}}
-                </span>
-                <span class="timeAgo">{{timeAgo vis.result.updatedAt}}</span>
-              </div>
-            </div>       
+    <div class="ui top attached segment visualizationTopbar">
+      {{#unless isFullscreen}}
+      <div class="ui grid">
+        <div class="two column row">
+          <div class="column">
+            <strong>{{vis.title}}</strong>
           </div>
-        {{else}}
-          <strong>{{vis.title}}</strong>
-        {{/unless}}
+          <div class="right aligned column">
+            <span class="actions">
+              <i class="download link icon js-download" title="download"></i>
+              {{#if isOwner vis}}
+              <i class="refresh {{running}} link icon js-run" title="refresh"></i>
+              <a href={{pathFor 'visualizationEdit' id=vis._id}} title="edit"><i class="edit link icon"></i></a>
+              {{/if}}
+            </span>
+            <span class="timeAgo">{{timeAgo vis.result.updatedAt}}</span>
+          </div>
+        </div>
       </div>
-      <div class="ui bottom attached {{loading}} segment visualizationCanvas">
-        {{> Template.dynamic template=templateName data=data}}   
-      </div>
+      {{else}}
+      <strong>{{vis.title}}</strong>
+      {{/unless}}
+    </div>
+    <div class="ui bottom attached {{loading}} segment visualizationCanvas">
+      {{> Template.dynamic template=templateName data=data}}
+    </div>
     {{/if}}
   </div>
 </template>
@@ -39,7 +39,7 @@
   <div class="ui icon error message">
     <i class="warning icon"></i>
     <div class="content">
-      {{data}}  
+      {{data}}
     </div>
   </div>
 </template>

@@ -3,19 +3,19 @@
   <h1 class="ui dividing header">
     {{#unless isFullscreen}}
     <div class="ui grid">
-      <div class="thirteen wide column">
+      <div class="ten wide column">
         {{dashboard.title}}
-        {{#if isOwner dashboard}}
-        <small>
-          <a href={{pathFor 'dashboardEdit' id=dashboard._id}}>(edit)</a>
-        </small>
-        {{/if}}
         <span class="sub header">{{dashboard.description}}</span>
       </div>
-      <div class="three wide right aligned column">
-        <i class="small play link icon js-present-mode" title="present"></i>
-        <i class="small {{fullscreenClass}} link icon js-toggle-fullscreen" title="fullscreen"></i>
-        <i class="small {{starredClass}} link icon js-toggle-star" title="star"></i>
+      <div class="six wide right aligned column">
+        {{#if isOwner dashboard}}
+        <a href={{pathFor 'dashboardEdit' id=dashboard._id}}>
+          <i class="tiny edit link icon"></i>
+        </a>
+        {{/if}}
+        <i class="tiny play link icon js-present-mode" title="present"></i>
+        <i class="tiny {{fullscreenClass}} link icon js-toggle-fullscreen" title="fullscreen"></i>
+        <i class="tiny {{starredClass}} link icon js-toggle-star" title="star"></i>
       </div>
     </div>
     {{else}}

@@ -1,3 +1,4 @@
+const { isEqual } = require("lodash");
 const qs = require("query-string");
 
 loadHandler(Template.dashboardView);
@@ -7,7 +8,9 @@ Template.dashboardView.onCreated(function() {
   this.parameters = new ReactiveVar(qs.parse(location.hash));
 
   this.autorun(() => {
-    Template.currentData().embedded || this.subscribe("dashboard", _id());
+    if (!Template.currentData().embedded) {
+      this.subscribe("dashboard", _id());
+    }
   });
 });
 
@@ -29,6 +32,12 @@ Template.dashboardView.onRendered(function() {
     if (this.subscriptionsReady()) {
       var dashboard = Dashboards.findOne(_id());
       var widgets = dashboard ? dashboard.widgets : [];
+
+      const prevParams = template.parameters.get();
+      const newParams = { ...qs.parse(dashboard.params), ...prevParams };
+      if (!isEqual(prevParams, newParams)) {
+        template.parameters.set(newParams);
+      }
 
       // Gridster tries to be clever and pushes widgets down if they don't fit in width.
       // That's not what we want though, so we're manually overriding the columns with the maximum to expect.

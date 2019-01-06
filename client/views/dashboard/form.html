@@ -28,12 +28,19 @@
       </div>
     </div>
 
-    <div class="fields">
-      <div class="sixteen wide field">
-        <dic class="ui labeled input">
+    <div class="two fields">
+      <div class="field">
+        <div class="ui labeled input">
           <div class="ui basic right pointing label">description</div>
           <input type="text" name="description" placeholder="optional" value={{dashboard.description}}>
-        </dic>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="ui labeled input">
+          <div class="ui basic right pointing label">params</div>
+          <input type="text" name="params" placeholder="defaults as query string" value={{dashboard.params}}>
+        </div>
       </div>
     </div>
 
