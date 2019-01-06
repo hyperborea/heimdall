@@ -82,7 +82,7 @@
     </thead>
     <tbody>
       {{#each series in seriesArray}}
-        {{> visChartFormSeriesItem index=@index series=series}}
+      {{> visChartFormSeriesItem index=@index series=series}}
       {{/each}}
       <tr>
         <td colspan="6">
@@ -95,7 +95,7 @@
   </table>
 
   {{#each group in groupsArray}}
-    {{> visChartFormGroupItem index=@index group=group}}
+  {{> visChartFormGroupItem index=@index group=group}}
   {{/each}}
 
   <div class="ui basic button js-add-group">
@@ -106,8 +106,8 @@
 
   <div class="fields">
     <div class="five wide field">
-      {{> dropdown name="categoryField" value=settings.categoryField items=fields 
-          placeholder="category field" allowEmpty=true}}
+      {{> dropdown name="categoryField" value=settings.categoryField items=fields
+      placeholder="category field" allowEmpty=true}}
     </div>
 
     <div class="one wide field">
@@ -115,8 +115,8 @@
     </div>
 
     <div class="five wide field">
-      {{> dropdown name="timeField" value=settings.timeField items=fields 
-          placeholder="time field" allowEmpty=true}}
+      {{> dropdown name="timeField" value=settings.timeField items=fields
+      placeholder="time field" allowEmpty=true}}
     </div>
 
     <div class="five wide field">
@@ -124,7 +124,7 @@
         <a href="https://github.com/d3/d3-3.x-api-reference/blob/master/Time-Formatting.md" target="_blank" class="ui label">
           Time Format
         </a>
-        <input type="text" name="timeFormat" value={{settings.timeFormat}} placeholder="%Y-%m-%d">  
+        <input type="text" name="timeFormat" value={{settings.timeFormat}} placeholder="%Y-%m-%d">
       </div>
     </div>
   </div>
@@ -159,7 +159,7 @@
         <th class="two wide">
           Format
           <a href="https://github.com/mbostock/d3/wiki/Formatting" target="_blank">
-            <i class="external link icon"></i>
+            <i class="small info circle link icon"></i>
           </a>
         </th>
       </tr>
@@ -196,22 +196,22 @@
     <div class="ui slider checkbox">
       <input type="checkbox" name="gridY:boolean" checked={{settings.gridY}}>
       <label>horizontal grid lines</label>
-    </div>  
+    </div>
   </div>
   <div class="field">
     <div class="ui slider checkbox">
       <input type="checkbox" name="gridX:boolean" checked={{settings.gridX}}>
       <label>vertical grid lines</label>
-    </div>  
+    </div>
   </div>
 
   <div class="field">
     <div class="ui basic button js-add-line">
       <i class="plus icon"></i> Add reference line
-    </div>    
+    </div>
   </div>
   {{#each line in gridLines}}
-    {{> visChartFormGridLine line=line index=@index}}
+  {{> visChartFormGridLine line=line index=@index}}
   {{/each}}
 </template>
 

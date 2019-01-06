@@ -1,6 +1,6 @@
 /*
   DO NOT MODIFY - This file has been generated and will be regenerated
-  Semantic UI v2.2.1
+  Semantic UI v2.3.1
 */
 /*!
  * # Semantic UI - Form
@@ -91,6 +91,7 @@
 .ui.form input[type="tel"],
 .ui.form input[type="time"],
 .ui.form input[type="text"],
+.ui.form input[type="file"],
 .ui.form input[type="url"] {
   width: @inputWidth;
   vertical-align: top;
@@ -112,6 +113,7 @@
 .ui.form input[type="tel"],
 .ui.form input[type="time"],
 .ui.form input[type="text"],
+.ui.form input[type="file"],
 .ui.form input[type="url"] {
   font-family: @inputFont;
   margin: 0em;
@@ -377,6 +379,7 @@
 .ui.form input[type="tel"]:focus,
 .ui.form input[type="time"]:focus,
 .ui.form input[type="text"]:focus,
+.ui.form input[type="file"]:focus,
 .ui.form input[type="url"]:focus {
   color: @inputFocusColor;
   border-color: @inputFocusBorderColor;
@@ -465,6 +468,7 @@
 .ui.form .fields.error .field input[type="tel"],
 .ui.form .fields.error .field input[type="time"],
 .ui.form .fields.error .field input[type="text"],
+.ui.form .fields.error .field input[type="file"],
 .ui.form .fields.error .field input[type="url"],
 .ui.form .field.error textarea,
 .ui.form .field.error select,
@@ -478,6 +482,7 @@
 .ui.form .field.error input[type="tel"],
 .ui.form .field.error input[type="time"],
 .ui.form .field.error input[type="text"],
+.ui.form .field.error input[type="file"],
 .ui.form .field.error input[type="url"] {
   background: @formErrorBackground;
   border-color: @formErrorBorder;
@@ -497,6 +502,7 @@
 .ui.form .field.error input[type="tel"]:focus,
 .ui.form .field.error input[type="time"]:focus,
 .ui.form .field.error input[type="text"]:focus,
+.ui.form .field.error input[type="file"]:focus,
 .ui.form .field.error input[type="url"]:focus {
   background: @inputErrorFocusBackground;
   border-color: @inputErrorFocusBorder;
@@ -594,7 +600,8 @@
   pointer-events: none;
   opacity: @disabledOpacity;
 }
-.ui.form .field.disabled label {
+.ui.form .field.disabled > label,
+.ui.form .fields.disabled > label {
   opacity: @disabledLabelOpacity;
 }
 .ui.form .field.disabled :disabled {
@@ -609,7 +616,7 @@
 .ui.loading.form {
   position: relative;
   cursor: default;
-  point-events: none;
+  pointer-events: none;
 }
 .ui.loading.form:before {
   position: absolute;
@@ -722,6 +729,7 @@
 .ui.inverted.form input[type="tel"],
 .ui.inverted.form input[type="time"],
 .ui.inverted.form input[type="text"],
+.ui.inverted.form input[type="file"],
 .ui.inverted.form input[type="url"] {
   background: @invertedInputBackground;
   border-color: @invertedInputBorderColor;
@@ -822,26 +830,26 @@
     flex-wrap: wrap;
   }
 
-  .ui[class*="equal width"].form .fields > .field,
-  .ui.form [class*="equal width"].fields > .field,
-  .ui.form .two.fields > .fields,
-  .ui.form .two.fields > .field,
-  .ui.form .three.fields > .fields,
-  .ui.form .three.fields > .field,
-  .ui.form .four.fields > .fields,
-  .ui.form .four.fields > .field,
-  .ui.form .five.fields > .fields,
-  .ui.form .five.fields > .field,
-  .ui.form .six.fields > .fields,
-  .ui.form .six.fields > .field,
-  .ui.form .seven.fields > .fields,
-  .ui.form .seven.fields > .field,
-  .ui.form .eight.fields > .fields,
-  .ui.form .eight.fields > .field,
-  .ui.form .nine.fields > .fields,
-  .ui.form .nine.fields > .field,
-  .ui.form .ten.fields > .fields,
-  .ui.form .ten.fields > .field {
+  .ui[class*="equal width"].form:not(.unstackable) .fields > .field,
+  .ui.form:not(.unstackable) [class*="equal width"].fields:not(.unstackable) > .field,
+  .ui.form:not(.unstackable) .two.fields:not(.unstackable) > .fields,
+  .ui.form:not(.unstackable) .two.fields:not(.unstackable) > .field,
+  .ui.form:not(.unstackable) .three.fields:not(.unstackable) > .fields,
+  .ui.form:not(.unstackable) .three.fields:not(.unstackable) > .field,
+  .ui.form:not(.unstackable) .four.fields:not(.unstackable) > .fields,
+  .ui.form:not(.unstackable) .four.fields:not(.unstackable) > .field,
+  .ui.form:not(.unstackable) .five.fields:not(.unstackable) > .fields,
+  .ui.form:not(.unstackable) .five.fields:not(.unstackable) > .field,
+  .ui.form:not(.unstackable) .six.fields:not(.unstackable) > .fields,
+  .ui.form:not(.unstackable) .six.fields:not(.unstackable) > .field,
+  .ui.form:not(.unstackable) .seven.fields:not(.unstackable) > .fields,
+  .ui.form:not(.unstackable) .seven.fields:not(.unstackable) > .field,
+  .ui.form:not(.unstackable) .eight.fields:not(.unstackable) > .fields,
+  .ui.form:not(.unstackable) .eight.fields:not(.unstackable) > .field,
+  .ui.form:not(.unstackable) .nine.fields:not(.unstackable) > .fields,
+  .ui.form:not(.unstackable) .nine.fields:not(.unstackable) > .field,
+  .ui.form:not(.unstackable) .ten.fields:not(.unstackable) > .fields,
+  .ui.form:not(.unstackable) .ten.fields:not(.unstackable) > .field {
     width: @oneColumn !important;
     margin: 0em 0em @rowDistance;
   }
@@ -906,29 +914,29 @@
 
 /* Swap to full width on mobile */
 @media only screen and (max-width : @largestMobileScreen) {
-  .ui.form .two.fields > .fields,
-  .ui.form .two.fields > .field,
-  .ui.form .three.fields > .fields,
-  .ui.form .three.fields > .field,
-  .ui.form .four.fields > .fields,
-  .ui.form .four.fields > .field,
-  .ui.form .five.fields > .fields,
-  .ui.form .five.fields > .field,
-  .ui.form .fields > .two.wide.field,
-  .ui.form .fields > .three.wide.field,
-  .ui.form .fields > .four.wide.field,
-  .ui.form .fields > .five.wide.field,
-  .ui.form .fields > .six.wide.field,
-  .ui.form .fields > .seven.wide.field,
-  .ui.form .fields > .eight.wide.field,
-  .ui.form .fields > .nine.wide.field,
-  .ui.form .fields > .ten.wide.field,
-  .ui.form .fields > .eleven.wide.field,
-  .ui.form .fields > .twelve.wide.field,
-  .ui.form .fields > .thirteen.wide.field,
-  .ui.form .fields > .fourteen.wide.field,
-  .ui.form .fields > .fifteen.wide.field,
-  .ui.form .fields > .sixteen.wide.field {
+  .ui.form:not(.unstackable) .two.fields:not(.unstackable) > .fields,
+  .ui.form:not(.unstackable) .two.fields:not(.unstackable) > .field,
+  .ui.form:not(.unstackable) .three.fields:not(.unstackable) > .fields,
+  .ui.form:not(.unstackable) .three.fields:not(.unstackable) > .field,
+  .ui.form:not(.unstackable) .four.fields:not(.unstackable) > .fields,
+  .ui.form:not(.unstackable) .four.fields:not(.unstackable) > .field,
+  .ui.form:not(.unstackable) .five.fields:not(.unstackable) > .fields,
+  .ui.form:not(.unstackable) .five.fields:not(.unstackable) > .field,
+  .ui.form:not(.unstackable) .fields:not(.unstackable) > .two.wide.field,
+  .ui.form:not(.unstackable) .fields:not(.unstackable) > .three.wide.field,
+  .ui.form:not(.unstackable) .fields:not(.unstackable) > .four.wide.field,
+  .ui.form:not(.unstackable) .fields:not(.unstackable) > .five.wide.field,
+  .ui.form:not(.unstackable) .fields:not(.unstackable) > .six.wide.field,
+  .ui.form:not(.unstackable) .fields:not(.unstackable) > .seven.wide.field,
+  .ui.form:not(.unstackable) .fields:not(.unstackable) > .eight.wide.field,
+  .ui.form:not(.unstackable) .fields:not(.unstackable) > .nine.wide.field,
+  .ui.form:not(.unstackable) .fields:not(.unstackable) > .ten.wide.field,
+  .ui.form:not(.unstackable) .fields:not(.unstackable) > .eleven.wide.field,
+  .ui.form:not(.unstackable) .fields:not(.unstackable) > .twelve.wide.field,
+  .ui.form:not(.unstackable) .fields:not(.unstackable) > .thirteen.wide.field,
+  .ui.form:not(.unstackable) .fields:not(.unstackable) > .fourteen.wide.field,
+  .ui.form:not(.unstackable) .fields:not(.unstackable) > .fifteen.wide.field,
+  .ui.form:not(.unstackable) .fields:not(.unstackable) > .sixteen.wide.field {
     width: @oneColumn !important;
   }
   .ui.form .fields {

@@ -1,6 +1,6 @@
 /*
   DO NOT MODIFY - This file has been generated and will be regenerated
-  Semantic UI v2.2.1
+  Semantic UI v2.3.1
 */
 /*
  * # Semantic - Menu
@@ -202,18 +202,6 @@
 }
 
 /*--------------
-     Popup
----------------*/
-
-.ui.menu .ui.popup {
-  display: none;
-}
-.ui.menu .ui.visible.popup {
-  display: block;
-}
-
-
-/*--------------
     Dropdowns
 ---------------*/
 
@@ -227,7 +215,6 @@
 
 /* Menu */
 .ui.menu .dropdown.item .menu {
-  left: 0px;
   min-width: ~"calc(100% - 1px)";
   border-radius: 0em 0em @dropdownMenuBorderRadius @dropdownMenuBorderRadius;
   background: @dropdownBackground;
@@ -300,12 +287,17 @@
   margin-left: 1em;
 }
 .ui.vertical.menu .dropdown.item .menu {
-  top: 0% !important;
   left: 100%;
   min-width: 0;
   margin: 0em 0em 0em @dropdownMenuDistance;
   box-shadow: @dropdownVerticalMenuBoxShadow;
   border-radius: 0em @dropdownMenuBorderRadius @dropdownMenuBorderRadius @dropdownMenuBorderRadius;
+}
+.ui.vertical.menu .dropdown.item.upward .menu {
+  bottom: 0;
+}
+.ui.vertical.menu .dropdown.item:not(.upward) .menu {
+  top: 0;
 }
 .ui.vertical.menu .active.dropdown.item {
   border-top-right-radius: 0em;
@@ -360,6 +352,15 @@
 /*******************************
           Coupling
 *******************************/
+
+/*--------------
+     List
+---------------*/
+
+/* Menu divider shouldnt apply */
+.ui.menu .list .item:before {
+  background: none !important;
+}
 
 /*--------------
      Sidebar
@@ -455,9 +456,9 @@
 
 .ui.menu .item.disabled,
 .ui.menu .item.disabled:hover {
-  cursor: default;
+  cursor: default !important;
   background-color: transparent !important;
-  color: @disabledTextColor;
+  color: @disabledTextColor !important;
 }
 
 
@@ -1249,6 +1250,11 @@ Floated Menu / Item
   .ui.stackable.menu .right.item {
     margin-left: 0 !important;
   }
+
+  .ui.stackable.menu .right.menu,
+  .ui.stackable.menu .left.menu {
+    flex-direction: column;
+  }
 }
 
 /*--------------
@@ -1659,6 +1665,9 @@ Floated Menu / Item
   margin-right: 0em !important;
   text-align: center;
   justify-content: center;
+}
+.ui.attached.item.menu {
+  margin: 0em @attachedHorizontalOffset !important;
 }
 
 .ui.item.menu .item:last-child:before {

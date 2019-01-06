@@ -1,16 +1,16 @@
 <template name="dashboardForm">
   <form class="ui small form segment">
     <input type="hidden" name="_id" value={{dashboard._id}}>
-    
+
     <div class="fields">
       <div class="eight wide field">
         <div class="ui {{#if dashboard._id}}left action{{/if}} input">
           {{#if dashboard._id}}
-            <a href={{pathFor 'dashboardView' id=dashboard._id}} class="ui icon button">
-              <i class="external icon"></i>
-            </a>
+          <a href={{pathFor 'dashboardView' id=dashboard._id}} class="ui icon button">
+            <i class="eye icon"></i>
+          </a>
           {{/if}}
-          <input type="text" name="title" placeholder="Dashboard Title" value={{dashboard.title}}>  
+          <input type="text" name="title" placeholder="Dashboard Title" value={{dashboard.title}}>
         </div>
       </div>
 
@@ -88,11 +88,12 @@
   <div class="gridster"></div>
 
   {{#unless Template.subscriptionsReady}}
-    <div class="ui active centered inline loader"></div>
+  <div class="ui active centered inline loader"></div>
   {{/unless}}
 
   <div class="ui info message">
     <div class="header">Did you know?</div>
-    Sharing a dashboard automatically shares access to the underlying data sources as well, no need to additionally grant permissions on all jobs!
+    Sharing a dashboard automatically shares access to the underlying data sources as well, no need to additionally
+    grant permissions on all jobs!
   </div>
 </template>

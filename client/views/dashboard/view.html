@@ -2,24 +2,24 @@
   {{#unless embedded}}
   <h1 class="ui dividing header">
     {{#unless isFullscreen}}
-      <div class="ui grid">
-        <div class="thirteen wide column">
-          {{dashboard.title}}
-          {{#if isOwner dashboard}}
-            <small>
-              <a href={{pathFor 'dashboardEdit' id=dashboard._id}}>(edit)</a>
-            </small>
-          {{/if}}
-          <span class="sub header">{{dashboard.description}}</span>
-        </div>
-        <div class="three wide right aligned column">
-          <i class="play link icon js-present-mode" title="present"></i>
-          <i class="{{fullscreenClass}} link icon js-toggle-fullscreen" title="fullscreen"></i>
-          <i class="{{starredClass}} star link icon js-toggle-star" title="star"></i>
-        </div>
+    <div class="ui grid">
+      <div class="thirteen wide column">
+        {{dashboard.title}}
+        {{#if isOwner dashboard}}
+        <small>
+          <a href={{pathFor 'dashboardEdit' id=dashboard._id}}>(edit)</a>
+        </small>
+        {{/if}}
+        <span class="sub header">{{dashboard.description}}</span>
       </div>
+      <div class="three wide right aligned column">
+        <i class="small play link icon js-present-mode" title="present"></i>
+        <i class="small {{fullscreenClass}} link icon js-toggle-fullscreen" title="fullscreen"></i>
+        <i class="small {{starredClass}} link icon js-toggle-star" title="star"></i>
+      </div>
+    </div>
     {{else}}
-      {{dashboard.title}}
+    {{dashboard.title}}
     {{/unless}}
   </h1>
   {{/unless}}
@@ -28,12 +28,12 @@
   <form class="ui parameters form">
     <div class="fields">
       {{#each param in paramArray}}
-        <div class="four wide field">
-          <div class="ui labeled input">
-            <div class="ui basic grey label">{{param.name}}</div>
-            <input type="text" name="{{param.name}}" value={{param.value}}>
-          </div>  
+      <div class="four wide field">
+        <div class="ui labeled input">
+          <div class="ui basic grey label">{{param.name}}</div>
+          <input type="text" name="{{param.name}}" value={{param.value}}>
         </div>
+      </div>
       {{/each}}
       <button class="ui basic green submit button">Go</button>
     </div>
@@ -43,6 +43,6 @@
   <div class="gridster"></div>
 
   {{#unless Template.subscriptionsReady}}
-    <div class="ui active centered inline loader"></div>
+  <div class="ui active centered inline loader"></div>
   {{/unless}}
 </template>
