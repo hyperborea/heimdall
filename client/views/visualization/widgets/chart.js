@@ -29,7 +29,7 @@ Template.visChart.onRendered(function() {
           case "sum_total":
             sortedSeries = _.chain(data)
               .groupBy(seriesField)
-              .mapValues(arr => _.sumBy(arr, valueField))
+              .mapValues(arr => _.sumBy(arr, o => Number(o[valueField])))
               .map((v, k) => ({ name: k, value: v }))
               .sortBy("value")
               .reverse()
@@ -91,7 +91,12 @@ Template.visChart.onRendered(function() {
               .sum()
               .value();
             seriesNames.forEach(k => {
-              if (item[k] && sum) {
+              // Make sure there's no gaps.
+              if (!item.hasOwnProperty(k)) {
+                item[k] = 0;
+              }
+              // Update value with the relative ratio.
+              if (sum) {
                 item[k] = Number(item[k]) / sum;
               }
             });
