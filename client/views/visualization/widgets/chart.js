@@ -20,24 +20,34 @@ Template.visChart.onRendered(function() {
         const valueField = settings.dynamic.valueField;
         const xAxisField = settings.timeField || settings.categoryField;
 
-        // Create global sums to figure out what series to plot.
-        const sortedSeries = _.chain(data)
-          .groupBy(seriesField)
-          .mapValues(arr => _.sumBy(arr, valueField))
-          .map((v, k) => ({ name: k, value: v }))
-          .sortBy("value")
-          .reverse()
+        let sortedSeries = _.chain(data)
+          .map(seriesField)
+          .uniq()
           .value();
 
-        let seriesNames = _.map(sortedSeries, "name");
-        if (
-          settings.dynamic.limit &&
-          seriesNames.length > settings.dynamic.limit
-        ) {
-          seriesNames = seriesNames.slice(0, settings.dynamic.limit);
-          if (!settings.dynamic.hideOther) {
-            seriesNames.push("other");
-          }
+        switch (settings.dynamic.sort) {
+          case "sum_total":
+            sortedSeries = _.chain(data)
+              .groupBy(seriesField)
+              .mapValues(arr => _.sumBy(arr, valueField))
+              .map((v, k) => ({ name: k, value: v }))
+              .sortBy("value")
+              .reverse()
+              .map("name")
+              .value();
+            break;
+          case "name_asc":
+            sortedSeries = sortedSeries.sort();
+            break;
+          case "name_desc":
+            sortedSeries = sortedSeries.sort().reverse();
+            break;
+        }
+
+        const limit = settings.dynamic.limit || 20;
+        const seriesNames = _.slice(sortedSeries, 0, limit);
+        if (seriesNames.length < sortedSeries.length) {
+          seriesNames.push("other");
         }
 
         const store = {};
@@ -71,6 +81,22 @@ Template.visChart.onRendered(function() {
 
         if (settings.dynamic.stacked) {
           groups = [Array.from(seriesNames)];
+        }
+
+        if (settings.dynamic.ratio) {
+          data = data.map(item => {
+            const sum = _.chain(item)
+              .pick(seriesNames)
+              .values()
+              .sum()
+              .value();
+            seriesNames.forEach(k => {
+              if (item[k] && sum) {
+                item[k] = Number(item[k]) / sum;
+              }
+            });
+            return item;
+          });
         }
       }
 

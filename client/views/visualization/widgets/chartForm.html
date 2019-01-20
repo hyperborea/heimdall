@@ -114,36 +114,56 @@
   </div>
 
   <div style="{{#unless settings.dynamic.enabled}}display: none{{/unless}}">
-    <div class="fields">
-      <div style="display: none">
-        <div class="ui checkbox checkbox-dynamic">
-          <input type="checkbox" name="dynamic[enabled]:boolean" checked={{settings.dynamic.enabled}}>
-          <label>enabled</label>
-        </div>
+    <div style="display: none">
+      <div class="ui checkbox checkbox-dynamic">
+        <input type="checkbox" name="dynamic[enabled]:boolean" checked={{settings.dynamic.enabled}}>
+        <label>enabled</label>
       </div>
+    </div>
+    <div class="fields">
       <div class="three wide field">
+        <label>Chart Type</label>
         {{> dropdown name="dynamic[chartType]" value=settings.dynamic.chartType items=chartOptions
         placeholder="chart type" allowEmpty=true}}
       </div>
-      <div class="three wide field">
+      <div class="four wide field">
+        <label>Series Field</label>
         {{> dropdown name="dynamic[seriesField]" value=settings.dynamic.seriesField items=fields
         placeholder="series field" allowEmpty=true}}
       </div>
-      <div class="three wide field">
+      <div class="four wide field">
+        <label>Value Field</label>
         {{> dropdown name="dynamic[valueField]" value=settings.dynamic.valueField items=fields
         placeholder="value field" allowEmpty=true}}
       </div>
-      <div class="three wide field">
-        {{> dropdown name="dynamic[limit]:number" value=settings.dynamic.limit items=limitOptions
-        placeholder="limit" allowEmpty=true}}
-      </div>
-      <div class="two wide field">
+      <div class="field">
+        <label>&nbsp;</label>
         <div class="ui checkbox">
           <input type="checkbox" name="dynamic[stacked]:boolean" checked={{settings.dynamic.stacked}}>
           <label>stacked</label>
         </div>
       </div>
+      <div class="field">
+        <label>&nbsp;</label>
+        <div class="ui checkbox">
+          <input type="checkbox" name="dynamic[ratio]:boolean" checked={{settings.dynamic.ratio}}>
+          <label>ratio</label>
+        </div>
+      </div>
+    </div>
+    <div class="fields">
+      <div class="three wide field">
+        <label>Limit</label>
+        {{> dropdown name="dynamic[limit]:number" value=settings.dynamic.limit items=limitOptions
+        placeholder="limit" allowEmpty=true}}
+      </div>
+      <div class="four wide field">
+        <label>Sort</label>
+        {{> dropdown name="dynamic[sort]" value=settings.dynamic.sort items=sortOptions
+        placeholder="sort" allowEmpty=true}}
+      </div>
       <div class="two wide field">
+        <label>&nbsp;</label>
         <div class="ui checkbox">
           <input type="checkbox" name="dynamic[hideOther]:boolean" checked={{settings.dynamic.hideOther}}>
           <label>hide "other"</label>

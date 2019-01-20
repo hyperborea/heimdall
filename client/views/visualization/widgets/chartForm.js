@@ -35,6 +35,12 @@ Template.visChartFormSeries.helpers({
     { value: 7, text: "7" },
     { value: 10, text: "10" }
   ],
+  sortOptions: [
+    { value: "", text: "none" },
+    { value: "sum_total", text: "sum (total)" },
+    { value: "name_asc", text: "name (ascending)" },
+    { value: "name_desc", text: "name (descending)" }
+  ],
   chartOptions: CHART_TYPES
 });
 
