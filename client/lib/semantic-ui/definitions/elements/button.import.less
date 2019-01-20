@@ -1,6 +1,6 @@
 /*
   DO NOT MODIFY - This file has been generated and will be regenerated
-  Semantic UI v2.2.1
+  Semantic UI v2.3.1
 */
 /*!
  * # Semantic UI - Button
@@ -595,10 +595,10 @@
   color: @iconColor;
 }
 
-.ui.button:not(.icon) > .icon:not(.button) {
+.ui.button:not(.icon) > .icon:not(.button):not(.dropdown) {
   margin: @iconMargin;
 }
-.ui.button:not(.icon) > .right.icon:not(.button) {
+.ui.button:not(.icon) > .right.icon:not(.button):not(.dropdown) {
   margin: @rightIconMargin;
 }
 
@@ -697,7 +697,7 @@
 .ui.icon.buttons .button > .icon,
 .ui.icon.button > .icon {
   opacity: @iconButtonOpacity;
-  margin: 0em;
+  margin: 0em !important;
   vertical-align: top;
 }
 
@@ -747,8 +747,7 @@
 .ui.basic.active.button {
   background: @basicActiveBackground !important;
   box-shadow: @basicActiveBoxShadow !important;
-  color: @basicActiveTextColor;
-  box-shadow: @selectedBorderColor;
+  color: @basicActiveTextColor !important;
 }
 .ui.basic.buttons .active.button:hover,
 .ui.basic.active.button:hover {
@@ -763,7 +762,7 @@
   box-shadow: @basicDownBoxShadow inset;
 }
 .ui.basic.buttons .active.button {
-  box-shadow: @selectedBorderColor inset;
+  box-shadow: @basicActiveBoxShadow !important;
 }
 
 /* Standard Basic Inverted */
@@ -3412,24 +3411,19 @@
   width: 100%;
   margin: @verticalGroupOffset;
   box-shadow: @verticalBoxShadow;
+  border-radius: 0em;
 }
-.ui.vertical.buttons .button:first-child,
-.ui.vertical.buttons .mini.button:first-child,
-.ui.vertical.buttons .tiny.button:first-child,
-.ui.vertical.buttons .small.button:first-child,
-.ui.vertical.buttons .massive.button:first-child,
-.ui.vertical.buttons .huge.button:first-child {
-  border-radius: @borderRadius @borderRadius 0px 0px;
+.ui.vertical.buttons .button:first-child {
+  border-top-left-radius: @borderRadius;
+  border-top-right-radius: @borderRadius;
 }
-.ui.vertical.buttons .button:last-child,
-.ui.vertical.buttons .mini.button:last-child,
-.ui.vertical.buttons .tiny.button:last-child,
-.ui.vertical.buttons .small.button:last-child,
-.ui.vertical.buttons .massive.button:last-child,
-.ui.vertical.buttons .huge.button:last-child,
-.ui.vertical.buttons .gigantic.button:last-child {
+.ui.vertical.buttons .button:last-child {
   margin-bottom: 0px;
-  border-radius: 0px 0px @borderRadius @borderRadius;
+  border-bottom-left-radius: @borderRadius;
+  border-bottom-right-radius: @borderRadius;
+}
+.ui.vertical.buttons .button:only-child {
+  border-radius: @borderRadius;
 }
 
 .loadUIOverrides();
