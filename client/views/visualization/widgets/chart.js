@@ -1,3 +1,4 @@
+import _ from "lodash";
 import d3 from "d3";
 import c3 from "c3";
 
@@ -8,23 +9,85 @@ Template.visChart.onRendered(function() {
   this.autorun(() => {
     const context = Template.currentData();
     const settings = context.settings;
-    let series = settings.series || [];
 
-    if (context.data) {
-      var fields = _.pluck(series, "field");
+    let data = context.data;
+    let series = settings.series || [];
+    let groups = settings.groups;
+
+    if (data) {
+      if (settings.dynamic && settings.dynamic.enabled) {
+        const seriesField = settings.dynamic.seriesField;
+        const valueField = settings.dynamic.valueField;
+        const xAxisField = settings.timeField || settings.categoryField;
+
+        // Create global sums to figure out what series to plot.
+        const sortedSeries = _.chain(data)
+          .groupBy(seriesField)
+          .mapValues(arr => _.sumBy(arr, valueField))
+          .map((v, k) => ({ name: k, value: v }))
+          .sortBy("value")
+          .reverse()
+          .value();
+
+        let seriesNames = _.map(sortedSeries, "name");
+        if (
+          settings.dynamic.limit &&
+          seriesNames.length > settings.dynamic.limit
+        ) {
+          seriesNames = seriesNames.slice(0, settings.dynamic.limit);
+          if (!settings.dynamic.hideOther) {
+            seriesNames.push("other");
+          }
+        }
+
+        const store = {};
+        data.forEach(row => {
+          const x = row[xAxisField];
+          const y = row[valueField];
+          let s = row[seriesField];
+          let obj = {};
+
+          if (!seriesNames.includes(s)) {
+            if (settings.dynamic.hideOther) return;
+            s = "other";
+          }
+
+          if (store.hasOwnProperty(x)) {
+            obj = store[x];
+          } else {
+            store[x] = obj;
+            obj[xAxisField] = x;
+          }
+
+          obj[s] = (obj[s] || 0) + Number(y);
+        });
+
+        data = Object.values(store);
+        series = Array.from(seriesNames).map(x => ({
+          field: x,
+          type: settings.dynamic.chartType,
+          yAxis: "y"
+        }));
+
+        if (settings.dynamic.stacked) {
+          groups = [Array.from(seriesNames)];
+        }
+      }
+
+      const fields = _.map(series, "field");
       series.forEach(s => (s.name = s.name || s.field));
 
       var config = {
         bindto: container,
         data: {
-          json: context.data,
+          json: data,
           keys: { value: fields },
-          groups: settings.groups,
-          types: _.object(fields, _.pluck(series, "type")),
-          axes: _.object(fields, _.pluck(series, "yAxis")),
-          colors: _.object(fields, _.pluck(series, "color")),
-          classes: _.object(fields, _.pluck(series, "lineType")),
-          names: _.object(fields, _.pluck(series, "name")),
+          groups: groups,
+          types: _.zipObject(fields, _.map(series, "type")),
+          axes: _.zipObject(fields, _.map(series, "yAxis")),
+          colors: _.zipObject(fields, _.map(series, "color")),
+          classes: _.zipObject(fields, _.map(series, "lineType")),
+          names: _.zipObject(fields, _.map(series, "name")),
           order: null
         },
         size: {
@@ -54,7 +117,7 @@ Template.visChart.onRendered(function() {
             max: settings.maxY
           },
           y2: {
-            show: _.where(series, { yAxis: "y2" }).length > 0,
+            show: _.filter(series, { yAxis: "y2" }).length > 0,
             label: {
               text: settings.labelY2,
               position: settings.labelY2 && "outer-top"
@@ -71,11 +134,11 @@ Template.visChart.onRendered(function() {
         grid: {
           x: {
             show: settings.gridX,
-            lines: _.where(settings.gridLines, { axis: "x" })
+            lines: _.filter(settings.gridLines, { axis: "x" })
           },
           y: {
             show: settings.gridY,
-            lines: _.where(settings.gridLines, { axis: "y" })
+            lines: _.filter(settings.gridLines, { axis: "y" })
           }
         },
         point: {

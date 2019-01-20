@@ -68,41 +68,91 @@
 
 
 <template name="visChartFormSeries">
-  <table class="ui very basic compact borderless table">
-    <thead>
-      <tr>
-        <th class="two wide">Chart Type</th>
-        <th class="four wide">Field</th>
-        <th class="three wide">Name</th>
-        <th class="two wide">Color</th>
-        <th class="two wide">Line Type</th>
-        <th class="two wide">Axis</th>
-        <th class="one wide"></th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each series in seriesArray}}
-      {{> visChartFormSeriesItem index=@index series=series}}
-      {{/each}}
-      <tr>
-        <td colspan="6">
-          <div class="ui basic button js-add-series">
-            <i class="plus icon"></i> Add series
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  {{#each group in groupsArray}}
-  {{> visChartFormGroupItem index=@index group=group}}
-  {{/each}}
-
-  <div class="ui basic button js-add-group">
-    <i class="plus icon"></i> Add stacking group
+  <div style="text-align: center; margin-bottom: 1em;">
+    <div class="ui basic buttons">
+      <button class="ui button js-disable-dynamic {{#unless settings.dynamic.enabled}}active{{/unless}}">custom</button>
+      <button class="ui button js-enable-dynamic {{#if settings.dynamic.enabled}}active{{/if}}">dynamic</button>
+    </div>
   </div>
 
-  <div class="ui horizontal divider">x values (optional)</div>
+
+  <div style="{{#if settings.dynamic.enabled}}display: none{{/if}}">
+    <table class=" ui very basic
+    compact borderless table">
+      <thead>
+        <tr>
+          <th class="two wide">Chart Type</th>
+          <th class="four wide">Field</th>
+          <th class="three wide">Name</th>
+          <th class="two wide">Color</th>
+          <th class="two wide">Line Type</th>
+          <th class="two wide">Axis</th>
+          <th class="one wide"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each series in seriesArray}}
+        {{> visChartFormSeriesItem index=@index series=series}}
+        {{/each}}
+        <tr>
+          <td colspan="6">
+            <div class="ui basic button js-add-series">
+              <i class="plus icon"></i> Add series
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    {{#each group in groupsArray}}
+    {{> visChartFormGroupItem index=@index group=group}}
+    {{/each}}
+
+    <div class="ui basic button js-add-group">
+      <i class="plus icon"></i> Add stacking group
+    </div>
+  </div>
+
+  <div style="{{#unless settings.dynamic.enabled}}display: none{{/unless}}">
+    <div class="fields">
+      <div style="display: none">
+        <div class="ui checkbox checkbox-dynamic">
+          <input type="checkbox" name="dynamic[enabled]:boolean" checked={{settings.dynamic.enabled}}>
+          <label>enabled</label>
+        </div>
+      </div>
+      <div class="three wide field">
+        {{> dropdown name="dynamic[chartType]" value=settings.dynamic.chartType items=chartOptions
+        placeholder="chart type" allowEmpty=true}}
+      </div>
+      <div class="three wide field">
+        {{> dropdown name="dynamic[seriesField]" value=settings.dynamic.seriesField items=fields
+        placeholder="series field" allowEmpty=true}}
+      </div>
+      <div class="three wide field">
+        {{> dropdown name="dynamic[valueField]" value=settings.dynamic.valueField items=fields
+        placeholder="value field" allowEmpty=true}}
+      </div>
+      <div class="three wide field">
+        {{> dropdown name="dynamic[limit]:number" value=settings.dynamic.limit items=limitOptions
+        placeholder="limit" allowEmpty=true}}
+      </div>
+      <div class="two wide field">
+        <div class="ui checkbox">
+          <input type="checkbox" name="dynamic[stacked]:boolean" checked={{settings.dynamic.stacked}}>
+          <label>stacked</label>
+        </div>
+      </div>
+      <div class="two wide field">
+        <div class="ui checkbox">
+          <input type="checkbox" name="dynamic[hideOther]:boolean" checked={{settings.dynamic.hideOther}}>
+          <label>hide "other"</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui horizontal divider">x values</div>
 
   <div class="fields">
     <div class="five wide field">
