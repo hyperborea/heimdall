@@ -211,6 +211,8 @@ Template.visChart.onRendered(function() {
         config.data.x = settings.categoryField;
         config.data.keys.value.push(settings.categoryField);
         config.axis.x.type = "category";
+        config.axis.x.tick.culling = true;
+        config.axis.x.tick.multiline = false;
       }
 
       c3.generate(config);
