@@ -55,7 +55,9 @@ Meteor.publishComposite('job', function(_id) {
     children: [{
       find: (job) => JobResults.find({ jobId: job._id, parameters: job.parameters })
     }, {
-      find: (job) => Visualizations.find({ jobId: job._id }, { fields: { jobId: 1, title: 1 } })
+      find: (job) => Visualizations.find(
+        { jobId: job._id },
+        { fields: { jobId: 1, title: 1, type: 1, settings: 1 } })
     }]
   }
 });
@@ -83,18 +85,18 @@ Meteor.publish('visualization', function(_id, parameters, dashboardId=false) {
     if (!_.contains(_.pluck(dashboard.widgets, 'visId'), _id)) {
       throw new Meteor.Error('access-denied', `Visualization ${_id} is not in dashboard ${dashboardId}`);
     } else {
-      requireAccess(this.userId, dashboard);  
+      requireAccess(this.userId, dashboard);
     }
   } else {
     requireAccess(this.userId, vis);
   }
 
   parameters = cleanParameters(parameters, vis.job().parameters);
-  
+
   // run job if at time of subscription there are no results for these parameters or the cache has expired
   const results = JobResults.findOne({ jobId: vis.jobId, parameters: parameters });
   if (!results || (results.expiresAt < new Date() && results.status !== 'running')) {
-    runJob(vis.jobId, parameters);  
+    runJob(vis.jobId, parameters);
   }
 
   return [

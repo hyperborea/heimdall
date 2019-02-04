@@ -10,7 +10,7 @@ Jobs.schema = new SimpleSchema({
   name: String,
   sourceId: { type: String, regEx: SimpleSchema.RegEx.Id },
   query: String,
-  parameters: { type: Object, blackbox: true }, 
+  parameters: { type: Object, blackbox: true },
   status: String,
   createdAt: {
     type: Date,
@@ -134,8 +134,26 @@ Meteor.methods({
 
     delete job._id;
     job.name = job.name + ' - CLONE';
-    return Jobs.insert(job);
+
+    var clonedJobId = Jobs.insert(job);
+
+    // Find all visualizations for the source job and clone them too
+    Visualizations.find({ jobId: jobId }).forEach((vis) => {
+      delete vis._id;
+      Visualizations.insert({
+        ...vis,
+        jobId        : clonedJobId,
+        jobName      : job.name,
+        ownerGroups  : job.ownerGroups,
+        accessGroups : job.accessGroups,
+        owner        : job.owner,
+        ownerId      : job.ownerId,
+      });
+    });
+
+    return clonedJobId;
   },
+
 
   removeJob: function(jobId) {
     check(jobId, String);
@@ -208,9 +226,9 @@ runJob = function(jobId, parameters) {
 
   parameters = parameters || {};
   parameters = cleanParameters(parameters, job.parameters);
-  
+
   if (source) {
-    requireAccess(job.ownerId, source);  
+    requireAccess(job.ownerId, source);
   }
   else {
     console.warn(`Job ${jobId} does no longer have a valid source`);
@@ -247,7 +265,7 @@ runJob = function(jobId, parameters) {
     if (result.status === 'ok' && result.data) {
       // enforce maximum rows setting (bson size is limited to ~ 16MB)
       if (result.data.length > SOURCE_SETTINGS.maxRows) {
-        result = { status: 'error', data: `Exceeded limit of ${SOURCE_SETTINGS.maxRows} rows.` };  
+        result = { status: 'error', data: `Exceeded limit of ${SOURCE_SETTINGS.maxRows} rows.` };
       }
 
       // transpose data if configured to do so
@@ -315,7 +333,7 @@ runJob = function(jobId, parameters) {
         //         <td>{{country}}</td>
         //         <td>{{value}}</td>
         //       </tr>
-        //     {{/data}}  
+        //     {{/data}}
         //     </tbody>
         //   </table>
         // `;
