@@ -16,13 +16,13 @@ Template.visualizationForm.helpers({
 
   visTypes: [
     { text: "Big Number", value: "BigNumber", icon: "bullseye" },
+    { text: "Calendar", value: "CalHeatmap", icon: "calendar alternate" },
     { text: "Data Table", value: "DataTable", icon: "table" },
     { text: "Geo Map", value: "GeoMap", icon: "map" },
     { text: "Line Chart", value: "Chart", icon: "line chart" },
     { text: "Pie Chart", value: "PieChart", icon: "pie chart" },
     { text: "Word Cloud", value: "WordCloud", icon: "cloud" },
     { text: "World Map", value: "WorldMap", icon: "world" }
-    // { text: 'Heat Map', value: 'HeatMap', icon: 'fire' },
   ],
 
   typeForm: function(vis) {
