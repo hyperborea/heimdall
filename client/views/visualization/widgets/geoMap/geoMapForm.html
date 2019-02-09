@@ -1,0 +1,57 @@
+<template name="visGeoMapForm">
+  <div class="four fields">
+    <div class="field">
+      <label>Map style</label>
+      {{> dropdown name="mapStyle" value=settings.mapStyle items=mapStyles defaultValue='streets'}}
+    </div>
+
+    <div class="field">
+      <label>Longitude field</label>
+      {{> dropdown name="longField" value=settings.longField items=fields defaultValue='longitude'}}
+    </div>
+
+    <div class="field">
+      <label>Latitude field</label>
+      {{> dropdown name="latField" value=settings.latField items=fields defaultValue='latitude'}}
+    </div>
+
+    <div class="field">
+      <label>Category field</label>
+      {{> dropdown name="catField" value=settings.catField items=fields placeholder="- optional -"}}
+    </div>
+  </div>
+
+  <div class="fields">
+    <div class="four wide field">
+      <label>Country</label>
+      {{> dropdown name="country" value=settings.country items=countries allowEmpty=true placeholder="- optional -"}}
+    </div>
+
+    <div class="eight wide field">
+      <label>Bounds</label>
+      <input
+        type="text"
+        name="bounds:list"
+        value="{{ settings.bounds }}"
+        placeholder="comma separated"
+      />
+    </div>
+
+    <div class="four wide field">
+      <label>Interactive map</label>
+      <div class="ui checkbox">
+        <input
+          type="checkbox"
+          name="interactive:boolean"
+          checked="{{ settings.interactive }}"
+        />
+        <label>enabled</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="geoMapForm field">
+    <label>Layers</label>
+    <textarea name="layersJson"></textarea>
+  </div>
+</template>

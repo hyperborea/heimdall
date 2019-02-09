@@ -9,6 +9,7 @@
   "author": "Sven Perkmann",
   "dependencies": {
     "@babel/runtime": "^7.2.0",
+    "@turf/bbox": "^6.0.1",
     "babel-runtime": "^6.26.0",
     "bcrypt": "^0.8.7",
     "c3": "^0.4.11",
@@ -18,6 +19,7 @@
     "d3.layout.cloud": "^1.2.0",
     "datamaps": "^0.5.7",
     "lodash": "^4.15.0",
+    "mapbox-gl": "^0.53.0-beta.1",
     "meteor-node-stubs": "~0.2.0",
     "mssql": "^3.3.0",
     "mustache": "^2.2.1",

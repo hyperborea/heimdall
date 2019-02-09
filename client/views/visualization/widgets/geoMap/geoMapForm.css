@@ -1,0 +1,8 @@
+.geoMapForm .CodeMirror {
+  height: auto;
+  min-height: 200px;
+}
+
+.geoMapForm .CodeMirror-scroll {
+  max-height: 600px;
+}
