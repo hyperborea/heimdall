@@ -1,0 +1,104 @@
+<template name="visCalHeatmapForm">
+  <div class="four fields">
+    <div class="field">
+      <label>Domain</label>
+      {{> dropdown name="domain" value=settings.domain items=domains defaultValue='month'}}
+    </div>
+
+    <div class="field">
+      <label>Subdomain</label>
+      {{> dropdown name="subdomain" value=settings.subdomain items=subdomains allowEmpty=true placeholder="- optional -"}}
+    </div>
+
+    <div class="field">
+      <label>Date field <small>(required)</small></label>
+      {{> dropdown name="dateField" value=settings.dateField items=fields}}
+    </div>
+
+    <div class="field">
+      <label>Value field <small>(required)</small></label>
+      {{> dropdown name="valueField" value=settings.valueField items=fields}}
+    </div>
+  </div>
+
+  <div class="four fields">
+    <div class="field">
+      <label>Cell size</label>
+      <input
+        type="number"
+        name="cellSize:number"
+        value="{{ settings.cellSize }}"
+        placeholder="10"
+      />
+    </div>
+
+    <div class="field">
+      <label>Cell content</label>
+      {{> dropdown name="cellFormat" value=settings.cellFormat items=cellFormats defaultValue='empty'}}
+    </div>
+
+    <div class="field">
+      <label>Min color</label>
+      <input
+        type="text"
+        name="minColor"
+        value="{{ settings.minColor }}"
+        placeholder="#dae289"
+      />
+    </div>
+
+    <div class="field">
+      <label>Max color</label>
+      <input
+        type="text"
+        name="maxColor"
+        value="{{ settings.maxColor }}"
+        placeholder="#3b6427"
+      />
+    </div>
+  </div>
+
+  <div class="four fields">
+    <div class="field">
+      <label>Displayed domains</label>
+      <input
+        type="number"
+        name="range:number"
+        value="{{ settings.range }}"
+        placeholder="12"
+      />
+    </div>
+
+    <div class="field">
+      <label>Date format</label>
+      <input
+        type="text"
+        name="dateFormat"
+        value="{{ settings.dateFormat }}"
+        placeholder="YYYY-MM-DD HH:mm:ss"
+      />
+    </div>
+
+    <div class="field">
+      <label>Groups</label>
+      <input
+        type="text"
+        name="groups:list"
+        value="{{ settings.groups }}"
+        placeholder="10, 20, 30, 40"
+      />
+    </div>
+
+    <div class="field">
+      <label>Tooltip</label>
+      <div class="ui checkbox">
+        <input
+          type="checkbox"
+          name="tooltip:boolean"
+          checked="{{ settings.tooltip }}"
+        />
+        <label>enabled</label>
+      </div>
+    </div>
+  </div>
+</template>

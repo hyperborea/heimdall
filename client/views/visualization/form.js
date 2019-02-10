@@ -15,13 +15,15 @@ Template.visualizationForm.helpers({
   vis: () => Template.instance().getVisualization(),
 
   visTypes: [
-    { value: "Chart", text: "Line Chart", icon: "line chart" },
-    { value: "PieChart", text: "Pie Chart", icon: "pie chart" },
-    { value: "BigNumber", text: "Big Number", icon: "bullseye" },
-    { value: "WorldMap", text: "World Map", icon: "world" },
-    // { value: 'HeatMap', text: 'Heat Map', icon: 'fire' },
-    { value: "DataTable", text: "Data Table", icon: "table" },
-    { value: "WordCloud", text: "Word Cloud", icon: "cloud" }
+    { text: "Data Table", value: "DataTable", icon: "table" },
+    { text: "Line Chart", value: "Chart", icon: "line chart" },
+    { text: "Big Number", value: "BigNumber", icon: "bullseye" },
+    { text: "Calendar", value: "CalHeatmap", icon: "calendar alternate" },
+    { text: "Geo Map", value: "GeoMap", icon: "map" },
+    { text: "Progress", value: "Progress", icon: "percent" },
+    { text: "Pie Chart", value: "PieChart", icon: "pie chart" },
+    { text: "Word Cloud", value: "WordCloud", icon: "cloud" },
+    { text: "World Map", value: "WorldMap", icon: "world" }
   ],
 
   typeForm: function(vis) {

@@ -2,7 +2,8 @@
   "public": {
     "ldapEnabled": false,
     "slackEnabled": false,
-    "loginMessage": null
+    "loginMessage": null,
+    "mapboxAccessToken": null
   },
 
   "services": [],

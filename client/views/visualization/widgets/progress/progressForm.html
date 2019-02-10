@@ -1,0 +1,70 @@
+<template name="visProgressForm">
+  <div class="four fields">
+    <div class="field">
+      <label>Type</label>
+      {{> dropdown name="compType" value=settings.compType items=compTypes defaultValue="SemiCircle"}}
+    </div>
+
+    <div class="field">
+      <label>Value Field</label>
+      {{> dropdown name="valueField" value=settings.valueField items=fields}}
+    </div>
+
+    <div class="field">
+      <label>Goal Field</label>
+      {{> dropdown name="goalField" value=settings.goalField items=fields}}
+    </div>
+
+    <div class="field">
+      <label>Label</label>
+      <input
+        type="text"
+        name="label"
+        value="{{ settings.label }}"
+        placeholder="optional"
+      />
+    </div>
+  </div>
+
+  <div class="four fields">
+    <div class="field">
+      <label>Min color</label>
+      <input
+        type="text"
+        name="minColor"
+        value="{{ settings.minColor }}"
+        placeholder="#dae289"
+      />
+    </div>
+
+    <div class="field">
+      <label>Max color</label>
+      <input
+        type="text"
+        name="maxColor"
+        value="{{ settings.maxColor }}"
+        placeholder="#3b6427"
+      />
+    </div>
+
+    <div class="field">
+      <label>Stroke width</label>
+      <input
+        type="number"
+        name="strokeWidth:number"
+        value="{{ settings.strokeWidth }}"
+        placeholder="4"
+      />
+    </div>
+
+    <div class="field">
+      <label>Max width</label>
+      <input
+        type="number"
+        name="maxWidth:number"
+        value="{{ settings.maxWidth }}"
+        placeholder="300px"
+      />
+    </div>
+  </div>
+</template>
