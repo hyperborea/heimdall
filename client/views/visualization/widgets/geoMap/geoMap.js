@@ -11,7 +11,7 @@ Template.visGeoMap.onRendered(function() {
   const container = template.find(".mapbox");
   let activeSettings = {};
 
-  this.autorun(() => {
+  this.autorun(computation => {
     const { settings, data } = Template.currentData();
     const hasChangedSettings = !_.isEqual(settings, activeSettings);
     activeSettings = settings;
@@ -54,12 +54,33 @@ Template.visGeoMap.onRendered(function() {
 
         const layers = JSON.parse(settings.layersJson || "[]");
         if (layers.length) {
-          layers.forEach(x => map.addLayer(x));
+          layers.forEach(layer => {
+            // Make sure every layer has at least a dummy source.
+            if (!map.getSource(layer.source)) {
+              map.addSource(layer.source, {
+                type: "geojson",
+                data: {
+                  type: "FeatureCollection",
+                  features: []
+                }
+              });
+            }
+            map.addLayer(layer);
+          });
         }
       });
     } else {
       // Only data has changed, update sources.
       const map = this.map;
+
+      // Map isn't quite ready yet - wait a bit to rerun.
+      if (!map.loaded) {
+        setTimeout(() => {
+          computation.invalidate();
+        }, 200);
+      }
+
+      // Upsert all sources.
       _.forEach(sources, (data, key) => {
         const source = map.getSource(key);
         if (source) {
