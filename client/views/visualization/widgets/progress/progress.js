@@ -52,7 +52,7 @@ Template.visProgress.onRendered(function() {
       const value = data[0][settings.valueField];
       const goal = data[0][settings.goalField];
 
-      progress.animate(value / goal);
+      progress.animate(Math.min(value / goal, 1.0));
       progress.text.innerHTML = `
       <center>
         ${settings.label ? `<h3>${settings.label.toUpperCase()}</h3>` : ""}
