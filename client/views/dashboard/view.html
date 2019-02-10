@@ -1,27 +1,26 @@
 <template name="dashboardView">
   {{#unless embedded}}
-  <h1 class="ui dividing header">
-    {{#unless isFullscreen}}
-    <div class="ui grid">
-      <div class="ten wide column">
+  <div class="ui grid">
+    <div class="ten wide column">
+      <h1 class="ui header">
         {{dashboard.title}}
-        <span class="sub header">{{dashboard.description}}</span>
-      </div>
-      <div class="six wide right aligned column">
-        {{#if isOwner dashboard}}
-        <a href={{pathFor 'dashboardEdit' id=dashboard._id}}>
-          <i class="tiny edit link icon"></i>
-        </a>
-        {{/if}}
-        <i class="tiny play link icon js-present-mode" title="present"></i>
-        <i class="tiny {{fullscreenClass}} link icon js-toggle-fullscreen" title="fullscreen"></i>
-        <i class="tiny {{starredClass}} link icon js-toggle-star" title="star"></i>
-      </div>
+      </h1>
     </div>
-    {{else}}
-    {{dashboard.title}}
+    {{#unless isFullscreen}}
+    <div class="six wide right aligned column">
+      {{#if isOwner dashboard}}
+      <a href={{pathFor 'dashboardEdit' id=dashboard._id}}>
+        <i class="edit link icon"></i>
+      </a>
+      {{/if}}
+      <i class="play link icon js-present-mode" title="present"></i>
+      <i class="{{fullscreenClass}} link icon js-toggle-fullscreen" title="fullscreen"></i>
+      <i class="{{refreshClass}} refresh link icon js-toggle-refresh" title="auto refresh"></i>
+      <i class="{{starredClass}} link icon js-toggle-star" title="star"></i>
+    </div>
     {{/unless}}
-  </h1>
+  </div>
+  <div class="ui divider"></div>
   {{/unless}}
 
   {{#if paramArray.length}}

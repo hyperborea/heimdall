@@ -6,12 +6,32 @@ var _id = () => Template.currentData().id;
 
 Template.dashboardView.onCreated(function() {
   this.parameters = new ReactiveVar(qs.parse(location.hash));
+  this.enabledAutorefresh = new ReactiveVar(false);
 
   this.autorun(() => {
     if (!Template.currentData().embedded) {
       this.subscribe("dashboard", _id());
     }
   });
+
+  this.autorun(() => {
+    const enabled = this.enabledAutorefresh.get();
+    if (enabled) {
+      this.timer = window.setInterval(() => {
+        // Rerun all (parameterized) jobs that aren't running already.
+        JobResults.find({ status: { $ne: "running" } }).map(jr => {
+          console.log("refreshing");
+          Meteor.call("runJob", jr.jobId, this.parameters.get());
+        });
+      }, 60 * 1000);
+    } else {
+      window.clearInterval(this.timer);
+    }
+  });
+});
+
+Template.dashboardView.onDestroyed(function() {
+  window.clearInterval(this.timer);
 });
 
 Template.dashboardView.onRendered(function() {
@@ -56,6 +76,7 @@ Template.dashboardView.helpers({
   dashboard: () => Dashboards.findOne(_id()),
   starredClass: () =>
     hasStarred("dashboard", _id()) ? "yellow star" : "star outline",
+  refreshClass: () => Template.instance().enabledAutorefresh.get() && "blue",
   fullscreenClass: () => (isFullscreen() ? "compress" : "expand"),
   paramArray: function() {
     const template = Template.instance();
@@ -79,6 +100,10 @@ Template.dashboardView.events({
 
   "click .js-toggle-star": function() {
     toggleStar("dashboard", _id());
+  },
+
+  "click .js-toggle-refresh": function(event, template) {
+    template.enabledAutorefresh.set(!template.enabledAutorefresh.get());
   },
 
   "click .js-toggle-fullscreen": function() {
