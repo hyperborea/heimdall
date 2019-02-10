@@ -28,6 +28,7 @@
     "mysql": "^2.11.1",
     "papaparse": "^4.1.2",
     "pg": "^4.5.6",
+    "progressbar.js": "^1.0.1",
     "query-string": "^6.2.0",
     "simpl-schema": "^1.5.3",
     "sqlite3": "^4.0.4",

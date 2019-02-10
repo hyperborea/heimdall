@@ -13,10 +13,13 @@ Heimdall is a free and open-source data visualization and business monitoring sy
 
 - a variety of visualization widgets including
   - line, bar and area charts that can be stacked and combined
-  - pie and donut charts
   - sortable tables with configurable column types
   - "big number" widgets
+  - calendar heatmaps
+  - geo maps
   - world and US maps
+  - progress widgets
+  - pie and donut charts
 - interactive dashboards through query parameterization
 - supports PostgreSQL, MySQL, Microsoft SQL Server, SQLite, CSV and JSON
 - queries can be scheduled to run periodically or are executed automatically after the cache validity expires

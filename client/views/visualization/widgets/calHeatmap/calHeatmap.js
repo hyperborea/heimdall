@@ -1,4 +1,5 @@
 import CalHeatMap from "cal-heatmap";
+import isEqual from "lodash/isEqual";
 import minBy from "lodash/minBy";
 import format from "date-fns/format";
 
@@ -11,7 +12,7 @@ Template.visCalHeatmap.onRendered(function() {
 
   this.autorun(() => {
     const { settings, data } = Template.currentData();
-    const hasChangedSettings = !_.isEqual(settings, activeSettings);
+    const hasChangedSettings = !isEqual(settings, activeSettings);
     activeSettings = settings;
 
     const { dateField, valueField } = settings;
