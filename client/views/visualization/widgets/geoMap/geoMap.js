@@ -78,6 +78,7 @@ Template.visGeoMap.onRendered(function() {
         setTimeout(() => {
           computation.invalidate();
         }, 200);
+        return;
       }
 
       // Upsert all sources.
