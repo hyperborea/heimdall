@@ -48,9 +48,9 @@ Template.visProgress.onRendered(function() {
     }
 
     const progress = this.progress;
-    if (data.length && settings.valueField && settings.goalField) {
-      const value = data[0][settings.valueField];
-      const goal = data[0][settings.goalField];
+    if (data.length) {
+      const value = data[0][settings.valueField] || 0;
+      const goal = data[0][settings.goalField] || 1;
 
       progress.animate(Math.min(value / goal, 1.0));
       progress.text.innerHTML = `
