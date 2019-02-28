@@ -4,9 +4,10 @@ const qs = require("query-string");
 loadHandler(Template.dashboardView);
 var _id = () => Template.currentData().id;
 
+const isAutorefresh = () => FlowRouter.getQueryParam("autorefresh") === "true";
+
 Template.dashboardView.onCreated(function() {
   this.parameters = new ReactiveVar(qs.parse(location.hash));
-  this.enabledAutorefresh = new ReactiveVar(false);
 
   this.autorun(() => {
     if (!Template.currentData().embedded) {
@@ -15,12 +16,10 @@ Template.dashboardView.onCreated(function() {
   });
 
   this.autorun(() => {
-    const enabled = this.enabledAutorefresh.get();
-    if (enabled) {
+    if (isAutorefresh()) {
       this.timer = window.setInterval(() => {
         // Rerun all (parameterized) jobs that aren't running already.
         JobResults.find({ status: { $ne: "running" } }).map(jr => {
-          console.log("refreshing");
           Meteor.call("runJob", jr.jobId, this.parameters.get());
         });
       }, 60 * 1000);
@@ -76,7 +75,7 @@ Template.dashboardView.helpers({
   dashboard: () => Dashboards.findOne(_id()),
   starredClass: () =>
     hasStarred("dashboard", _id()) ? "yellow star" : "star outline",
-  refreshClass: () => Template.instance().enabledAutorefresh.get() && "blue",
+  refreshClass: () => isAutorefresh() && "blue",
   fullscreenClass: () => (isFullscreen() ? "compress" : "expand"),
   paramArray: function() {
     const template = Template.instance();
@@ -103,15 +102,11 @@ Template.dashboardView.events({
   },
 
   "click .js-toggle-refresh": function(event, template) {
-    template.enabledAutorefresh.set(!template.enabledAutorefresh.get());
+    FlowRouter.setQueryParams({ autorefresh: !isAutorefresh() });
   },
 
   "click .js-toggle-fullscreen": function() {
-    FlowRouter.go(
-      "dashboardView",
-      { id: _id() },
-      { fullscreen: !isFullscreen() }
-    );
+    FlowRouter.setQueryParams({ fullscreen: !isFullscreen() });
   },
 
   "click .js-present-mode": function() {
