@@ -1,4 +1,4 @@
-accounts-base@1.4.3
+accounts-base@1.4.4
 accounts-facebook@1.3.2
 accounts-github@1.4.2
 accounts-google@1.3.2
@@ -69,7 +69,7 @@ localstorage@1.2.0
 logging@1.1.20
 matteodem:gridster@0.5.6
 mdg:validation-error@0.5.1
-meteor@1.9.2
+meteor@1.9.3
 meteor-base@1.4.0
 meteorhacks:aggregate@1.3.0
 meteorhacks:cluster@1.6.9
@@ -84,14 +84,14 @@ modern-browsers@0.1.3
 modules@0.13.0
 modules-runtime@0.10.3
 momentjs:moment@2.23.0
-mongo@1.6.0
-mongo-decimal@0.1.0
+mongo@1.6.2
+mongo-decimal@0.1.1
 mongo-dev-server@1.1.0
 mongo-id@1.0.7
 mongo-livedata@1.0.12
 msavin:mongol@2.0.1
 npm-bcrypt@0.9.3
-npm-mongo@3.1.1
+npm-mongo@3.1.2
 oauth@1.2.7
 oauth2@1.2.1
 observe-sequence@1.0.16
@@ -129,6 +129,6 @@ tracker@1.2.0
 ui@1.0.13
 underscore@1.0.10
 url@1.2.0
-webapp@1.7.2
+webapp@1.7.4
 webapp-hashing@1.0.9
 zimme:active-route@2.3.2
