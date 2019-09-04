@@ -32,10 +32,7 @@ Accounts.onLogin(function() {
   var user = Meteor.user();
   var existingGroups = Groups.find().fetch();
 
-  var newGroupNames = _.difference(
-    user.groups,
-    _.pluck(existingGroups, "name")
-  );
+  var newGroupNames = _.difference(user.groups, _.map(existingGroups, "name"));
   _.each(newGroupNames, function(groupName) {
     Groups.insert({ name: groupName });
   });
@@ -60,7 +57,9 @@ Accounts.onCreateUser(function(_options, user) {
   if (Array.isArray(spec)) {
     defaultGroups = spec;
   } else if (_.isPlainObject(spec)) {
-    defaultGroups = _.find(spec, (_groups, regex) => user.match(regex));
+    defaultGroups = _.find(spec, (_groups, regex) =>
+      user.username.match(regex)
+    );
   }
 
   return _.defaults(user, {
