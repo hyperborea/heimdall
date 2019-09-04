@@ -1,4 +1,4 @@
-import { startCase } from "lodash";
+import _ from "lodash";
 
 _.defaults(Meteor.settings, { services: [] });
 _.extend(LDAP_SETTINGS, Meteor.settings.ldap);
@@ -41,7 +41,7 @@ Accounts.onLogin(function() {
   });
 });
 
-Accounts.onCreateUser(function(options, user) {
+Accounts.onCreateUser(function(_options, user) {
   if (user.services.google) {
     user.username = user.services.google.email;
     user.displayName = user.services.google.name;
@@ -54,9 +54,18 @@ Accounts.onCreateUser(function(options, user) {
     user.displayName = user.services.facebook.name;
   }
 
+  // Default user groups may be defined as an array or an Object of shape { regex: [groups] }
+  const spec = Meteor.settings.defaultGroups;
+  let defaultGroups;
+  if (Array.isArray(spec)) {
+    defaultGroups = spec;
+  } else if (_.isPlainObject(spec)) {
+    defaultGroups = _.find(spec, (_groups, regex) => user.match(regex));
+  }
+
   return _.defaults(user, {
     profile: {},
-    groups: Meteor.settings.defaultGroups || [],
+    groups: defaultGroups || [],
     displayName: user.username
   });
 });
