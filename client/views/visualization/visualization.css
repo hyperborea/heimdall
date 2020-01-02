@@ -1,5 +1,5 @@
 .visualizationWrapper .timeAgo {
-  font-size: .7em;
+  font-size: 0.7em;
   padding-left: 1em;
 }
 
@@ -9,6 +9,11 @@
 
 .visualizationWrapper:hover .actions {
   display: initial;
+}
+
+.visualizationBasicTopbar {
+  position: absolute;
+  right: 0px;
 }
 
 .visualizationCanvas {
