@@ -11,7 +11,7 @@ Template.visBigNumber.helpers({
       var result = aggregationFunction(values);
 
       var parsedResult = parseFloat(result);
-      if (!isNaN(parsedResult) && result.match(/^[\d\.]+$/)) {
+      if (!isNaN(parsedResult) && String(result).match(/^[\d\.]+$/)) {
         result = parsedResult;
       }
 
