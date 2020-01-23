@@ -3,7 +3,7 @@
     {{#if basic}}
       <div class="visualizationBasicTopbar">
         <span class="actions">
-          {{> visualizationTopbarIcons vis=vis}}
+          {{> visualizationTopbarIcons vis=vis running=running}}
           <span class="timeAgo">{{timeAgo vis.result.updatedAt}}</span>
         </span>
       </div>
@@ -20,7 +20,7 @@
               </div>
               <div class="right aligned column">
                 <span class="actions">
-                  {{> visualizationTopbarIcons vis=vis}}
+                  {{> visualizationTopbarIcons vis=vis running=running}}
                 </span>
                 <span class="timeAgo">{{timeAgo vis.result.updatedAt}}</span>
               </div>
