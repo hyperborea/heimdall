@@ -5,7 +5,7 @@ import format from "date-fns/format";
 
 import "cal-heatmap/cal-heatmap.css";
 
-Template.visCalHeatmap.onRendered(function() {
+Template.visCalHeatmap.onRendered(function () {
   const template = this;
   const container = template.find(".container");
   let activeSettings = {};
@@ -27,16 +27,16 @@ Template.visCalHeatmap.onRendered(function() {
         domain: settings.domain,
         subDomain: settings.subdomain || null,
         start: minBy(data, dateField)[dateField],
-        subDomainDateFormat: date =>
+        subDomainDateFormat: (date) =>
           format(date, settings.dateFormat || "YYYY-MM-DD HH:mm:ss"),
         subDomainTitleFormat: {
           empty: "{date}",
-          filled: "{date}: {count}"
+          filled: "{date}: {count}",
         },
         cellSize: settings.cellSize || 10,
         legendColors: {
           min: settings.minColor || "#dae289",
-          max: settings.maxColor || "#3b6427"
+          max: settings.maxColor || "#3b6427",
         },
         subDomainTextFormat: (date, value) => {
           if (!(date instanceof Date)) {
@@ -61,7 +61,7 @@ Template.visCalHeatmap.onRendered(function() {
         legend:
           settings.groups && settings.groups.length
             ? settings.groups
-            : [10, 20, 30, 40]
+            : [10, 20, 30, 40],
       });
     }
 

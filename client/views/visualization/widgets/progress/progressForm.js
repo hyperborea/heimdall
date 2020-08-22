@@ -1,3 +1,3 @@
 Template.visProgressForm.helpers({
-  compTypes: ["SemiCircle", "Circle"]
+  compTypes: ["SemiCircle", "Circle"],
 });

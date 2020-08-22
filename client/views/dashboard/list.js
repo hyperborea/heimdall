@@ -7,7 +7,7 @@ function dashboardFilter() {
     selector["$or"] = [
       { title: { $regex: FlowRouter.getQueryParam("search"), $options: "i" } },
       { owner: { $regex: FlowRouter.getQueryParam("search"), $options: "i" } },
-      { tags: FlowRouter.getQueryParam("search") }
+      { tags: FlowRouter.getQueryParam("search") },
     ];
   if (FlowRouter.getQueryParam("filterOwn") === "true")
     selector["ownerId"] = Meteor.userId();
@@ -17,7 +17,7 @@ function dashboardFilter() {
   return selector;
 }
 
-Template.dashboardList.onCreated(function() {
+Template.dashboardList.onCreated(function () {
   this.limit = new ReactiveVar();
   this.tags = new ReactiveVar([]);
 
@@ -35,7 +35,7 @@ Template.dashboardList.onCreated(function() {
   Meteor.call("getDashboardTags", (err, res) => this.tags.set(res));
 });
 
-Template.dashboardList.onRendered(function() {
+Template.dashboardList.onRendered(function () {
   var template = this;
 
   template.$(".ui.checkbox").checkbox();
@@ -47,7 +47,7 @@ Template.dashboardList.onRendered(function() {
       if (template.subscriptionsReady()) {
         template.$(".js-load-more").click();
       }
-    }
+    },
   });
 });
 
@@ -56,35 +56,35 @@ Template.dashboardList.helpers({
   starredDashboards: () =>
     Dashboards.find({
       ...dashboardFilter(),
-      _id: { $in: getStarred("dashboard", Meteor.user()) }
+      _id: { $in: getStarred("dashboard", Meteor.user()) },
     }),
 
   tags: () => Template.instance().tags.get(),
   search: () => FlowRouter.getQueryParam("search"),
   filterOwn: () => FlowRouter.getQueryParam("filterOwn") === "true",
 
-  tagLabelClass: tag =>
+  tagLabelClass: (tag) =>
     FlowRouter.getQueryParam("tag") == tag ? "basic blue" : "basic",
 
-  hasMore: function(items) {
+  hasMore: function (items) {
     return (
       !Template.instance().subscriptionsReady() ||
       items.count() >= Template.instance().limit.get()
     );
-  }
+  },
 });
 
 Template.dashboardList.events({
-  "keyup input[name=search], change input[name=search]": event =>
+  "keyup input[name=search], change input[name=search]": (event) =>
     FlowRouter.setQueryParams({ search: event.target.value || null }),
-  "change input[name=filterOwn]": event =>
+  "change input[name=filterOwn]": (event) =>
     FlowRouter.setQueryParams({ filterOwn: event.target.checked || null }),
   "click .js-select-tag": (event, template) =>
     FlowRouter.setQueryParams({ tag: event.target.dataset.value || null }),
   "click .js-load-more": (event, template) =>
-    template.limit.set(template.limit.get() + 10)
+    template.limit.set(template.limit.get() + 10),
 });
 
 Template.dashboardListItem.helpers({
-  hasStarred: dashboard => hasStarred("dashboard", dashboard._id)
+  hasStarred: (dashboard) => hasStarred("dashboard", dashboard._id),
 });

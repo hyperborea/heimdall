@@ -4,23 +4,23 @@ _.defaults(Meteor.settings, { services: [] });
 _.extend(LDAP_SETTINGS, Meteor.settings.ldap);
 
 ServiceConfiguration.configurations.remove({});
-Meteor.settings.services.forEach(config => {
+Meteor.settings.services.forEach((config) => {
   ServiceConfiguration.configurations.insert(config);
 });
 
 Accounts.config({
   forbidClientAccountCreation: true,
-  restrictCreationByEmailDomain: Meteor.settings.restrictEmailDomain
+  restrictCreationByEmailDomain: Meteor.settings.restrictEmailDomain,
 });
 
 // Ensure there's an admin account
-Meteor.startup(function() {
+Meteor.startup(function () {
   let adminUser = Accounts.findUserByUsername("admin");
 
   if (!adminUser) {
     adminUser = Accounts.createUser({
       username: "admin",
-      password: "admin"
+      password: "admin",
     });
   }
 
@@ -28,17 +28,17 @@ Meteor.startup(function() {
 });
 
 // Keep track of all LDAP groups
-Accounts.onLogin(function() {
+Accounts.onLogin(function () {
   var user = Meteor.user();
   var existingGroups = Groups.find().fetch();
 
   var newGroupNames = _.difference(user.groups, _.map(existingGroups, "name"));
-  _.each(newGroupNames, function(groupName) {
+  _.each(newGroupNames, function (groupName) {
     Groups.insert({ name: groupName });
   });
 });
 
-Accounts.onCreateUser(function(_options, user) {
+Accounts.onCreateUser(function (_options, user) {
   if (user.services.google) {
     user.username = user.services.google.email;
     user.displayName = user.services.google.name;
@@ -65,6 +65,6 @@ Accounts.onCreateUser(function(_options, user) {
   return _.defaults(user, {
     profile: {},
     groups: defaultGroups || [],
-    displayName: user.username
+    displayName: user.username,
   });
 });

@@ -1,8 +1,8 @@
 loadHandler(Template.userList);
 
-Template.userList.onCreated(function() {
+Template.userList.onCreated(function () {
   this.state = new ReactiveDict();
-  this.subscribe('users');
+  this.subscribe("users");
 });
 
 Template.userList.helpers({
@@ -11,21 +11,23 @@ Template.userList.helpers({
 });
 
 Template.userList.events({
-  'submit form': function(event, template) {
+  "submit form": function (event, template) {
     event.preventDefault();
     const $form = $(event.target);
-    const username = $form.find('input').val();
+    const username = $form.find("input").val();
 
-    Meteor.call('createUserWithRandomPassword', username, (err, res) => {
+    Meteor.call("createUserWithRandomPassword", username, (err, res) => {
       if (err) {
-        template.state.set('createErrorMessage', err.reason);
-        $form.removeClass('success').addClass('error');
-      }
-      else {
-        template.state.set('createSuccessMessage', `User "${username}" successfully created with password "${res}".`);
-        $form.removeClass('error').addClass('success');
+        template.state.set("createErrorMessage", err.reason);
+        $form.removeClass("success").addClass("error");
+      } else {
+        template.state.set(
+          "createSuccessMessage",
+          `User "${username}" successfully created with password "${res}".`
+        );
+        $form.removeClass("error").addClass("success");
         $form.get(0).reset();
       }
     });
-  }
+  },
 });

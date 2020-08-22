@@ -2,7 +2,7 @@ import { Pool } from "pg";
 
 POOLS = {};
 
-SOURCE_TYPES.postgres.query = async function(
+SOURCE_TYPES.postgres.query = async function (
   source,
   sql,
   parameters,
@@ -22,7 +22,7 @@ SOURCE_TYPES.postgres.query = async function(
         host: source.host,
         port: source.port,
         database: source.database,
-        ssl: source.ssl
+        ssl: source.ssl,
       });
       POOLS[source._id] = pool;
     }
@@ -39,7 +39,7 @@ SOURCE_TYPES.postgres.query = async function(
         let index = 1;
         query = {
           text: replaceQueryParameters(sql, () => "$" + index++),
-          values: getQueryParameters(sql).map(key => parameters[key])
+          values: getQueryParameters(sql).map((key) => parameters[key]),
         };
 
         client.query(
@@ -59,6 +59,6 @@ SOURCE_TYPES.postgres.query = async function(
   } else throw new Meteor.Error("Can't query job, something is missing.");
 };
 
-SOURCE_TYPES.postgres.cancel = function(source, pid) {
+SOURCE_TYPES.postgres.cancel = function (source, pid) {
   source.query(`select pg_cancel_backend(${pid})`);
 };

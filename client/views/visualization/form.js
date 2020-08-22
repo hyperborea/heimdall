@@ -1,4 +1,4 @@
-Template.visualizationForm.onCreated(function() {
+Template.visualizationForm.onCreated(function () {
   this.autorun(() => {
     this.subscribe("visualization", FlowRouter.getParam("id"));
   });
@@ -7,7 +7,7 @@ Template.visualizationForm.onCreated(function() {
   this.getVisualization = () => Visualizations.findOne(this.getId());
 });
 
-Template.visualizationForm.onRendered(function() {
+Template.visualizationForm.onRendered(function () {
   this.$(".ui.main.form").form({});
 });
 
@@ -23,27 +23,27 @@ Template.visualizationForm.helpers({
     { text: "Progress", value: "Progress", icon: "percent" },
     { text: "Pie Chart", value: "PieChart", icon: "pie chart" },
     { text: "Word Cloud", value: "WordCloud", icon: "cloud" },
-    { text: "World Map", value: "WorldMap", icon: "world" }
+    { text: "World Map", value: "WorldMap", icon: "world" },
   ],
 
-  typeForm: function(vis) {
+  typeForm: function (vis) {
     return vis && vis.type ? `vis${vis.type}Form` : null;
   },
 
-  typeData: function(vis) {
+  typeData: function (vis) {
     if (vis) {
       return {
         settings: vis.settings || {},
-        fields: _.result(vis.result(), "fields")
+        fields: _.result(vis.result(), "fields"),
       };
     }
-  }
+  },
 });
 
 Template.visualizationForm.events({
   "change input": (event, template) => template.$("form").submit(),
 
-  "submit .ui.form": function(event, template) {
+  "submit .ui.form": function (event, template) {
     event.preventDefault();
 
     const data = $(event.target).serializeJSON();
@@ -55,18 +55,18 @@ Template.visualizationForm.events({
     Meteor.call("saveVisualization", doc);
   },
 
-  "click .js-delete": function(event, template) {
+  "click .js-delete": function (event, template) {
     const vis = template.getVisualization();
 
-    confirmModal("Sure you want to delete this visualization?", function() {
+    confirmModal("Sure you want to delete this visualization?", function () {
       Meteor.call("removeVisualization", vis._id);
       FlowRouter.go("jobEdit", { id: vis.jobId });
     });
   },
 
-  "click .js-clone": function(event, template) {
+  "click .js-clone": function (event, template) {
     Meteor.call("cloneVisualization", template.getId(), (err, visId) => {
       FlowRouter.go("visualizationEdit", { id: visId });
     });
-  }
+  },
 });

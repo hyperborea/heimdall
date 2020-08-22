@@ -1,3 +1,3 @@
 Template.alarmLabel.helpers({
-  color: (level) => SEVERITIES[level].color
+  color: (level) => SEVERITIES[level].color,
 });

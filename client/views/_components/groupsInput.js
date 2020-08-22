@@ -1,31 +1,28 @@
-Template.groupsInput.onCreated(function() {
+Template.groupsInput.onCreated(function () {
   this.search = new ReactiveVar();
 
   this.autorun(() => {
-    this.subscribe('groups', this.search.get());
+    this.subscribe("groups", this.search.get());
   });
 });
 
-
-Template.groupsInput.onRendered(function() {
+Template.groupsInput.onRendered(function () {
   this.autorun(() => {
     Template.currentData();
 
-    this.$('.ui.dropdown').dropdown({
+    this.$(".ui.dropdown").dropdown({
       allowAdditions: true,
-      fullTextSearch: true
+      fullTextSearch: true,
     });
   });
 });
 
-
 Template.groupsInput.helpers({
-  groups: () => Groups.find()
+  groups: () => Groups.find(),
 });
 
-
 Template.groupsInput.events({
-  'keyup input.search': function(event, template) {
+  "keyup input.search": function (event, template) {
     template.search.set(event.target.value);
-  }
+  },
 });

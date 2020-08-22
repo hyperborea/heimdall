@@ -6,7 +6,7 @@ var _id = () => Template.currentData().id;
 
 const isAutorefresh = () => FlowRouter.getQueryParam("autorefresh") === "true";
 
-Template.dashboardView.onCreated(function() {
+Template.dashboardView.onCreated(function () {
   this.parameters = new ReactiveVar(qs.parse(location.hash));
 
   this.autorun(() => {
@@ -19,7 +19,7 @@ Template.dashboardView.onCreated(function() {
     if (isAutorefresh()) {
       this.timer = window.setInterval(() => {
         // Rerun all (parameterized) jobs that aren't running already.
-        JobResults.find({ status: { $ne: "running" } }).map(jr => {
+        JobResults.find({ status: { $ne: "running" } }).map((jr) => {
           Meteor.call("runJob", jr.jobId, this.parameters.get());
         });
       }, 60 * 1000);
@@ -29,11 +29,11 @@ Template.dashboardView.onCreated(function() {
   });
 });
 
-Template.dashboardView.onDestroyed(function() {
+Template.dashboardView.onDestroyed(function () {
   window.clearInterval(this.timer);
 });
 
-Template.dashboardView.onRendered(function() {
+Template.dashboardView.onRendered(function () {
   const template = this;
 
   var grid = this.$(".gridster")
@@ -42,7 +42,7 @@ Template.dashboardView.onRendered(function() {
       widget_base_dimensions: [80, 60],
       // tricking gridster to autogenerate css for columns generously
       min_cols: 25,
-      max_size_x: 20
+      max_size_x: 20,
     })
     .data("gridster")
     .disable();
@@ -63,10 +63,10 @@ Template.dashboardView.onRendered(function() {
 
       // Gridster tries to be clever and pushes widgets down if they don't fit in width.
       // That's not what we want though, so we're manually overriding the columns with the maximum to expect.
-      grid.options.min_cols = _.max(_.map(widgets, w => w.col + w.size_x));
+      grid.options.min_cols = _.max(_.map(widgets, (w) => w.col + w.size_x));
 
       grid.remove_all_widgets();
-      _.each(widgets, widget => addWidget(grid, widget, template));
+      _.each(widgets, (widget) => addWidget(grid, widget, template));
     }
   });
 });
@@ -77,7 +77,7 @@ Template.dashboardView.helpers({
     hasStarred("dashboard", _id()) ? "yellow star" : "star outline",
   refreshClass: () => isAutorefresh() && "blue",
   fullscreenClass: () => (isFullscreen() ? "compress" : "expand"),
-  paramArray: function() {
+  paramArray: function () {
     const template = Template.instance();
     const parameters = template.parameters.get();
     return _.chain(Jobs.find().fetch())
@@ -85,11 +85,11 @@ Template.dashboardView.helpers({
       .reduce((memo, param) => _.extend(memo, param), {})
       .map((v, k) => Object({ name: k, value: parameters[k] || v }))
       .value();
-  }
+  },
 });
 
 Template.dashboardView.events({
-  "submit form.parameters": function(event, template) {
+  "submit form.parameters": function (event, template) {
     event.preventDefault();
 
     var data = $(event.target).serializeJSON();
@@ -97,21 +97,21 @@ Template.dashboardView.events({
     template.parameters.set(data);
   },
 
-  "click .js-toggle-star": function() {
+  "click .js-toggle-star": function () {
     toggleStar("dashboard", _id());
   },
 
-  "click .js-toggle-refresh": function(event, template) {
+  "click .js-toggle-refresh": function (event, template) {
     FlowRouter.setQueryParams({ autorefresh: !isAutorefresh() });
   },
 
-  "click .js-toggle-fullscreen": function() {
+  "click .js-toggle-fullscreen": function () {
     FlowRouter.setQueryParams({ fullscreen: !isFullscreen() });
   },
 
-  "click .js-present-mode": function() {
+  "click .js-present-mode": function () {
     FlowRouter.go("dashboardPresent", {}, { ids: _id() });
-  }
+  },
 });
 
 function addWidget(grid, options, template) {
@@ -125,7 +125,7 @@ function addWidget(grid, options, template) {
         id: options.visId,
         basic: options.basic,
         parameters: template.parameters.get(),
-        dashboardId: dashboardId
+        dashboardId: dashboardId,
       };
     }
 

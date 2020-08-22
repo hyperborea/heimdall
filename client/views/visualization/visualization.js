@@ -1,63 +1,59 @@
-import Papa from 'papaparse';
+import Papa from "papaparse";
 
-
-Template.visualization.onCreated(function() {
+Template.visualization.onCreated(function () {
   this.rendered = new ReactiveVar(false);
 
   this.id = () => Template.currentData().id;
-  this.vis = () => _.extend(Visualizations.findOne(this.id()) || {}, Template.currentData());
-  this.result = () => _.result(this.vis(), 'result');
+  this.vis = () =>
+    _.extend(Visualizations.findOne(this.id()) || {}, Template.currentData());
+  this.result = () => _.result(this.vis(), "result");
 
-  this.autorun(() =>  {
+  this.autorun(() => {
     if (this.id()) {
       const vis = this.vis();
       let parameters = vis.parameters;
-      
+
       // when this block is first run the job might not be available yet
       const job = Jobs.findOne(this.vis().jobId);
       if (job) {
         parameters = cleanParameters(parameters, job.parameters);
       }
 
-      this.subscribe('visualization', this.id(), parameters, vis.dashboardId);  
+      this.subscribe("visualization", this.id(), parameters, vis.dashboardId);
     }
   });
 });
 
-
-Template.visualization.onRendered(function() {
+Template.visualization.onRendered(function () {
   this.rendered.set(true);
 });
 
-
 Template.visualization.helpers({
   vis: () => Template.instance().vis(),
-  loading: () => !Template.instance().subscriptionsReady() && 'loading',
+  loading: () => !Template.instance().subscriptionsReady() && "loading",
 
-  templateName: function() {
+  templateName: function () {
     const template = Template.instance();
-    
+
     if (template.subscriptionsReady()) {
       const vis = template.vis();
       const result = template.result();
 
       if (result) {
-        if (result.status === 'error')
-          return 'visualizationError';
+        if (result.status === "error") return "visualizationError";
         else if (_.isArray(result.data))
-          return 'vis' + (vis.type || 'DataTable');
-        else if (result.status === 'running')
-          return 'visualizationRunning'
+          return "vis" + (vis.type || "DataTable");
+        else if (result.status === "running") return "visualizationRunning";
       }
     }
   },
 
-  running: function() {
+  running: function () {
     const result = Template.instance().result();
-    return (result && result.status === 'running') && 'loading';
+    return result && result.status === "running" && "loading";
   },
 
-  data: function() {
+  data: function () {
     const template = Template.instance();
     const vis = template.vis();
 
@@ -65,11 +61,12 @@ Template.visualization.helpers({
     let results = template.result() || {};
 
     if (template.rendered.get()) {
-      const wrapper = template.find('.visualizationWrapper');
-      const topbar = template.find('.visualizationTopbar');
-      const canvas = template.find('.visualizationCanvas');
+      const wrapper = template.find(".visualizationWrapper");
+      const topbar = template.find(".visualizationTopbar");
+      const canvas = template.find(".visualizationCanvas");
 
-      const canvasHeight = wrapper.offsetHeight - (topbar ? topbar.offsetHeight : 0) - 28;
+      const canvasHeight =
+        wrapper.offsetHeight - (topbar ? topbar.offsetHeight : 0) - 28;
       if (canvasHeight > 30) $(canvas).height(canvasHeight);
 
       settings.height = canvasHeight;
@@ -77,24 +74,26 @@ Template.visualization.helpers({
     }
 
     return {
-      settings : settings,
-      data     : results.data,
-      fields   : results.fields
+      settings: settings,
+      data: results.data,
+      fields: results.fields,
     };
-  }
+  },
 });
 
-
 Template.visualization.events({
-  'click .js-run': function(event, template) {
+  "click .js-run": function (event, template) {
     const vis = template.vis();
-    Meteor.call('runJob', vis.jobId, vis.parameters);
+    Meteor.call("runJob", vis.jobId, vis.parameters);
   },
 
-  'click .js-download': function(event, template) {
+  "click .js-download": function (event, template) {
     const result = template.result();
-    const csv = Papa.unparse({ fields: result.fields, data: result.data }, { delimiter: ',' });
-    const blob = new Blob([csv], {type: "application/csv"});
+    const csv = Papa.unparse(
+      { fields: result.fields, data: result.data },
+      { delimiter: "," }
+    );
+    const blob = new Blob([csv], { type: "application/csv" });
     saveAs(blob, `${template.vis().jobName}.csv`);
-  }
+  },
 });

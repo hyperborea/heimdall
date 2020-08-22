@@ -35,7 +35,7 @@ const LAYERS_DEFAULT = `[
 //   }
 // }`;
 
-Template.visGeoMapForm.onRendered(function() {
+Template.visGeoMapForm.onRendered(function () {
   const { settings } = this.data;
   const textarea = this.find("textarea");
 
@@ -44,9 +44,9 @@ Template.visGeoMapForm.onRendered(function() {
     lineWrapping: true,
     mode: "application/json",
     theme: "monokai",
-    autoCloseBrackets: true
+    autoCloseBrackets: true,
   });
-  editor.on("change", doc => (textarea.value = doc.getValue()));
+  editor.on("change", (doc) => (textarea.value = doc.getValue()));
   editor.setValue(settings.layersJson || LAYERS_DEFAULT);
 });
 
@@ -54,8 +54,8 @@ Template.visGeoMapForm.helpers({
   mapStyles: ["basic", "streets", "bright", "light", "dark", "satellite"],
   countries: map(boundingBoxes, (item, key) => ({
     text: item[0],
-    value: key
-  }))
+    value: key,
+  })),
 });
 
 Template.visGeoMapForm.events({
@@ -64,5 +64,5 @@ Template.visGeoMapForm.events({
       template.find("[name='bounds:list']").value =
         boundingBoxes[event.target.value][1];
     }
-  }
+  },
 });

@@ -13,10 +13,10 @@ Jobs.schema = new SimpleSchema({
   createdAt: {
     type: Date,
     index: -1,
-    autoValue: function() {
+    autoValue: function () {
       if (this.isInsert) return new Date();
       else this.unset();
-    }
+    },
   },
   cacheDuration: { type: SimpleSchema.Integer },
   schedule: { type: String, optional: true },
@@ -26,17 +26,17 @@ Jobs.schema = new SimpleSchema({
   "email.recipients": {
     type: String,
     optional: true,
-    custom: requiredIf("email.enabled", true)
+    custom: requiredIf("email.enabled", true),
   },
   "email.subject": {
     type: String,
     optional: true,
-    custom: requiredIf("email.enabled", true)
+    custom: requiredIf("email.enabled", true),
   },
   "email.content": {
     type: String,
     optional: true,
-    custom: requiredIf("email.enabled", true)
+    custom: requiredIf("email.enabled", true),
   },
   rules: Array,
   "rules.$": Object,
@@ -60,49 +60,49 @@ Jobs.schema = new SimpleSchema({
     type: String,
     optional: true,
     custom: requiredIf("transpose.enabled", true),
-    label: "Key field"
+    label: "Key field",
   },
   "transpose.catField": {
     type: String,
     optional: true,
     custom: requiredIf("transpose.enabled", true),
-    label: "Category field"
+    label: "Category field",
   },
   "transpose.valField": {
     type: String,
     optional: true,
     custom: requiredIf("transpose.enabled", true),
-    label: "Value field"
-  }
+    label: "Value field",
+  },
 });
 
 Jobs.schema.extend(permissionSchema);
 Jobs.attachSchema(Jobs.schema);
 
 Jobs.helpers({
-  result: function(parameters) {
+  result: function (parameters) {
     parameters = cleanParameters(parameters, this.parameters);
     return JobResults.findOne({ jobId: this._id, parameters: parameters });
   },
 
-  visualizations: function() {
+  visualizations: function () {
     return Visualizations.find(
       {
-        jobId: this._id
+        jobId: this._id,
       },
       {
-        sort: { title: 1 }
+        sort: { title: 1 },
       }
     );
   },
 
-  isRunning: function() {
+  isRunning: function () {
     return this.status === "running";
-  }
+  },
 });
 
 Meteor.methods({
-  saveJob: function(job) {
+  saveJob: function (job) {
     const user = Meteor.users.findOne(this.userId);
 
     var jobId = job._id;
@@ -111,11 +111,11 @@ Meteor.methods({
     _.defaults(doc, {
       parameters: {},
       rules: [],
-      scheduleError: null
+      scheduleError: null,
     });
 
     doc.parameters = _.chain(getQueryParameters(doc.query))
-      .map(key => [key, doc.parameters[key] || ""])
+      .map((key) => [key, doc.parameters[key] || ""])
       .object()
       .value();
 
@@ -130,7 +130,7 @@ Meteor.methods({
       requireOwnership(user, oldDoc);
 
       Jobs.update(jobId, { $set: doc });
-      Visualizations.find({ jobId: jobId }).forEach(vis =>
+      Visualizations.find({ jobId: jobId }).forEach((vis) =>
         syncVisualization(vis._id, doc)
       );
 
@@ -141,7 +141,7 @@ Meteor.methods({
 
       // update job result expiration dates if the cache duration has changed
       if (doc.cacheDuration !== oldDoc.cacheDuration) {
-        JobResults.find({ jobId: jobId }).forEach(res => {
+        JobResults.find({ jobId: jobId }).forEach((res) => {
           var expiresAt = moment(res.updatedAt)
             .add(doc.cacheDuration, "seconds")
             .toDate();
@@ -158,7 +158,7 @@ Meteor.methods({
     return jobId;
   },
 
-  cloneJob: function(jobId) {
+  cloneJob: function (jobId) {
     var job = Jobs.findOne(jobId);
     requireOwnership(this.userId, job);
 
@@ -167,7 +167,7 @@ Meteor.methods({
     return Jobs.insert(job);
   },
 
-  removeJob: function(jobId) {
+  removeJob: function (jobId) {
     check(jobId, String);
     requireOwnership(this.userId, Jobs.findOne(jobId));
 
@@ -180,7 +180,7 @@ Meteor.methods({
     Visualizations.remove({ jobId: jobId });
   },
 
-  runJob: function(jobId, parameters) {
+  runJob: function (jobId, parameters) {
     if (!Meteor.isServer) return;
 
     check(jobId, String);
@@ -189,7 +189,7 @@ Meteor.methods({
     runJob(jobId, parameters);
   },
 
-  cancelJob: function(jobId) {
+  cancelJob: function (jobId) {
     if (!Meteor.isServer) return;
 
     var job = Jobs.findOne(jobId);
@@ -197,17 +197,17 @@ Meteor.methods({
     requireOwnership(this.userId, job);
 
     source.cancel(job.result().pid);
-  }
+  },
 });
 
-scheduleJob = function(jobId, scheduleString) {
+scheduleJob = function (jobId, scheduleString) {
   SyncedCron.remove(jobId);
 
   if (scheduleString) {
     SyncedCron.add({
       name: jobId,
       job: () => runJob(jobId),
-      schedule: function(parser) {
+      schedule: function (parser) {
         var schedule = parser.text(scheduleString);
 
         if (schedule.error !== -1) {
@@ -223,12 +223,12 @@ scheduleJob = function(jobId, scheduleString) {
         } else {
           return schedule;
         }
-      }
+      },
     });
   }
 };
 
-runJob = function(jobId, parameters) {
+runJob = function (jobId, parameters) {
   const startedAt = new Date();
   const runId = Random.id();
   const job = Jobs.findOne(jobId);
@@ -261,9 +261,7 @@ runJob = function(jobId, parameters) {
     }
 
     result.runId = runId;
-    result.expiresAt = moment()
-      .add(job.cacheDuration, "seconds")
-      .toDate();
+    result.expiresAt = moment().add(job.cacheDuration, "seconds").toDate();
     JobResults.upsert(
       { jobId: jobId, parameters: parameters },
       { $set: result }
@@ -286,13 +284,13 @@ runJob = function(jobId, parameters) {
   source.query(
     job.query,
     parameters,
-    function(result) {
+    function (result) {
       if (result.status === "ok" && result.data) {
         // enforce maximum rows setting (bson size is limited to ~ 16MB)
         if (result.data.length > SOURCE_SETTINGS.maxRows) {
           result = {
             status: "error",
-            data: `Exceeded limit of ${SOURCE_SETTINGS.maxRows} rows.`
+            data: `Exceeded limit of ${SOURCE_SETTINGS.maxRows} rows.`,
           };
         }
 
@@ -301,7 +299,7 @@ runJob = function(jobId, parameters) {
           var store = {},
             fields = new Set([job.transpose.keyField]);
 
-          result.data.forEach(row => {
+          result.data.forEach((row) => {
             var key = row[job.transpose.keyField],
               cat = row[job.transpose.catField],
               val = row[job.transpose.valField],
@@ -325,7 +323,7 @@ runJob = function(jobId, parameters) {
 
       // sanitize data, keys are not allowed to contain dots
       _.isObject(result.data) &&
-        _.each(result.data, row => {
+        _.each(result.data, (row) => {
           _.each(row, (value, key) => {
             if (_.isObject(value) && !(value instanceof Date)) {
               var json = JSON.stringify(value);
@@ -361,43 +359,43 @@ runJob = function(jobId, parameters) {
                 contents: Papa.unparse(
                   { fields: result.fields, data: result.data },
                   { delimiter: "," }
-                )
-              }
-            ]
+                ),
+              },
+            ],
           });
         } else if (result.status === "error") {
           Email.send({
             from: "noreply@heimdall",
             to: job.email.recipients,
             subject: `[heimdall] error in job "${job.name}"`,
-            text: result.data
+            text: result.data,
           });
         }
       }
     },
-    function(pid) {
+    function (pid) {
       updateJob({
         status: "running",
-        pid: pid
+        pid: pid,
       });
     }
   );
 };
 
 // Parses out parameteres (in double curly braces) from a string and returns a list of the parameter names.
-getQueryParameters = function(query) {
+getQueryParameters = function (query) {
   var matches = query.match(/{{\s*\w+\s*}}/g);
   if (matches) {
-    return matches.map(s => s.substring(2, s.length - 2).trim());
+    return matches.map((s) => s.substring(2, s.length - 2).trim());
   } else return [];
 };
 
-replaceQueryParameters = function(query, replacement) {
+replaceQueryParameters = function (query, replacement) {
   return query.replace(/{{\s*(\w+)\s*}}/g, replacement);
 };
 
 // Make sure only relevant parameters are used and that defaults are still filled in.
-cleanParameters = function(params, defaultParams) {
+cleanParameters = function (params, defaultParams) {
   params = params || {};
   return mapValues(defaultParams, (v, k) => params[k] || v);
 };

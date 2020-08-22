@@ -3,10 +3,10 @@ import Datamap from "datamaps";
 
 import { countryISO3 } from "./countryMapping";
 
-Template.visWorldMap.onRendered(function() {
+Template.visWorldMap.onRendered(function () {
   let template = this;
 
-  this.autorun(function() {
+  this.autorun(function () {
     let context = Template.currentData();
     const settings = context.settings;
 
@@ -22,7 +22,7 @@ Template.visWorldMap.onRendered(function() {
         .range(["#F5F5F5", targetColor]);
 
       let dataset = {};
-      context.data.forEach(function(item) {
+      context.data.forEach(function (item) {
         let country = item[settings.countryField];
         let value = item[settings.valueField];
 
@@ -40,13 +40,11 @@ Template.visWorldMap.onRendered(function() {
         height: settings.height,
         scope: settings.mapType,
         geographyConfig: {
-          popupTemplate: function(geography, data) {
+          popupTemplate: function (geography, data) {
             var value = data ? data.value : "-";
-            return `<div class="hoverinfo"><strong>${
-              geography.properties.name
-            }</strong>: ${value}</div>`;
-          }
-        }
+            return `<div class="hoverinfo"><strong>${geography.properties.name}</strong>: ${value}</div>`;
+          },
+        },
       });
     }
   });
@@ -55,6 +53,6 @@ Template.visWorldMap.onRendered(function() {
 Template.visWorldMapForm.helpers({
   mapTypes: [
     { value: "world", text: "World Map" },
-    { value: "usa", text: "US Map" }
-  ]
+    { value: "usa", text: "US Map" },
+  ],
 });

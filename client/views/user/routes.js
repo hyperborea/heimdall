@@ -1,13 +1,13 @@
 var userRoutes = FlowRouter.group({
-  prefix: '/user'
+  prefix: "/user",
 });
 
-userRoutes.route('/list', {
-  name: 'userList',
-  action: render('userList')
+userRoutes.route("/list", {
+  name: "userList",
+  action: render("userList"),
 });
 
-userRoutes.route('/:id', {
-  name: 'userView',
-  action: render('userView')
+userRoutes.route("/:id", {
+  name: "userView",
+  action: render("userView"),
 });

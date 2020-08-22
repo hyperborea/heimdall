@@ -1,7 +1,7 @@
 import sqlite3 from "sqlite3";
 // import sqlite3 from "better-sqlite3";
 
-SOURCE_TYPES.sqlite.query = function(
+SOURCE_TYPES.sqlite.query = function (
   source,
   sql,
   parameters,
@@ -25,7 +25,7 @@ SOURCE_TYPES.sqlite.query = function(
 
   db.all(
     replaceQueryParameters(sql, "?"),
-    getQueryParameters(sql).map(key => parameters[key]),
+    getQueryParameters(sql).map((key) => parameters[key]),
     Meteor.bindEnvironment((err, rows) => {
       if (err) {
         sendResults("error", err.toString());

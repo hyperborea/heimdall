@@ -1,76 +1,80 @@
 Meteor.methods({
-  getStatistics: function() {
-    const ownerFilter  = filterByOwnership(this.userId);
+  getStatistics: function () {
+    const ownerFilter = filterByOwnership(this.userId);
     const accessFilter = filterByAccess(this.userId);
 
     var ownedJobs = Jobs.find(ownerFilter, { fields: { _id: 1 } });
-    var ownedJobIds = _.pluck(ownedJobs.fetch(), '_id');
+    var ownedJobIds = _.pluck(ownedJobs.fetch(), "_id");
 
-    var accessDashboards = Dashboards.find(accessFilter, { fields: { _id: 1 } });
-    var accessDashboardIds = _.pluck(accessDashboards.fetch(), '_id');
+    var accessDashboards = Dashboards.find(accessFilter, {
+      fields: { _id: 1 },
+    });
+    var accessDashboardIds = _.pluck(accessDashboards.fetch(), "_id");
 
     var jobHistory24h = JobHistory.aggregate([
-      { $match: 
-        { 
+      {
+        $match: {
           jobId: { $in: ownedJobIds },
-          finishedAt: { $gt: moment().subtract(1, 'days').toDate() },
-        }
+          finishedAt: { $gt: moment().subtract(1, "days").toDate() },
+        },
       },
-      { $group:
-        { 
-          _id: '$status',
+      {
+        $group: {
+          _id: "$status",
           count: { $sum: 1 },
-          jobs: { $addToSet: '$jobId' },
-          avgDuration: { $avg: '$duration' }, 
-          maxDuration: { $max: '$duration' },
-        }
-      }
+          jobs: { $addToSet: "$jobId" },
+          avgDuration: { $avg: "$duration" },
+          maxDuration: { $max: "$duration" },
+        },
+      },
     ]);
 
     var dashboardToplist = Requests.aggregate([
-      { $match:
-        {
-          routeName: 'dashboardView',
+      {
+        $match: {
+          routeName: "dashboardView",
           "params.id": { $in: accessDashboardIds },
-          requestedAt: { $gt: moment().subtract(1, 'month').toDate() },
+          requestedAt: { $gt: moment().subtract(1, "month").toDate() },
         },
       },
-      { $group:
-        {
-          _id: { dashboardId: '$params.id', user: '$userId' },
-          count: { $sum: 1 }
-        }
+      {
+        $group: {
+          _id: { dashboardId: "$params.id", user: "$userId" },
+          count: { $sum: 1 },
+        },
       },
-      { $group:
-        {
-          _id: '$_id.dashboardId',
+      {
+        $group: {
+          _id: "$_id.dashboardId",
           userCount: { $sum: 1 },
-          totalCount: { $sum: '$count' }
-        }
+          totalCount: { $sum: "$count" },
+        },
       },
       { $sort: { totalCount: -1 } },
-      { $limit: 15 }
+      { $limit: 15 },
     ]);
 
     return {
       owned: {
-        dashboards : Dashboards.find(ownerFilter).count(),
-        jobs       : ownedJobs.count(),
-        sources    : Sources.find(ownerFilter).count(),
+        dashboards: Dashboards.find(ownerFilter).count(),
+        jobs: ownedJobs.count(),
+        sources: Sources.find(ownerFilter).count(),
       },
       access: {
-        dashboards : Dashboards.find(accessFilter).count(),
-        jobs       : Jobs.find(accessFilter).count(),
-        sources    : Sources.find(accessFilter).count(),
+        dashboards: Dashboards.find(accessFilter).count(),
+        jobs: Jobs.find(accessFilter).count(),
+        sources: Sources.find(accessFilter).count(),
       },
       jobHistory24h: _.chain(jobHistory24h)
-        .map( (row) => [row._id, _.omit(row, '_id')] )
+        .map((row) => [row._id, _.omit(row, "_id")])
         .object()
         .value(),
       dashboardToplist: _.map(dashboardToplist, (item) => {
-        var dashboard = Dashboards.findOne(item._id, { fields: { title: 1, owner: 1 } });
+        var dashboard = Dashboards.findOne(item._id, {
+          fields: { title: 1, owner: 1 },
+        });
         return _.extend(item, dashboard);
-      })
+      }),
     };
-  }
+  },
 });

@@ -10,7 +10,7 @@ Template.visCalHeatmapForm.helpers({
     "week",
     "x_week",
     "month",
-    "x_month"
+    "x_month",
   ],
-  cellFormats: ["- empty -", "value", "day", "dow", "hour", "minute"]
+  cellFormats: ["- empty -", "value", "day", "dow", "hour", "minute"],
 });

@@ -1,23 +1,28 @@
-SOURCE_TYPES.json.query = function(source, query, parameters, endCallback, startCallback) {
+SOURCE_TYPES.json.query = function (
+  source,
+  query,
+  parameters,
+  endCallback,
+  startCallback
+) {
   function sendResults(status, data, fields) {
     endCallback({ status: status, data: data, fields: fields });
   }
 
-  try {    
+  try {
     var data = JSON.parse(query);
 
     new SimpleSchema({
       data: Array,
-      'data.$': {
-        label: 'Data items',
+      "data.$": {
+        label: "Data items",
         type: Object,
-        blackbox: true
-      }
-    }).validate({data: data});
+        blackbox: true,
+      },
+    }).validate({ data: data });
 
-    sendResults('ok', data, _.keys(data[0]));
+    sendResults("ok", data, _.keys(data[0]));
+  } catch (err) {
+    sendResults("error", err.toString());
   }
-  catch(err) {
-    sendResults('error', err.toString());
-  }
-}
+};

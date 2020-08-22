@@ -2,7 +2,7 @@ import _ from "lodash";
 import d3 from "d3";
 import c3 from "c3";
 
-Template.visChart.onRendered(function() {
+Template.visChart.onRendered(function () {
   var template = this;
   var container = template.find(".chart");
 
@@ -20,16 +20,13 @@ Template.visChart.onRendered(function() {
         const valueField = settings.dynamic.valueField;
         const xAxisField = settings.timeField || settings.categoryField;
 
-        let sortedSeries = _.chain(data)
-          .map(seriesField)
-          .uniq()
-          .value();
+        let sortedSeries = _.chain(data).map(seriesField).uniq().value();
 
         switch (settings.dynamic.sort) {
           case "sum_total":
             sortedSeries = _.chain(data)
               .groupBy(seriesField)
-              .mapValues(arr => _.sumBy(arr, o => Number(o[valueField])))
+              .mapValues((arr) => _.sumBy(arr, (o) => Number(o[valueField])))
               .map((v, k) => ({ name: k, value: v }))
               .sortBy("value")
               .reverse()
@@ -51,7 +48,7 @@ Template.visChart.onRendered(function() {
         }
 
         const store = {};
-        data.forEach(row => {
+        data.forEach((row) => {
           const x = row[xAxisField];
           const y = row[valueField];
           let s = row[seriesField];
@@ -73,10 +70,10 @@ Template.visChart.onRendered(function() {
         });
 
         data = Object.values(store);
-        series = Array.from(seriesNames).map(x => ({
+        series = Array.from(seriesNames).map((x) => ({
           field: x,
           type: settings.dynamic.chartType,
-          yAxis: "y"
+          yAxis: "y",
         }));
 
         if (settings.dynamic.stacked) {
@@ -84,13 +81,9 @@ Template.visChart.onRendered(function() {
         }
 
         if (settings.dynamic.ratio) {
-          data = data.map(item => {
-            const sum = _.chain(item)
-              .pick(seriesNames)
-              .values()
-              .sum()
-              .value();
-            seriesNames.forEach(k => {
+          data = data.map((item) => {
+            const sum = _.chain(item).pick(seriesNames).values().sum().value();
+            seriesNames.forEach((k) => {
               // Make sure there's no gaps.
               if (!item.hasOwnProperty(k)) {
                 item[k] = 0;
@@ -106,7 +99,7 @@ Template.visChart.onRendered(function() {
       }
 
       const fields = _.map(series, "field");
-      series.forEach(s => (s.name = s.name || s.field));
+      series.forEach((s) => (s.name = s.name || s.field));
 
       var config = {
         bindto: container,
@@ -119,74 +112,83 @@ Template.visChart.onRendered(function() {
           colors: _.zipObject(fields, _.map(series, "color")),
           classes: _.zipObject(fields, _.map(series, "lineType")),
           names: _.zipObject(fields, _.map(series, "name")),
-          order: null
+          order: null,
         },
         size: {
-          height: settings.height
+          height: settings.height,
         },
         axis: {
           x: {
             label: {
               text: settings.labelX,
-              position: settings.labelX && "outer-right"
+              position: settings.labelX && "outer-right",
             },
             tick: {
-              format: settings.formatX ? d3.format(settings.formatX) : undefined
+              format: settings.formatX
+                ? d3.format(settings.formatX)
+                : undefined,
             },
             min: settings.minX,
-            max: settings.maxX
+            max: settings.maxX,
           },
           y: {
             label: {
               text: settings.labelY,
-              position: settings.labelY && "outer-top"
+              position: settings.labelY && "outer-top",
             },
             tick: {
-              format: settings.formatY ? d3.format(settings.formatY) : undefined
+              format: settings.formatY
+                ? d3.format(settings.formatY)
+                : undefined,
             },
             min: settings.minY,
-            max: settings.maxY
+            max: settings.maxY,
           },
           y2: {
             show: _.filter(series, { yAxis: "y2" }).length > 0,
             label: {
               text: settings.labelY2,
-              position: settings.labelY2 && "outer-top"
+              position: settings.labelY2 && "outer-top",
             },
             tick: {
               format: settings.formatY2
                 ? d3.format(settings.formatY2)
-                : undefined
+                : undefined,
             },
             min: settings.minY2,
-            max: settings.maxY2
-          }
+            max: settings.maxY2,
+          },
         },
         grid: {
           x: {
             show: settings.gridX,
-            lines: _.filter(settings.gridLines, { axis: "x" })
+            lines: _.filter(settings.gridLines, { axis: "x" }),
           },
           y: {
             show: settings.gridY,
-            lines: _.filter(settings.gridLines, { axis: "y" })
-          }
+            lines: _.filter(settings.gridLines, { axis: "y" }),
+          },
         },
         point: {
-          show: !settings.hidePoints
+          show: !settings.hidePoints,
         },
         subchart: {
-          show: settings.subchart
+          show: settings.subchart,
         },
         tooltip: {
-          contents: function(d, defaultTitleFormat, defaultValueFormat, color) {
+          contents: function (
+            d,
+            defaultTitleFormat,
+            defaultValueFormat,
+            color
+          ) {
             var formatTitle = defaultTitleFormat;
             var formatValue = settings.formatY
               ? d3.format(settings.formatY)
-              : x => x;
+              : (x) => x;
 
             if (d.length > 1) {
-              defaultTitleFormat = function(title) {
+              defaultTitleFormat = function (title) {
                 var sum = d.reduce((tot, item) => tot + item.value, 0);
                 return formatTitle(title) + " - " + formatValue(sum);
               };
@@ -196,8 +198,8 @@ Template.visChart.onRendered(function() {
               this,
               arguments
             );
-          }
-        }
+          },
+        },
       };
 
       if (settings.timeField) {

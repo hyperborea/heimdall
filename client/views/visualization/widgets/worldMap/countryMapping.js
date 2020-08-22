@@ -245,7 +245,7 @@ export const countryMapping = {
   EH: "ESH",
   YE: "YEM",
   ZM: "ZMB",
-  ZW: "ZWE"
+  ZW: "ZWE",
 };
 
 export function countryISO3(cc) {

@@ -1,13 +1,13 @@
-Template.alarmView.onCreated(function() {
-  this.subscribe('jobAlarmsForRun', this.data.jobId, this.data.runId);
+Template.alarmView.onCreated(function () {
+  this.subscribe("jobAlarmsForRun", this.data.jobId, this.data.runId);
 });
 
 Template.alarmView.helpers({
-  job: function() {
+  job: function () {
     return Jobs.findOne(this.jobId);
   },
 
-  alarms: function() {
+  alarms: function () {
     return JobAlarms.find({ runId: this.runId });
-  }
+  },
 });

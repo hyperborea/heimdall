@@ -6,7 +6,7 @@ import { format as d3Format } from "d3";
 const IMGURL_REGEX = /https?:\/\/(?:[a-z0-9\-]+\.)+[a-z]{2,6}(?:\/[^/#?]+)+\.(?:jpe?g|gif|png)/gi;
 const ICON_REGEX = /\[([\w\s]+)\]/g;
 
-Template.visDataTable.onRendered(function() {
+Template.visDataTable.onRendered(function () {
   const table = this.find("table");
   const sorter = tablesort(table);
   table.addEventListener("afterSort", () => {
@@ -23,8 +23,8 @@ Template.visDataTable.onRendered(function() {
 });
 
 Template.visDataTable.helpers({
-  columns: function() {
-    const fields = this.fields.map(key => {
+  columns: function () {
+    const fields = this.fields.map((key) => {
       const config = get(this.settings, `fields.${key}`, {});
       if (config.type !== "hidden") {
         let name = key;
@@ -43,20 +43,20 @@ Template.visDataTable.helpers({
     return _.compact(fields);
   },
 
-  rowClass: function(row) {
+  rowClass: function (row) {
     if (this.settings.colorField) {
       return row[this.settings.colorField];
     }
   },
 
-  cellClass: function(row, key) {
+  cellClass: function (row, key) {
     const config = get(this.settings, `fields.${key}`, {});
     if (config.colorField) {
       return row[config.colorField];
     }
   },
 
-  getValue: function(row, key) {
+  getValue: function (row, key) {
     const config = get(this.settings, `fields.${key}`, {});
 
     let value = row[key];
@@ -100,14 +100,14 @@ Template.visDataTable.helpers({
           return moment(value).format("YYYY-MM-DD HH:mm:ss");
         else return value.toString();
     }
-  }
+  },
 });
 
 Template.visDataTableForm.helpers({
-  fieldSettings: field =>
+  fieldSettings: (field) =>
     get(Template.currentData(), `settings.fields.${field}`, {}),
   tableSizes: ["small", "medium", "large"],
-  tableStyles: ["standard", "compact", "padded", "collapsing"]
+  tableStyles: ["standard", "compact", "padded", "collapsing"],
 });
 
 Template.visDataTableFormItem.helpers({
@@ -118,36 +118,36 @@ Template.visDataTableFormItem.helpers({
     { value: "date", text: "date", icon: "calendar" },
     { value: "link", text: "link", icon: "linkify" },
     { value: "rating", text: "rating", icon: "empty star" },
-    { value: "flag", text: "flag", icon: "flag outline" }
+    { value: "flag", text: "flag", icon: "flag outline" },
   ],
   numberOptions: [
     { value: ",", text: "default" },
     { value: ",.2f", text: "two decimals" },
-    { value: "%", text: "percent" }
+    { value: "%", text: "percent" },
   ],
   dateOptions: [
     { value: "YYYY-MM-DD HH:mm:ss", text: "YYYY-MM-DD HH:mm:ss" },
     { value: "YYYY-MM-DD", text: "YYYY-MM-DD" },
     { value: "HH:mm:ss", text: "HH:mm:ss" },
-    { value: "dddd", text: "Weekday" }
+    { value: "dddd", text: "Weekday" },
   ],
   ratingIcons: [
     { value: "yellow star", text: "star", icon: "yellow star" },
     {
       value: "yellow empty star",
       text: "empty star",
-      icon: "yellow empty star"
+      icon: "yellow empty star",
     },
     { value: "red heart", text: "heart", icon: "red heart" },
     { value: "green smile", text: "smile", icon: "green smile" },
     { value: "orange meh", text: "meh", icon: "orange meh" },
     { value: "red frown", text: "frown", icon: "red frown" },
-    { value: "black bomb", text: "bomb", icon: "black bomb" }
+    { value: "black bomb", text: "bomb", icon: "black bomb" },
   ],
   namePath(key) {
     return `fields[${this.field}][${key}]`;
   },
   isType(type) {
     return (this.config.type || "text") === type;
-  }
+  },
 });

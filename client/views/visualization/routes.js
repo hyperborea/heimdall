@@ -1,8 +1,8 @@
 var visualizationRoutes = FlowRouter.group({
-  prefix: '/visualization'
+  prefix: "/visualization",
 });
 
-visualizationRoutes.route('/:id/edit', {
-  name: 'visualizationEdit',
-  action: render('visualizationForm')
+visualizationRoutes.route("/:id/edit", {
+  name: "visualizationEdit",
+  action: render("visualizationForm"),
 });

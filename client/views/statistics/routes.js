@@ -1,4 +1,4 @@
-FlowRouter.route('/statistics', {
-  name: 'statistics',
-  action: render('statistics')
+FlowRouter.route("/statistics", {
+  name: "statistics",
+  action: render("statistics"),
 });

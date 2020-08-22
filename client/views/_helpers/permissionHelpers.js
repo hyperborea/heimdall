@@ -1,16 +1,16 @@
-Template.registerHelper('isAdmin', function(trueValue=true, falseValue) {
+Template.registerHelper("isAdmin", function (trueValue = true, falseValue) {
   return isAdmin(Meteor.user()) ? trueValue : falseValue;
 });
 
-Template.registerHelper('isOwner', function(doc) {
+Template.registerHelper("isOwner", function (doc) {
   return isOwner(Meteor.user(), doc);
 });
 
-Template.registerHelper('ownerVisibility', function(doc) {
-  return isOwner(Meteor.user(), doc) ? 'visible' : 'hidden';
+Template.registerHelper("ownerVisibility", function (doc) {
+  return isOwner(Meteor.user(), doc) ? "visible" : "hidden";
 });
 
-Template.registerHelper('ownerOrNewVisibility', function(doc) {
+Template.registerHelper("ownerOrNewVisibility", function (doc) {
   doc = doc || {};
-  return !doc._id || isOwner(Meteor.user(), doc) ? 'visible' : 'hidden';
+  return !doc._id || isOwner(Meteor.user(), doc) ? "visible" : "hidden";
 });

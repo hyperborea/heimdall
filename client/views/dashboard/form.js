@@ -1,4 +1,4 @@
-Template.dashboardForm.onCreated(function() {
+Template.dashboardForm.onCreated(function () {
   this.unsavedChanges = new ReactiveVar(false);
   this.includeNonOwned = new ReactiveVar(false);
   this.visSearch = new ReactiveVar("");
@@ -15,10 +15,10 @@ Template.dashboardForm.onCreated(function() {
   );
 });
 
-Template.dashboardForm.onRendered(function() {
+Template.dashboardForm.onRendered(function () {
   this.$("form").form({
     fields: { title: "empty" },
-    inline: true
+    inline: true,
   });
 
   this.$(".ui.checkbox").checkbox();
@@ -32,19 +32,19 @@ Template.dashboardForm.onRendered(function() {
       max_size_x: 20,
       resize: {
         enabled: true,
-        stop: () => this.unsavedChanges.set(true)
+        stop: () => this.unsavedChanges.set(true),
       },
       draggable: {
-        stop: () => this.unsavedChanges.set(true)
+        stop: () => this.unsavedChanges.set(true),
       },
-      serialize_params: function($w, wgd) {
+      serialize_params: function ($w, wgd) {
         var type = $w.find("[name=type]").val();
         var options = {
           col: wgd.col,
           row: wgd.row,
           size_x: wgd.size_x,
           size_y: wgd.size_y,
-          type: type
+          type: type,
         };
 
         if (options.type === "visualization") {
@@ -56,7 +56,7 @@ Template.dashboardForm.onRendered(function() {
         }
 
         return options;
-      }
+      },
     })
     .data("gridster");
 
@@ -67,10 +67,10 @@ Template.dashboardForm.onRendered(function() {
 
       // Gridster tries to be clever and pushes widgets down if they don't fit in width.
       // That's not what we want though, so we're manually overriding the columns with the maximum to expect.
-      grid.options.min_cols = _.max(_.map(widgets, w => w.col + w.size_x));
+      grid.options.min_cols = _.max(_.map(widgets, (w) => w.col + w.size_x));
 
       grid.remove_all_widgets();
-      _.each(widgets, widget => addWidget(grid, widget));
+      _.each(widgets, (widget) => addWidget(grid, widget));
     }
   });
 });
@@ -78,51 +78,52 @@ Template.dashboardForm.onRendered(function() {
 Template.dashboardForm.helpers({
   dashboard: () => Dashboards.findOne(FlowRouter.getParam("id")),
   disabledIfNew: () => !FlowRouter.getParam("id") && "disabled",
-  disabledIfSaved: () => !Template.instance().unsavedChanges.get() && "disabled"
+  disabledIfSaved: () =>
+    !Template.instance().unsavedChanges.get() && "disabled",
 });
 
 Template.dashboardForm.events({
-  "change input, keyup input, keyup textarea": function() {
+  "change input, keyup input, keyup textarea": function () {
     Template.instance().unsavedChanges.set(true);
   },
 
-  "submit form": function(event, template) {
+  "submit form": function (event, template) {
     event.preventDefault();
 
     var _id = FlowRouter.getParam("id");
     var data = $(event.target).serializeJSON();
     data.widgets = getGrid(template).serialize();
 
-    Meteor.call("saveDashboard", data, function(err, _id) {
+    Meteor.call("saveDashboard", data, function (err, _id) {
       template.unsavedChanges.set(false);
       FlowRouter.go("dashboardEdit", { id: _id });
     });
   },
 
-  "keyup .visualization.dropdown input.search": function(event, template) {
+  "keyup .visualization.dropdown input.search": function (event, template) {
     template.visSearch.set(event.target.value);
   },
 
-  "click .js-delete": function() {
-    confirmModal("Sure you want to delete this dashboard?", function() {
+  "click .js-delete": function () {
+    confirmModal("Sure you want to delete this dashboard?", function () {
       Meteor.call("removeDashboard", FlowRouter.getParam("id"));
       FlowRouter.go("dashboardList");
     });
   },
 
-  "click .js-add-vis-widget": function(event, template) {
+  "click .js-add-vis-widget": function (event, template) {
     var grid = getGrid(template);
     addWidget(grid, { size_x: 10, size_y: 4, type: "visualization" });
     template.unsavedChanges.set(true);
   },
 
-  "click .js-add-text-widget": function(event, template) {
+  "click .js-add-text-widget": function (event, template) {
     var grid = getGrid(template);
     addWidget(grid, { size_x: 10, size_y: 1, type: "text" });
     template.unsavedChanges.set(true);
   },
 
-  "click .js-move-widget-top": function(event, template) {
+  "click .js-move-widget-top": function (event, template) {
     var grid = getGrid(template);
     var widgetNode = $(event.target).closest(".dashboardFormWidget");
 
@@ -132,7 +133,7 @@ Template.dashboardForm.events({
     template.unsavedChanges.set(true);
   },
 
-  "click .js-clone-widget": function(event, template) {
+  "click .js-clone-widget": function (event, template) {
     var grid = getGrid(template);
     var widgetNode = $(event.target).closest(".dashboardFormWidget");
 
@@ -142,7 +143,7 @@ Template.dashboardForm.events({
     template.unsavedChanges.set(true);
   },
 
-  "click .js-remove-widget": function(event, template) {
+  "click .js-remove-widget": function (event, template) {
     var grid = getGrid(template);
     var widgetNode = $(event.target).closest(".dashboardFormWidget");
 
@@ -150,9 +151,9 @@ Template.dashboardForm.events({
     template.unsavedChanges.set(true);
   },
 
-  'change input[name="includeNonOwned:skip"]': function(event, template) {
+  'change input[name="includeNonOwned:skip"]': function (event, template) {
     template.includeNonOwned.set(event.target.checked);
-  }
+  },
 });
 
 function getGrid(template) {

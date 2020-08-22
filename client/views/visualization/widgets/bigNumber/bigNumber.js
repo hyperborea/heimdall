@@ -1,7 +1,7 @@
 import { format as d3Format } from "d3";
 
 Template.visBigNumber.helpers({
-  value: function() {
+  value: function () {
     var settings = this.settings;
     settings.valueFormat = settings.valueFormat || ",";
 
@@ -19,9 +19,9 @@ Template.visBigNumber.helpers({
         ? d3Format(settings.valueFormat)(result)
         : result;
     } else return "-";
-  }
+  },
 });
 
 Template.visBigNumberForm.helpers({
-  aggregationMethods: _.keys(AGGREGATIONS)
+  aggregationMethods: _.keys(AGGREGATIONS),
 });

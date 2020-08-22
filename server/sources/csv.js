@@ -1,7 +1,12 @@
-import Papa from 'papaparse';
+import Papa from "papaparse";
 
-
-SOURCE_TYPES.csv.query = function(source, query, parameters, endCallback, startCallback) {
+SOURCE_TYPES.csv.query = function (
+  source,
+  query,
+  parameters,
+  endCallback,
+  startCallback
+) {
   function sendResults(status, data, fields) {
     endCallback({ status: status, data: data, fields: fields });
   }
@@ -9,12 +14,11 @@ SOURCE_TYPES.csv.query = function(source, query, parameters, endCallback, startC
   try {
     var results = Papa.parse(query, {
       header: true,
-      dynamicTyping: true
+      dynamicTyping: true,
     });
 
-    sendResults('ok', results.data, results.meta.fields);
+    sendResults("ok", results.data, results.meta.fields);
+  } catch (err) {
+    sendResults("error", err.toString());
   }
-  catch(err) {
-    sendResults('error', err.toString());
-  }
-}
+};

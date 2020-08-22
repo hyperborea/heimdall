@@ -1,7 +1,7 @@
 import ProgressBar from "progressbar.js";
 import isEqual from "lodash/isEqual";
 
-Template.visProgress.onRendered(function() {
+Template.visProgress.onRendered(function () {
   const template = this;
   const container = template.find(".container");
   let activeSettings = {};
@@ -32,15 +32,15 @@ Template.visProgress.onRendered(function() {
             margin: 0,
             transform: {
               prefix: true,
-              value: "translate(-50%, -50%)"
-            }
-          }
+              value: "translate(-50%, -50%)",
+            },
+          },
         },
         from: { color: settings.minColor || "#dae289" },
         to: { color: settings.maxColor || "#3b6427" },
         step: (state, progress) => {
           progress.path.setAttribute("stroke", state.color);
-        }
+        },
       });
 
       const maxWidth = settings.maxWidth || "300px";
