@@ -1,14 +1,13 @@
 <template name="sourceForm">
-
   <form class="ui form text container">
-    <input type="hidden" name="_id" value={{source._id}}>
+    <input type="hidden" name="_id" value="{{source._id}}" />
 
     <h4 class="ui dividing header">Connection Details</h4>
 
     <div class="fields">
       <div class="twelve wide field">
         <label>Name</label>
-        <input type="text" name="name" value={{source.name}}>
+        <input type="text" name="name" value="{{source.name}}" />
       </div>
       <div class="four wide field">
         <label>Type</label>
@@ -19,52 +18,90 @@
     {{#if showField 'path'}}
     <div class="field">
       <label>Path</label>
-      <input type="text" name="path" value={{source.path}} placeholder="path">
+      <input
+        type="text"
+        name="path"
+        value="{{source.path}}"
+        placeholder="path"
+      />
     </div>
-    {{/if}}
-
-    {{#if showField 'server'}}
+    {{/if}} {{#if showField 'server'}}
     <div class="field">
       <label>Server</label>
       <div class="fields">
         <div class="eight wide field">
-          <input type="text" name="host" value={{source.host}} placeholder="host address">
+          <input
+            type="text"
+            name="host"
+            value="{{source.host}}"
+            placeholder="host address"
+          />
         </div>
         <div class="four wide field">
-          <input type="number" name="port" value={{source.port}} placeholder="port">
+          <input
+            type="number"
+            name="port"
+            value="{{source.port}}"
+            placeholder="port"
+          />
         </div>
         <div class="four wide field">
-          <input type="text" name="database" value={{source.database}} placeholder="database">
+          <input
+            type="text"
+            name="database"
+            value="{{source.database}}"
+            placeholder="database"
+          />
         </div>
       </div>
     </div>
-    {{/if}}
-
-    {{#if showField 'ssl'}}
+    {{/if}} {{#if showField 'ssl'}}
     <div class="field">
       <div class="ui checkbox">
-        <input type="checkbox" name="ssl:boolean" checked={{source.ssl}}>
+        <input type="checkbox" name="ssl:boolean" checked="{{source.ssl}}" />
         <label>use SSL</label>
       </div>
     </div>
-    {{/if}}
-
-    {{#if showField 'mssql'}}
+    {{/if}} {{#if showField 'mssql'}}
     <div class="field">
       <label>Domain (SQL Server)</label>
-      <input type="text" name="domain" value={{source.domain}} placeholder="domain">
+      <input
+        type="text"
+        name="domain"
+        value="{{source.domain}}"
+        placeholder="domain"
+      />
     </div>
-    {{/if}}
-
-    {{#if showField 'credentials'}}
+    {{/if}} {{#if showField 'gcp'}}
+    <div class="field">
+      <label>Project ID</label>
+      <input
+        type="text"
+        name="projectId"
+        value="{{source.projectId}}"
+        placeholder="projectId"
+      />
+    </div>
+    {{/if}} {{#if showField 'credentials'}}
     <div class="field">
       <label>Credentials</label>
       <div class="two fields">
         <div class="field">
-          <input type="text" name="username" value={{source.username}} placeholder="username">
+          <input
+            type="text"
+            name="username"
+            value="{{source.username}}"
+            placeholder="username"
+          />
         </div>
         <div class="field">
-          <input type="password" name="password" value={{source.password}} placeholder="password" autocomplete="off">
+          <input
+            type="password"
+            name="password"
+            value="{{source.password}}"
+            placeholder="password"
+            autocomplete="off"
+          />
         </div>
       </div>
     </div>
@@ -81,13 +118,13 @@
       <div class="ui buttons">
         <div class="ui submit button js-save-source {{saveBtnClass}}">save</div>
         {{#if source._id}}
-          <div class="or" data-text="&amp;"></div>
-          <div class="ui submit button js-test">test connection</div>
+        <div class="or" data-text="&amp;"></div>
+        <div class="ui submit button js-test">test connection</div>
         {{/if}}
       </div>
 
       {{#if source._id}}
-        <div class="ui right floated negative button js-delete">delete</div>
+      <div class="ui right floated negative button js-delete">delete</div>
       {{/if}}
     </div>
 
@@ -99,11 +136,9 @@
         <small>last checked {{timeAgo source.test.updatedAt}}</small>
       </div>
       {{#if resultIsError source.test}}
-        <div class="ui visible error message">{{source.test.data}}</div>
+      <div class="ui visible error message">{{source.test.data}}</div>
       {{/if}}
     </div>
     {{/if}}
-
   </form>
-
 </template>

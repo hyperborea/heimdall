@@ -49,7 +49,7 @@ JobResults.schema = new SimpleSchema({
     type: Date,
   },
   pid: {
-    type: Number,
+    type: String,
     optional: true,
   },
 });

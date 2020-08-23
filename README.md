@@ -21,7 +21,7 @@ Heimdall is a free and open-source data visualization and business monitoring sy
   - progress widgets
   - pie and donut charts
 - interactive dashboards through query parameterization
-- supports PostgreSQL, MySQL, Microsoft SQL Server, SQLite, CSV and JSON
+- supports PostgreSQL, MySQL, Microsoft SQL Server, BigQuery, SQLite, CSV and JSON
 - queries can be scheduled to run periodically or are executed automatically after the cache validity expires
 - alarms and easy rule system supporting notification through email and Slack
 - authentication through passwords, LDAP, Google, Github and / or Facebook

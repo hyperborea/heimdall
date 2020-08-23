@@ -37,7 +37,6 @@ pfafman:filesaver
 reywood:publish-composite
 dburles:collection-helpers
 perak:markdown
-meteorhacks:kadira
 http@1.4.1
 standard-minifier-js@2.4.0
 reactive-dict@1.2.1
