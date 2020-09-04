@@ -27,7 +27,7 @@
     "mssql": "^3.3.0",
     "mustache": "^2.2.1",
     "mysql": "^2.11.1",
-    "papaparse": "^4.1.2",
+    "papaparse": "^5.2.0",
     "pg": "^7.12.1",
     "progressbar.js": "^1.0.1",
     "query-string": "^6.2.0",
