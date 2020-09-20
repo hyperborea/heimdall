@@ -34,9 +34,16 @@ Template.login.events({
   },
 
   "click .google.button": function (event, template) {
-    Meteor.loginWithGoogle({}, function (err) {
-      if (err) template.error.set(err.reason);
-    });
+    Meteor.loginWithGoogle(
+      {
+        requestPermissions: [
+          "https://www.googleapis.com/auth/admin.directory.group.readonly",
+        ],
+      },
+      function (err) {
+        if (err) template.error.set(err.reason);
+      }
+    );
   },
 
   "click .github.button": function (event, template) {

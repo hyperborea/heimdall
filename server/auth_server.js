@@ -21,17 +21,43 @@ Meteor.startup(function () {
     adminUser = Accounts.createUser({
       username: "admin",
       password: "admin",
+      email: Meteor.settings.restrictEmailDomain
+        ? `heimdall-admin@${Meteor.settings.restrictEmailDomain}`
+        : undefined,
     });
   }
 
   Roles.addUsersToRoles(adminUser, "admin");
 });
 
-// Keep track of all LDAP groups
+// Sync user groups if specifically enabled or if using LDAP.
 Accounts.onLogin(function () {
-  var user = Meteor.user();
-  var existingGroups = Groups.find().fetch();
+  const user = Meteor.user();
 
+  if (Meteor.settings.public.syncGroups) {
+    if (
+      user.services.google &&
+      (!user.lastSyncedExpiresAt ||
+        user.services.google.expiresAt > user.lastSyncedExpiresAt)
+    ) {
+      const { accessToken, email } = user.services.google;
+      const response = HTTP.get(
+        `https://www.googleapis.com/admin/directory/v1/groups?userKey=${email}`,
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+      user.groups = response.data.groups.map((item) =>
+        item.email.substring(0, item.email.indexOf("@"))
+      );
+      Meteor.users.update(user._id, {
+        $set: {
+          groups: user.groups,
+          lastSyncedExpiresAt: user.services.google.expiresAt,
+        },
+      });
+    }
+  }
+
+  var existingGroups = Groups.find().fetch();
   var newGroupNames = _.difference(user.groups, _.map(existingGroups, "name"));
   _.each(newGroupNames, function (groupName) {
     Groups.insert({ name: groupName });
