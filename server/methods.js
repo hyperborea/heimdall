@@ -1,5 +1,5 @@
 Meteor.methods({
-  getStatistics: function () {
+  getStatistics: async function () {
     const ownerFilter = filterByOwnership(this.userId);
     const accessFilter = filterByAccess(this.userId);
 
@@ -11,7 +11,7 @@ Meteor.methods({
     });
     var accessDashboardIds = _.pluck(accessDashboards.fetch(), "_id");
 
-    var jobHistory24h = JobHistory.aggregate([
+    var jobHistory24h = await JobHistory.aggregate([
       {
         $match: {
           jobId: { $in: ownedJobIds },
@@ -27,9 +27,9 @@ Meteor.methods({
           maxDuration: { $max: "$duration" },
         },
       },
-    ]);
+    ]).toArray();
 
-    var dashboardToplist = Requests.aggregate([
+    var dashboardToplist = await Requests.aggregate([
       {
         $match: {
           routeName: "dashboardView",
@@ -52,7 +52,7 @@ Meteor.methods({
       },
       { $sort: { totalCount: -1 } },
       { $limit: 15 },
-    ]);
+    ]).toArray();
 
     return {
       owned: {

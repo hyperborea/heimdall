@@ -45,7 +45,7 @@ Accounts.onLogin(function () {
         `https://www.googleapis.com/admin/directory/v1/groups?userKey=${email}`,
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
-      user.groups = response.data.groups.map((item) =>
+      user.groups = (response.data.groups || []).map((item) =>
         item.email.substring(0, item.email.indexOf("@"))
       );
       Meteor.users.update(user._id, {
