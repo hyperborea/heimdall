@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { google } from "googleapis";
 
 _.defaults(Meteor.settings, { services: [] });
 _.extend(LDAP_SETTINGS, Meteor.settings.ldap);
@@ -34,25 +35,35 @@ Meteor.startup(function () {
 Accounts.onLogin(function () {
   const user = Meteor.user();
 
-  if (Meteor.settings.public.syncGroups) {
+  if (Meteor.settings.syncGoogleGroups) {
     if (
       user.services.google &&
       (!user.lastSyncedExpiresAt ||
         user.services.google.expiresAt > user.lastSyncedExpiresAt)
     ) {
-      const { accessToken, email } = user.services.google;
-      const response = HTTP.get(
-        `https://www.googleapis.com/admin/directory/v1/groups?userKey=${email}`,
-        { headers: { Authorization: `Bearer ${accessToken}` } }
+      // Need to impersonate a user with access to Directory API using service account with domain-wide delegation:
+      // https://medium.com/swlh/how-to-use-directory-from-google-api-using-node-js-cb375f7a3f14
+      // https://developers.google.com/admin-sdk/directory/v1/guides/delegation
+      const auth = new google.auth.JWT(
+        Meteor.settings.syncGoogleGroups.clientEmail,
+        null,
+        Meteor.settings.syncGoogleGroups.privateKey,
+        ["https://www.googleapis.com/auth/admin.directory.group.readonly"],
+        Meteor.settings.syncGoogleGroups.impersonateEmail
       );
-      user.groups = (response.data.groups || []).map((item) =>
-        item.email.substring(0, item.email.indexOf("@"))
-      );
-      Meteor.users.update(user._id, {
-        $set: {
-          groups: user.groups,
-          lastSyncedExpiresAt: user.services.google.expiresAt,
-        },
+      const directory = google.admin({ version: "directory_v1", auth });
+
+      const { email } = user.services.google;
+      directory.groups.list({ userKey: email }).then((response) => {
+        user.groups = (response.data.groups || []).map((item) =>
+          item.email.substring(0, item.email.indexOf("@"))
+        );
+        Meteor.users.update(user._id, {
+          $set: {
+            groups: user.groups,
+            lastSyncedExpiresAt: user.services.google.expiresAt,
+          },
+        });
       });
     }
   }

@@ -3,10 +3,10 @@
     "ldapEnabled": false,
     "slackEnabled": false,
     "loginMessage": null,
-    "mapboxAccessToken": null,
-    "syncGroups": false
+    "mapboxAccessToken": null
   },
   "services": [],
+  "syncGoogleGroups": null,
   "salt": null,
   "defaultGroups": [],
   "slackHookURL": null

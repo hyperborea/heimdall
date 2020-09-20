@@ -21,6 +21,7 @@
     "d3.layout.cloud": "^1.2.0",
     "datamaps": "^0.5.7",
     "date-fns": "^1.30.1",
+    "googleapis": "^39.2.0",
     "lodash": "^4.17.20",
     "mapbox-gl": "^0.53.0-beta.1",
     "meteor-node-stubs": "~0.2.0",
