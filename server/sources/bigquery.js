@@ -21,10 +21,31 @@ SOURCE_TYPES.bigquery.query = async function (
     endCallback({ status: status, data: data, fields: fields });
   }
 
+  // BigQuery unfortunately doesn't quote date parts, so we need to whitelist certain values from parameterization.
+  const whitelistedKeywords = [
+    "DAYOFWEEK",
+    "DAY",
+    "DAYOFYEAR",
+    "WEEK",
+    "ISOWEEK",
+    "MONTH",
+    "QUARTER",
+    "YEAR",
+    "ISOYEAR",
+  ];
+  const whitelistedParams = {};
+  for (const key in parameters) {
+    if (whitelistedKeywords.includes(parameters[key])) {
+      whitelistedParams[key] = parameters[key];
+    }
+  }
+
   try {
     const client = createClient(source);
     const [job] = await client.createQueryJob({
-      query: replaceQueryParameters(sql, (_match, key) => "@" + key),
+      query: replaceQueryParameters(sql, (_match, key) =>
+        key in whitelistedParams ? whitelistedParams[key] : "@" + key
+      ),
       params: parameters,
     });
     startCallback(job.id);
