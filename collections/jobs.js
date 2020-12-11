@@ -338,7 +338,7 @@ runJob = function (jobId, parameters) {
           });
         });
 
-      result.pid = 0;
+      result.pid = null;
       updateJob(result);
       checkJobForAlarms(job, result, runId);
       logJobHistory(job, result, startedAt, new Date());

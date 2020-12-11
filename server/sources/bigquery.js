@@ -7,6 +7,7 @@ function createClient(source) {
       client_email: source.username,
       private_key: decryptString(source.password).replace(/\\n/g, "\n"),
     },
+    scopes: ["https://www.googleapis.com/auth/drive.readonly"],
   });
 }
 
@@ -51,7 +52,7 @@ SOURCE_TYPES.bigquery.query = async function (
     startCallback(job.id);
 
     const [rows] = await job.getQueryResults();
-    sendResults("ok", rows, _.keys(rows[0]));
+    sendResults("ok", rows, rows.length ? _.keys(rows[0]) : []);
   } catch (err) {
     sendResults("error", err.toString());
   }
