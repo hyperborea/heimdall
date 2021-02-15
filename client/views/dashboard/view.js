@@ -16,6 +16,20 @@ Template.dashboardView.onCreated(function () {
   });
 
   this.autorun(() => {
+    const dashboard = Dashboards.findOne(_id());
+    const jobs = Jobs.find().fetch();
+    if (dashboard && jobs) {
+      const sources = [
+        qs.parse(location.hash), // 1) dashboard url query parameters
+        qs.parse(dashboard.params), // 2) dashboard parameter defaults
+        _.chain(jobs) // 3) job defaults
+          .pluck("parameters")
+          .reduce((memo, param) => _.extend(memo, param), {})
+          .value(),
+      ];
+      this.parameters.set(_.defaults({}, ...sources));
+    }
+
     if (isAutorefresh()) {
       this.timer = window.setInterval(() => {
         // Rerun all (parameterized) jobs that aren't running already.
@@ -52,15 +66,6 @@ Template.dashboardView.onRendered(function () {
       var dashboard = Dashboards.findOne(_id());
       var widgets = dashboard ? dashboard.widgets : [];
 
-      // Prefill params with default values set on dashboard level.
-      const prevParams = template.parameters.get();
-      const newParams = { ...qs.parse(dashboard.params), ...prevParams };
-      if (!isEqual(prevParams, newParams)) {
-        template.parameters.set(newParams);
-        // Don't continue to rebuild widgets if we don't have the right params yet.
-        return;
-      }
-
       // Gridster tries to be clever and pushes widgets down if they don't fit in width.
       // That's not what we want though, so we're manually overriding the columns with the maximum to expect.
       grid.options.min_cols = _.max(_.map(widgets, (w) => w.col + w.size_x));
@@ -80,11 +85,10 @@ Template.dashboardView.helpers({
   paramArray: function () {
     const template = Template.instance();
     const parameters = template.parameters.get();
-    return _.chain(Jobs.find().fetch())
-      .pluck("parameters")
-      .reduce((memo, param) => _.extend(memo, param), {})
-      .map((v, k) => Object({ name: k, value: parameters[k] || v }))
-      .value();
+    return Object.keys(parameters).map((k) => ({
+      name: k,
+      value: parameters[k],
+    }));
   },
 });
 

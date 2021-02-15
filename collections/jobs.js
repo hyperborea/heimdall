@@ -397,5 +397,7 @@ replaceQueryParameters = function (query, replacement) {
 // Make sure only relevant parameters are used and that defaults are still filled in.
 cleanParameters = function (params, defaultParams) {
   params = params || {};
-  return mapValues(defaultParams, (v, k) => params[k] || v);
+  return mapValues(defaultParams, (v, k) =>
+    params.hasOwnProperty(k) ? params[k] : v
+  );
 };
