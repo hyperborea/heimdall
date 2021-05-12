@@ -32,7 +32,7 @@
     "pg": "^7.12.1",
     "progressbar.js": "^1.0.1",
     "query-string": "^6.2.0",
-    "simpl-schema": "^1.5.3",
+    "simpl-schema": "^1.10.2",
     "sqlite3": "^4.1.0",
     "tablesort": "^5.0.0"
   },
